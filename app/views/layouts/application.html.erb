@@ -16,14 +16,20 @@
     </div>
     <div class="span-17" id="main">
       #main
+      <% flash.each do |key, value| %>
+        <%= content_tag(:div, value, :class => "flash #{key}") %>
+      <% end %> 
       <%= yield %>
     </div>
     <div class="span-7 last" id="sidebar">
       #sidebar
     </div>
-    <div class="span-24" id="footer">
+    <div class="span-24 last" id="footer">
       #footer
     </div>
+    <% if Rails.env.development? %>
+      <div class="span-24"><%= debug(params) %></div>
+    <% end %>
   </div>
 </body>
 </html>
