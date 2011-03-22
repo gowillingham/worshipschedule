@@ -5,30 +5,37 @@
     <%= csrf_meta_tag %>
     <%= stylesheet_link_tag 'blueprint/screen', :media => 'screen' %>
     <%= stylesheet_link_tag 'blueprint/print',  :media => 'print' %>
-    <%= stylesheet_link_tag 'default',  :media => 'screen' %>
+    <%= stylesheet_link_tag 'style',  :media => 'screen' %>
     <!--[if IE]><link rel="stylesheet" href="blueprint/ie.css" type="text/css" media="screen, projection" /><![endif]-->  
   </head>
 <body>
-  <div class="container showgrid">
-    <div class="span-24 last" id="header">
-      #header
+  <div class="container round">
+    <div class="span-24 last">
+      <div id="header">
+        #header
+      </div>
     </div>
-    <div class="span-17" id="main">
-      #main
+    <div class="span-18 colborder">
+      <div id="main">
       <% flash.each do |key, value| %>
         <%= content_tag(:div, value, :class => "flash #{key}") %>
       <% end %> 
       <%= yield %>
+      </div>
     </div>
-    <div class="span-7 last" id="sidebar">
-      #sidebar
+    <div class="span-5 last">
+      <div id="sidebar">
+        #sidebar
+      </div>
     </div>
-    <div class="span-24 last" id="footer">
-      #footer
+    <div class="span-24 last">
+      <div id="footer">
+        #footer
+      </div>
+      <% if Rails.env.development? %>
+        <div class="span-24"><%= debug(params) %></div>
+      <% end %>
     </div>
-    <% if Rails.env.development? %>
-      <div class="span-24"><%= debug(params) %></div>
-    <% end %>
   </div>
 </body>
 </html>

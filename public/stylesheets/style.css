@@ -1,0 +1,10 @@
+body              {background-color:#cff;padding:40px 0 0 0;}
+.container        {background-color:#fff;}
+
+#header     {padding:20px;}
+#main       {padding:20px;}
+#sidebar    {}
+#footer     {padding:20px;}
+
+.round {-moz-border-radius:10px;-webkit-border-radius:10px;border-radius:10px;}
+
