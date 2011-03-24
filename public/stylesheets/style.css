@@ -1,10 +1,16 @@
-body              {background-color:#cff;padding:40px 0 0 0;}
+body              {background-color:#cff;padding:40px 0;}
 .container        {background-color:#fff;}
 
 #header     {padding:20px;}
 #main       {padding:20px;}
 #sidebar    {}
 #footer     {padding:20px;}
+
+.field                    {margin-bottom:10px;}
+
+.field_with_errors        {display:inline;}
+.field_with_errors label  {color:#b11f3d;}
+.field_with_errors input  {border-color:#b11f3d;}
 
 .round {-moz-border-radius:10px;-webkit-border-radius:10px;border-radius:10px;}
 
