@@ -1,4 +1,6 @@
 Worshipschedule::Application.routes.draw do
+  get "sessions/new"
+
   resources :users
 
   get "pages/home"
