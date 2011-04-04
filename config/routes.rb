@@ -1,7 +1,10 @@
 Worshipschedule::Application.routes.draw do
-  get "sessions/new"
 
   resources :users
+  resources :sessions, :only => [:new, :create, :destroy]
+  
+  match 'signin' => 'sessions#new'
+  match 'signout' => 'sessions#destroy'
 
   get "pages/home"
   
