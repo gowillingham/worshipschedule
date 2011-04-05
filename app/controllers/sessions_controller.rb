@@ -1,4 +1,5 @@
 class SessionsController < ApplicationController
+  
   def new
     @user = User.new
     @title = 'sign in'
@@ -18,6 +19,8 @@ class SessionsController < ApplicationController
   end
 
   def destroy
-    
+    sign_out
+    flash[:confirm] = "Ok. Signed out. "
+    redirect_to root_path
   end
 end

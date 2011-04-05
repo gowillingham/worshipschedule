@@ -33,6 +33,11 @@ describe UsersController do
       get :show, :id => @user
       response.should have_selector('img', :class => 'gravatar')
     end
+    
+    it "should have a sign out link" do
+      get :show, :id => @user
+      response.should have_selector('a', :content => 'sign out')
+    end
   end
 
   describe "GET 'new'" do

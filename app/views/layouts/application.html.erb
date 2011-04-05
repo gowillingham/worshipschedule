@@ -25,7 +25,9 @@
     </div>
     <div class="span-5 last">
       <div id="sidebar">
-        
+        <ul>
+          <li><%= link_to 'sign out', signout_path, :method => :delete %>
+        </ul>  
       </div>
     </div>
     <div class="span-24 last">
@@ -36,6 +38,7 @@
   </div>
     <% if Rails.env.development? %>
       <div class="span-24"><%= debug(params) %></div>
+      <div class="span-24"><%= debug(session) %></div>
     <% end %>
 </body>
 </html>

@@ -4,12 +4,12 @@ module SessionsHelper
     if signed_in?
       # check and/or refresh session ..
     else
-      # redirect to login ..
+      redirect_to signin_path
     end
   end
   
   def sign_in(user)
-    session[:remember_token] = user.id
+    session[:user_id] = user.id
     refresh_session
     self.current_user = user
   end
@@ -27,6 +27,11 @@ module SessionsHelper
   end
   
   def current_user
-    @current_user ||= User.find session[:remember_token]
+    @current_user ||= User.find_by_id session[:user_id]
+  end
+  
+  def sign_out
+    reset_session
+    self.current_user = nil
   end
 end
