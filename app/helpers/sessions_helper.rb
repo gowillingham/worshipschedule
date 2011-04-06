@@ -1,9 +1,10 @@
 module SessionsHelper
   
-  def authenticate(user)
+  def authenticate
     if signed_in?
       # check and/or refresh session ..
     else
+      flash[:error] = "Can't show you that page until you sign in!"
       redirect_to signin_path
     end
   end

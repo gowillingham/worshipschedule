@@ -26,7 +26,11 @@
     <div class="span-5 last">
       <div id="sidebar">
         <ul>
-          <li><%= link_to 'sign out', signout_path, :method => :delete %>
+          <% if signed_in? %>
+            <li><%= link_to 'sign out', signout_path, :method => :delete %>
+          <% else %>
+            <li><%= link_to 'sign in', signin_path %>
+          <% end %>
         </ul>  
       </div>
     </div>

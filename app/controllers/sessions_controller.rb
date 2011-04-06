@@ -1,4 +1,5 @@
 class SessionsController < ApplicationController
+  skip_before_filter :authenticate, :except => [:destroy]
   
   def new
     @user = User.new
@@ -20,7 +21,7 @@ class SessionsController < ApplicationController
 
   def destroy
     sign_out
-    flash[:confirm] = "Ok. Signed out. "
+    flash[:success] = "Ok. Signed out. "
     redirect_to root_path
   end
 end

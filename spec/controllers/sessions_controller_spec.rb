@@ -68,7 +68,7 @@ describe SessionsController do
   describe "DELETE 'destroy'" do
     
     it "it should sign a user out" do
-      test_signin_user(Factory(:user))
+      signin_user Factory(:user)
       delete :destroy
       controller.should_not be_signed_in
       response.should redirect_to(root_path)

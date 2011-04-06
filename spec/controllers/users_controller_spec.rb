@@ -3,6 +3,11 @@ require 'spec_helper'
 describe UsersController do
   render_views
   
+  before(:each) do
+    @signed_in_user = Factory(:user)
+    signin_user @signed_in_user
+  end
+  
   describe "GET 'show'" do
     
     before(:each) do
@@ -32,11 +37,6 @@ describe UsersController do
     it "should include the user gravatar image" do
       get :show, :id => @user
       response.should have_selector('img', :class => 'gravatar')
-    end
-    
-    it "should have a sign out link" do
-      get :show, :id => @user
-      response.should have_selector('a', :content => 'sign out')
     end
   end
 
