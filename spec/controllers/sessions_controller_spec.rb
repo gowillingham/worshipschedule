@@ -8,7 +8,7 @@ describe SessionsController do
     it "should be successful" do
       get 'new'
       response.should be_success
-    end
+    end 
     
     it "should have the right title" do
       get :new

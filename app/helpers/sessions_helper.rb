@@ -2,11 +2,24 @@ module SessionsHelper
   
   def authenticate
     if signed_in?
-      # check and/or refresh session ..
+      check_session
     else
-      flash[:error] = "Can't show you that page until you sign in!"
-      redirect_to signin_path
+      boot_session
     end
+  end
+  
+  def check_session
+    if (Time.now.utc - session[:starts]) > LOGIN_SESSION_LENGTH
+      boot_session
+    else
+      refresh_session
+    end
+  end
+  
+  def boot_session
+    sign_out
+    flash[:error] = "Can't show you that page until you sign in!"
+    redirect_to signin_path
   end
   
   def sign_in(user)
@@ -16,7 +29,7 @@ module SessionsHelper
   end
   
   def refresh_session
-    session[:ends] = Time.now.utc + LOGIN_SESSION_LENGTH
+    session[:starts] = Time.now.utc
   end
   
   def signed_in? 
