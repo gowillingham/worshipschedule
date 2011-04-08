@@ -1,5 +1,6 @@
 Worshipschedule::Application.routes.draw do
 
+  resources :accounts
   resources :users
   resources :sessions, :only => [:new, :create, :destroy]
   
