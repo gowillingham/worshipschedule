@@ -104,8 +104,7 @@ describe UsersController do
       it "should create a user" do
         lambda do
           post :create, :user => @attr
-          response.should change(User, :count).by(1)
-        end
+        end.should change(User, :count).by(1)
       end
       
       it "should redirect to the user show page" do

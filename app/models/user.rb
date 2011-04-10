@@ -4,8 +4,8 @@ class User < ActiveRecord::Base
   attr_accessor :password
   attr_accessible :email, :first_name, :last_name, :password, :password_confirmation
   
-  validates :first_name, :presence => true, :length => { :maximum => 50 }
-  validates :last_name, :presence => true, :length => { :maximum => 50 }
+  validates :first_name, :length => { :maximum => 50 }
+  validates :last_name, :length => { :maximum => 50 }
   
   validates :password, :presence => true, :confirmation => true, :length => { :within => 4..50 }
   
