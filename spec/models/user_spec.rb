@@ -126,4 +126,20 @@ describe User do
       end
     end
   end
+  
+  describe "accountships" do
+    
+    before(:each) do
+      @user = User.create!(@attr)
+      @account = Factory(:account)
+    end
+    
+    it "should have an accountships method" do
+      @user.should respond_to(:accountships)
+    end
+    
+    it "should have an accounts method" do
+      @user.should respond_to(:accounts)
+    end
+  end
 end

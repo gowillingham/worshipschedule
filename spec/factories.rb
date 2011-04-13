@@ -9,3 +9,7 @@ Factory.define :user do |user|
   user.password_confirmation 'password'
   user.email { Factory.next(:email) }
 end
+
+Factory.define :account do |account|
+  account.name 'Church name'
+end

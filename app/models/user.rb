@@ -4,6 +4,9 @@ class User < ActiveRecord::Base
   attr_accessor :password
   attr_accessible :email, :first_name, :last_name, :password, :password_confirmation
   
+  has_many :accountships
+  has_many :accounts, :through => :accountships
+  
   validates :first_name, :length => { :maximum => 50 }
   validates :last_name, :length => { :maximum => 50 }
   
