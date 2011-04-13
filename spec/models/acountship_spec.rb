@@ -46,5 +46,20 @@ describe Accountship do
     it "should be the correct account" do
       @accountship.account.should == @account
     end
+    
+    describe "admin" do
+      
+      it "should have an admin method" do
+        @accountship.should respond_to(:admin)
+      end
+      
+      it "should not be an admin by default" do
+        @accountship.should_not be_admin
+      end
+      
+      it "should be convertible to an admin" do
+        @accountship.should be_nil
+      end
+    end
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110412171603) do
+ActiveRecord::Schema.define(:version => 20110413143307) do
 
   create_table "accounts", :force => true do |t|
     t.string   "name"
@@ -19,8 +19,9 @@ ActiveRecord::Schema.define(:version => 20110412171603) do
   end
 
   create_table "accountships", :id => false, :force => true do |t|
-    t.integer "account_id", :null => false
-    t.integer "user_id",    :null => false
+    t.integer "account_id",                    :null => false
+    t.integer "user_id",                       :null => false
+    t.boolean "admin",      :default => false
   end
 
   add_index "accountships", ["account_id", "user_id"], :name => "index_accountships_on_account_id_and_user_id", :unique => true
@@ -33,6 +34,7 @@ ActiveRecord::Schema.define(:version => 20110412171603) do
     t.datetime "updated_at"
     t.string   "encrypted_password"
     t.string   "salt"
+    t.boolean  "admin",              :default => false
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
