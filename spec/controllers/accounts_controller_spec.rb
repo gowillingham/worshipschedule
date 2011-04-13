@@ -42,8 +42,17 @@ describe AccountsController do
           @request.session[:user_id].should_not be_nil
         end
         
-        it "should associate the user with the new account"
-        it "should make the user an account administrator"
+        it "should associate the user with the new account" do
+          post :create, { :name => @name, :email => @email }
+          account = assigns(:account)
+          account.users.should include(assigns(:user))
+        end
+        
+        it "should make the user an account administrator" do
+          post :create, { :name => @name, :email => @email }
+          account = assigns(:account)
+          account.accountships.find_by_user_id(assigns(:user)).should be_admin
+        end
         
         it "should render the user#show page" do
           post :create, { :name => @name, :email => @email }

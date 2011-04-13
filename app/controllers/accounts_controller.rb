@@ -16,6 +16,8 @@ class AccountsController < ApplicationController
       render 'new'
     else
 
+      @account.save
+      
       # upsert and signin the user ..
       @user = User.find_by_email(params[:email])
       if @user.nil?
@@ -24,9 +26,12 @@ class AccountsController < ApplicationController
           :password => generate_password
         )
       end
+      
+      # associate and sign_in the user ..
+      @account.users << @user
+      @user.accountships.find(@account).toggle!(:admin)
       sign_in @user
       
-      @account.save
       flash[:success] = "Ok. Your new account has been created!"
       redirect_to @user
     end

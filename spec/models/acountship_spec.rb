@@ -58,7 +58,8 @@ describe Accountship do
       end
       
       it "should be convertible to an admin" do
-        @accountship.should be_nil
+        @accountship.toggle!(:admin)
+        @accountship.should be_admin
       end
     end
   end
