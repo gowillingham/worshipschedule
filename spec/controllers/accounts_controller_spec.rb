@@ -31,21 +31,39 @@ describe AccountsController do
           end.should change(Account, :count).by(1)
         end
         
-        it "should create or upsert the user creating the account" do
+        it "should add an accountship for a new user" do
           lambda do
             post :create, { :name => @name, :email => @email }
-          end.should change(User, :count).by(1)
+          end.should change(Accountship, :count).by(1)
+        end
+        
+        it "should add an accountship for an existing user" do
+          lambda do
+            post :create, { :name => @name, :email => @user.email }
+          end.should change(Accountship, :count).by(1)
+        end
+        
+        it "should not create a user if the user already exists" do
+          lambda do
+            post :create, { :name => @name, :email => @user.email }
+          end.should change(User, :count).by(0)
+        end
+        
+        it "should associate a new user with the new account" do
+          post :create, { :name => @name, :email => @email }
+          account = assigns(:account)
+          account.users.should include(assigns(:user))
+        end
+        
+        it "should associate an existing user with the new account" do
+          post :create, { :name => @name, :email => @user.email }
+          account = assigns(:account)
+          account.users.should include(assigns(:user))
         end
         
         it "should signin the user creating the account" do
           post :create, { :name => @name, :email => @email }
           @request.session[:user_id].should_not be_nil
-        end
-        
-        it "should associate the user with the new account" do
-          post :create, { :name => @name, :email => @email }
-          account = assigns(:account)
-          account.users.should include(assigns(:user))
         end
         
         it "should make the user an account administrator" do
