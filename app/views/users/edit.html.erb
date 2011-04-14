@@ -1,0 +1,10 @@
+<h1>Edit user</h1>
+
+<%= form_for @user, :url => { :action => 'create' }  do |f| %>
+  <%= render 'fields', :f => f %>
+  <div class="actions">
+    <%= f.submit "Save" %>
+    or <a href="#">cancel</a>
+  </div>
+<% end %>
+

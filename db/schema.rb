@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110413165511) do
+ActiveRecord::Schema.define(:version => 20110414162516) do
 
   create_table "accounts", :force => true do |t|
     t.string   "name"
@@ -25,6 +25,8 @@ ActiveRecord::Schema.define(:version => 20110413165511) do
   end
 
   add_index "accountships", ["account_id", "user_id"], :name => "index_accountships_on_account_id_and_user_id", :unique => true
+  add_index "accountships", ["account_id"], :name => "index_accountships_on_account_id"
+  add_index "accountships", ["user_id"], :name => "index_accountships_on_user_id"
 
   create_table "users", :force => true do |t|
     t.string   "first_name"

@@ -29,7 +29,7 @@ class AccountsController < ApplicationController
       
       # associate and sign_in the user ..
       @account.users << @user
-      @user.accountships.find(@account).toggle!(:admin)
+      @user.accountships.find_by_account_id(@account).toggle!(:admin)
       sign_in @user
       
       flash[:success] = "Ok. Your new account has been created!"
@@ -38,8 +38,5 @@ class AccountsController < ApplicationController
   end
 
   def show
-  end
-
-  def index
   end
 end
