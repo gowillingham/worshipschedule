@@ -7,9 +7,9 @@ class AccountsController < ApplicationController
   end
 
   def create
-    @account = Account.new(:name => params[:name])
+    @account = Account.new(params[:account])
     
-    if params[:email].blank?
+    if params[:user][:email].blank?
       @title = 'New'
       flash[:error] = "We'll need your email address to create a #{APP_NAME} account for you!"
       
@@ -19,10 +19,10 @@ class AccountsController < ApplicationController
       @account.save
       
       # upsert and signin the user ..
-      @user = User.find_by_email(params[:email])
+      @user = User.find_by_email(params[:user][:email])
       if @user.nil?
         @user = User.create(
-          :email => params[:email],
+          :email => params[:user][:email],
           :password => generate_password
         )
       end
@@ -42,8 +42,4 @@ class AccountsController < ApplicationController
 
   def index
   end
-
-  def destroy
-  end
-
 end

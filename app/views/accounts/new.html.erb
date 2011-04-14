@@ -1,3 +1,19 @@
 <h1>Signup for an account!</h1>
 
+<%= form_for :account, @account, :url => { :action => "create" } do |fa| %>
+  <div class="field">
+    <%= fa.label :name, "Church name" %><br />
+    <%= fa.text_field :name %>
+  </div>
+  <%= fields_for :user, @user do |fu| %>
+    <div class="field">
+      <%= fu.label :email, "Your email" %><br />
+      <%= fu.text_field :email %>
+    </div>
+  <% end %>
+  <div class="actions">
+    <%= fa.submit "Save!" %>
+  </div>
+<% end %>
+
 

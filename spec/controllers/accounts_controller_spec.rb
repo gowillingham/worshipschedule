@@ -23,57 +23,66 @@ describe AccountsController do
         before(:each) do
           @name = 'Church name'
           @email = Factory.next(:email)
+          
+          @new_user_attr = {
+            :account => { :name => 'Church name'},
+            :user => { :email => Factory.next(:email) }
+          }
+          @existing_user_attr = {
+            :account => { :name => 'Church name' },
+            :user => { :email => @user.email}
+          }
         end
         
         it "should create a new account" do
           lambda do
-            post :create, { :name => @name, :email => @email }
+            post :create, @new_user_attr
           end.should change(Account, :count).by(1)
         end
         
         it "should add an accountship for a new user" do
           lambda do
-            post :create, { :name => @name, :email => @email }
+            post :create, @new_user_attr
           end.should change(Accountship, :count).by(1)
         end
         
         it "should add an accountship for an existing user" do
           lambda do
-            post :create, { :name => @name, :email => @user.email }
+            post :create, @existing_user_attr
           end.should change(Accountship, :count).by(1)
         end
         
         it "should not create a user if the user already exists" do
           lambda do
-            post :create, { :name => @name, :email => @user.email }
+            post :create, @existing_user_attr
           end.should change(User, :count).by(0)
         end
         
         it "should associate a new user with the new account" do
-          post :create, { :name => @name, :email => @email }
+          post :create, @new_user_attr
           account = assigns(:account)
           account.users.should include(assigns(:user))
         end
         
         it "should associate an existing user with the new account" do
-          post :create, { :name => @name, :email => @user.email }
+          post :create, @existing_user_attr
           account = assigns(:account)
           account.users.should include(assigns(:user))
         end
         
         it "should signin the user creating the account" do
-          post :create, { :name => @name, :email => @email }
+          post :create, @new_user_attr
           @request.session[:user_id].should_not be_nil
         end
         
         it "should make the user an account administrator" do
-          post :create, { :name => @name, :email => @email }
+          post :create, @new_user_attr
           account = assigns(:account)
           account.accountships.find_by_user_id(assigns(:user)).should be_admin
         end
         
         it "should render the user#show page" do
-          post :create, { :name => @name, :email => @email }
+          post :create, @new_user_attr
           response.should redirect_to(user_path(assigns(:user)))
         end
       end
@@ -81,29 +90,28 @@ describe AccountsController do
       describe "failure" do
         
         before(:each) do
-          @attr = {
-            :name => '',
-            :email => ''
+          @invalid_user_attr = {
+            :account => { :name => '' },
+            :user => { :email => '' }
           }
         end
         
         it "should not create the account" do
           lambda do
-            post :create, { :name => @name, :email => @email }
+            post :create, @invalid_user_attr
           end.should change(Account, :count).by(0)
         end
         
         it "should not upsert the user" do
           lambda do
-            post :create, { :name => @name, :email => @email }
+            post :create, @invalid_user_attr
           end.should change(User, :count).by(0)
         end
         
         it "should render the new page" do
-          post :create, { :name => @name, :email => @email }
+          post :create, @invalid_user_attr
           response.should render_template('new')
         end
-
       end
     end
   end
@@ -125,13 +133,6 @@ describe AccountsController do
     describe "GET 'index'" do
       it "should be successful" do
         get 'index'
-        response.should be_success
-      end
-    end
-  
-    describe "POST 'destroy'" do
-      it "should be successful" do
-        post 'destroy', :id => @user
         response.should be_success
       end
     end
