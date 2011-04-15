@@ -31,7 +31,7 @@ class SessionsController < ApplicationController
   end
   
   def accounts
-    
+    @accounts = current_user.accounts
   end
 
   def destroy

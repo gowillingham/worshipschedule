@@ -46,8 +46,8 @@ describe SessionsController do
         @user = Factory(:user)
         @attr = { :email => @user.email, :password => @user.password }
         
-        @account = Account.create(:name => 'First account')
-        @another_account = Account.create(:name => 'Another account')
+        @account = Factory(:account, :name => 'First account')
+        @another_account = Factory(:account, :name => 'Another account')
        end
        
        it "should sign the user in" do
@@ -56,23 +56,18 @@ describe SessionsController do
          controller.should be_signed_in
        end
        
-       it "should redirect to sessions/accounts page for multiple accounts" do
+       it "should redirect to sessions/accounts page for multiple accountships" do
          @user.accounts << @account
          @user.accounts << @another_account
          post :create, :session => @attr
          response.should redirect_to(sessions_accounts_path)
        end
        
-       it "should rediret to the user show page for singular accounts" do
+       it "should redirect to the user show page for singular accountships" do
          @user.accounts << @account
          post :create, :session => @attr
          response.should redirect_to(user_path(@user))
        end
-       
-       #it "should redirect to the user show page" do
-       #  post :create, :session => @attr
-       #  response.should redirect_to(user_path(@user))
-       #end
        
        it "should have the right flash message" do
          post :create, :session => @attr
@@ -89,6 +84,23 @@ describe SessionsController do
       controller.should_not be_signed_in
       response.should redirect_to(root_path)
       flash[:success] =~ /signed out/i
+    end
+  end
+  
+  describe "accounts listing" do
+    
+    it "should have a list of account links belonging to the user" do
+      user = Factory(:user)
+      signin_user user
+      
+      @account = Factory(:account)
+      @another_account = Factory(:account, :name => 'Another church')
+      user.accounts << @account
+      user.accounts << @another_account
+      
+      get :accounts
+      response.should have_selector('a', :content => @account.name)
+      response.should have_selector('a', :content => @another_account.name)
     end
   end
 end
