@@ -2,7 +2,9 @@ Worshipschedule::Application.routes.draw do
 
   resources :accounts
   resources :users
+  
   resources :sessions, :only => [:new, :create, :destroy]
+  get 'sessions/accounts'    
   
   match 'signin' => 'sessions#new'
   match 'signout' => 'sessions#destroy'

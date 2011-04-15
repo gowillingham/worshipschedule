@@ -20,8 +20,6 @@ describe "Users" do
           fill_in "First", :with => ''
           fill_in "Last", :with => ''
           fill_in "Email", :with => ''
-          fill_in "Password", :with => ''
-          fill_in "Confirmation", :with => ''
           click_button
           response.should render_template('users/new')
           response.should have_selector("div#error_explanation")
@@ -37,8 +35,6 @@ describe "Users" do
           fill_in "First", :with => 'Example'
           fill_in "Last", :with => 'User'
           fill_in "Email", :with => 'user@example.com'
-          fill_in "Password", :with => 'password'
-          fill_in "Confirmation", :with => 'password'
           click_button
           response.should render_template('users/new')
           response.should have_selector("div.flash.success")

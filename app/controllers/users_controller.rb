@@ -2,6 +2,7 @@ class UsersController < ApplicationController
   
   def create
     @user = User.new params[:user]
+    @user.password = generate_password
     if @user.save
       flash[:success] = "Ok! #{@user.email} was successfully created! "
       redirect_to @user 

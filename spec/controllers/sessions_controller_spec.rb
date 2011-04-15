@@ -45,6 +45,9 @@ describe SessionsController do
        before(:each) do
         @user = Factory(:user)
         @attr = { :email => @user.email, :password => @user.password }
+        
+        @account = Account.create(:name => 'First account')
+        @another_account = Account.create(:name => 'Another account')
        end
        
        it "should sign the user in" do
@@ -53,10 +56,23 @@ describe SessionsController do
          controller.should be_signed_in
        end
        
-       it "should redirect to the user show page" do
+       it "should redirect to sessions/accounts page for multiple accounts" do
+         @user.accounts << @account
+         @user.accounts << @another_account
+         post :create, :session => @attr
+         response.should redirect_to(sessions_accounts_path)
+       end
+       
+       it "should rediret to the user show page for singular accounts" do
+         @user.accounts << @account
          post :create, :session => @attr
          response.should redirect_to(user_path(@user))
        end
+       
+       #it "should redirect to the user show page" do
+       #  post :create, :session => @attr
+       #  response.should redirect_to(user_path(@user))
+       #end
        
        it "should have the right flash message" do
          post :create, :session => @attr
