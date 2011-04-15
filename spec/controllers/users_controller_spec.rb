@@ -66,9 +66,7 @@ describe UsersController do
         @attr = {
           :first_name => '',
           :last_name => '',
-          :email => '',
-          :password => '',
-          :password_confirm => ''
+          :email => ''
         }
       end
       
@@ -95,9 +93,7 @@ describe UsersController do
         @attr = {
           :first_name => 'Stephen',
           :last_name => 'Willingham',
-          :email => 'gowillingham@gmail.com',
-          :password => 'password',
-          :password_confirmation => 'password'
+          :email => 'gowillingham@gmail.com'
         }
       end
       
