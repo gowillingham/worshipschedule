@@ -44,8 +44,17 @@ module SessionsHelper
     @current_user ||= User.find_by_id session[:user_id]
   end
   
+  def current_account=(account)
+    @current_account = account
+  end
+  
+  def current_account
+    @current_account ||= Account.find_by_id session[:user_id]
+  end
+  
   def sign_out
     reset_session
     self.current_user = nil
+    self.current_account = nil
   end
 end

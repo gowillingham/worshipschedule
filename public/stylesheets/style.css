@@ -12,5 +12,17 @@ body              {background-color:#cff;padding:40px 0;}
 .field_with_errors label  {color:#b11f3d;}
 .field_with_errors input  {border-color:#b11f3d;}
 
-.round {-moz-border-radius:10px;-webkit-border-radius:10px;border-radius:10px;}
+.round        {-moz-border-radius:10px;-webkit-border-radius:10px;border-radius:10px;}
+.small_round  {-moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;}
+
+table.chooser tbody tr:nth-child(even) td,
+table.chooser tbody tr.even td            {background-color:transparent;}
+table.chooser td                          {margin:5px 0;background-color:#3b5998 !important;}
+
+.chooser                  {background-color:transparent;color:#fff;padding-left:0;}
+.chooser li               {font-size:2em;background-color:#3b5998;padding:0 5px;margin:0.2em 0;list-style-type:none;}
+.chooser li h2            {color:#fff;}
+.chooser form             {display:inline;}
+.chooser form div         {display:inline;float:right;}
+.chooser form div input   {position:relative;top:-0.2em;}
 

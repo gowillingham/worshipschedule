@@ -1,5 +1,11 @@
-<ul>
-  <% @accounts.each do |account| %>
-      <li><a href="#"><%= account.name %></a></li>
-  <% end %>
+<h1><%= "Your #{APP_NAME} accounts" %></h1>
+<p>Which account do you want to work with?</p>
+
+<ul class="chooser">
+<% @accounts.each do |account| %>
+  <li class="small_round">
+    <%= button_to 'Go!', {:controller => 'sessions', :action => 'set_account', :id => account}, :method => :post %>
+    <%= account.name %>
+  </li>
+<% end %>
 </ul>

@@ -22,7 +22,8 @@ class SessionsController < ApplicationController
         # todo: handle orphaned users ..
         redirect_to user
       elsif user.accounts.size == 1
-        # todo: set current account in the session ..
+        current_account = user.accounts.find :first
+        session[:account_id] = current_account.id
         redirect_to user
       else
         redirect_to sessions_accounts_path
@@ -30,13 +31,20 @@ class SessionsController < ApplicationController
     end
   end
   
-  def accounts
-    @accounts = current_user.accounts
-  end
-
   def destroy
     sign_out
     flash[:success] = "Ok. Signed out. "
     redirect_to root_path
+  end
+
+  def accounts
+    @accounts = current_user.accounts
+  end
+  
+  def set_account
+    account = Account.find_by_id(params[:id])
+    session[:account_id] = account.id
+    current_account = account
+    redirect_to current_user
   end
 end

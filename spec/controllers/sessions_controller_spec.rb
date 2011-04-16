@@ -63,10 +63,16 @@ describe SessionsController do
          response.should redirect_to(sessions_accounts_path)
        end
        
+       it "should set the current_account for singular accountships" do
+         @user.accounts << @account
+         post :create, :session => @attr
+         controller.current_account.should == @account
+       end
+       
        it "should redirect to the user show page for singular accountships" do
          @user.accounts << @account
          post :create, :session => @attr
-         response.should redirect_to(user_path(@user))
+         response.should redirect_to(user_path controller.current_user)
        end
        
        it "should have the right flash message" do
@@ -99,8 +105,30 @@ describe SessionsController do
       user.accounts << @another_account
       
       get :accounts
-      response.should have_selector('a', :content => @account.name)
-      response.should have_selector('a', :content => @another_account.name)
+      response.should have_selector('li', :content => @account.name)
+      response.should have_selector('li', :content => @another_account.name)
+    end
+  end
+  
+  describe "POST 'set_accounts'" do
+    
+    before(:each) do
+      @user = Factory(:user)
+      @account = Factory(:account)
+      @user.accounts << @account
+      signin_user @user
+    end
+    
+    it "should set the current_account" do
+      post :set_account, :id => @account.id
+      user = assigns(:user)
+      @request.session[:account_id].should == @account.id
+      controller.current_account.should == @account
+    end
+    
+    it "should redirect to current_user show" do
+      post :set_account, :id => @account.id
+      response.should redirect_to(user_path(controller.current_user))
     end
   end
 end
