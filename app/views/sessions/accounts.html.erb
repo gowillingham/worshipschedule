@@ -1,11 +1,15 @@
-<h1><%= "Your #{APP_NAME} accounts" %></h1>
-<p>Which account do you want to work with?</p>
-
-<ul class="chooser">
-<% @accounts.each do |account| %>
-  <li class="small_round">
-    <%= button_to 'Go!', {:controller => 'sessions', :action => 'set_account', :id => account}, :method => :post %>
-    <%= account.name %>
-  </li>
-<% end %>
-</ul>
+<div class="header">Your churches</div>
+  
+<table>
+  <thead>
+    <tr><th colspan="4"><%= current_user.name_or_email %>
+  </thead>
+  <tbody>
+  <% @accounts.each do |account| %>
+    <tr>
+      <td class="what"><span class='church'>Church</span></td>
+      <td><%= link_to account.name, {:controller => 'sessions', :action => 'set_account', :id => account}, :method => :post %></td>
+    <tr>
+  <% end %>
+  </tbody>
+</table>

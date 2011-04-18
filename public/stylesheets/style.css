@@ -1,12 +1,33 @@
-body              {background-color:#cff;padding:40px 0;}
-.container        {background-color:#fff;}
+body                    {font-family:"Lucida Grande",verdana,arial,helvetica,sans-serif;background:#e5e5e5 url("../images/header_bg.gif") repeat-x;}
+.container              {background-color:#e5e5e5;}
+.container a            {padding:0.2em 0.1em;}
+.container a:hover      {background-color:#253966;color:#d6ffcf;}
 
-#header     {padding:20px;}
-#main       {padding:20px;}
-#sidebar    {}
-#footer     {padding:20px;}
+#header                             {padding:0.5em 1em 0 1em;background-color:#c5e2e9;overflow:hidden;}
+#header .user                       {float:right;font-size:.9em;}
+#header h1                          {font-size:2em;margin:0.5em 0 1em 0;}
 
-.field                    {margin-bottom:10px;}
+#main                               {padding:1em;}
+#main .content                      {background-color:#fff;overflow:hidden;}
+#main .content .header              {background-color:#edf3fe;padding:1em;font-weight:bold;}
+#main .content ul                   {margin:1em;}
+
+#main table                         {font-size:0.9em;margin:2.0em auto;width:95%;}
+#main tbody tr:nth-child(even) td,
+#main tbody tr.even td              {background:none;}        /* overrides blueprint table stripe */
+#main th                            {background:#e9e9e9;}        
+#main td, #main th                  {padding:0.4em;}        
+#main td                            {border-bottom:solid 1px #efefef;}        
+#main td.what                       {width:6em;}        
+#main td.what span                  {display:block;background-color:gray;padding:.1em .3em .1em .2em;text-align:right;}
+#main td.what span.church           {background-color:green;color:white;}
+
+#sidebar                            {background-color:#ffffcc;margin:1em;padding:0.5em;}
+#footer                             {padding:1em;color:#9999a6;font-size:0.75em;}
+#footer a                           {color:#9999a6;}
+#footer a:hover                     {color:#fff;}
+
+.field                    {margin-bottom:1em;}
 
 .field_with_errors        {display:inline;}
 .field_with_errors label  {color:#b11f3d;}
@@ -15,14 +36,19 @@ body              {background-color:#cff;padding:40px 0;}
 .round        {-moz-border-radius:10px;-webkit-border-radius:10px;border-radius:10px;}
 .small_round  {-moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;}
 
-table.chooser tbody tr:nth-child(even) td,
-table.chooser tbody tr.even td            {background-color:transparent;}
-table.chooser td                          {margin:5px 0;background-color:#3b5998 !important;}
-
 .chooser                  {background-color:transparent;color:#fff;padding-left:0;}
 .chooser li               {font-size:2em;background-color:#3b5998;padding:0 5px;margin:0.2em 0;list-style-type:none;}
 .chooser li h2            {color:#fff;}
 .chooser form             {display:inline;}
 .chooser form div         {display:inline;float:right;}
 .chooser form div input   {position:relative;top:-0.2em;}
+
+.tabs                     {list-style-type:none;margin:0;padding:0;}
+.tabs li                  {float:left;margin-right:3px;background-color:#42577b;}
+.tabs li a                {display:block;padding:0.25em 1em;margin:0;color:#fff;text-decoration:none;}
+.tabs li a:hover          {background-color:#253966;color:#d6ffff;}
+
+
+/* setting selected tabs */
+body#page_dashboard .tabs li a.dashboard       {background-color:#e5e5e5;font-weight:bold;color:#000;}
 

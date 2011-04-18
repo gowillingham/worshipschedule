@@ -2,28 +2,40 @@
 <html>
 <head>
   <title><%= title %></title>
-    <%= csrf_meta_tag %>
-    <%= stylesheet_link_tag 'blueprint/screen', :media => 'screen' %>
-    <%= stylesheet_link_tag 'blueprint/print',  :media => 'print' %>
-    <%= stylesheet_link_tag 'style',  :media => 'screen' %>
-    <!--[if IE]><link rel="stylesheet" href="blueprint/ie.css" type="text/css" media="screen, projection" /><![endif]-->  
-  </head>
-<body>
-  <div class="container round">
+  <%= javascript_include_tag :defaults %>
+  <%= csrf_meta_tag %>
+  <%= stylesheet_link_tag 'blueprint/screen', :media => 'screen' %>
+  <%= stylesheet_link_tag 'blueprint/print',  :media => 'print' %>
+  <%= stylesheet_link_tag 'style',  :media => 'screen' %>
+  <!--[if IE]><link rel="stylesheet" href="blueprint/ie.css" type="text/css" media="screen, projection" /><![endif]-->  
+</head>
+<body id="page_<%= @context %>">
+  <div class="container">
     <div class="span-24 last">
       <div id="header">
-        #header
+        <div class="user">
+          <%= "email@email.com" %>
+          | <a href="#">My info</a>
+          | <%= link_to 'sign out', signout_path, :method => :delete %>
+          | <a href="#">Help</a>
+        </div>
+        <h1><%= header_text %></h1>
+        <ul class="tabs">
+          <li><a href="#" class="dashboard">Dashboard</a></li>
+          <li><a href="#">link 2</a></li>
+          <li><a href="#">link 3</a></li>
+        </ul>
       </div>
     </div>
-    <div class="span-18 colborder">
+    <div class="span-18">
       <div id="main">
-      <% flash.each do |key, value| %>
-        <%= content_tag(:div, value, :class => "flash #{key}") %>
-      <% end %> 
-      <%= yield %>
+        <%= render 'shared/show_flash' %>
+        <div class="content">
+          <%= yield %>
+        </div>
       </div>
     </div>
-    <div class="span-5 last">
+    <div class="span-6 last">
       <div id="sidebar">
         <ul>
           <% if signed_in? %>
@@ -36,7 +48,7 @@
     </div>
     <div class="span-24 last">
       <div id="footer">
-        #footer
+        Managed with <%= link_to APP_NAME, root_url %>
       </div>
     </div>
   </div>

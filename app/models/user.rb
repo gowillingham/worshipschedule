@@ -31,6 +31,14 @@ class User < ActiveRecord::Base
     "#{self.first_name} #{self.last_name}"
   end
   
+  def name_or_email
+    unless self.first_name.blank?
+      "#{self.first_name} #{self.last_name}"
+    else
+      self.email
+    end
+  end
+  
   private
   
     def encrypt_password
