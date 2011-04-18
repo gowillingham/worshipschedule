@@ -2,8 +2,8 @@
 <html>
 <head>
   <title><%= title %></title>
-  <%= javascript_include_tag :defaults %>
   <%= csrf_meta_tag %>
+  <%= javascript_include_tag "jquery/jquery-1.5.min.js", "rails" %>
   <%= stylesheet_link_tag 'blueprint/screen', :media => 'screen' %>
   <%= stylesheet_link_tag 'blueprint/print',  :media => 'print' %>
   <%= stylesheet_link_tag 'style',  :media => 'screen' %>
@@ -20,11 +20,7 @@
           | <a href="#">Help</a>
         </div>
         <h1><%= header_text %></h1>
-        <ul class="tabs">
-          <li><a href="#" class="dashboard">Dashboard</a></li>
-          <li><a href="#">link 2</a></li>
-          <li><a href="#">link 3</a></li>
-        </ul>
+        <%= render 'shared/tabstrip' %>
       </div>
     </div>
     <div class="span-18">

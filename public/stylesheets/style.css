@@ -23,7 +23,7 @@ body                    {font-family:"Lucida Grande",verdana,arial,helvetica,san
 #main td.what span.church           {background-color:green;color:white;}
 
 #sidebar                            {background-color:#ffffcc;margin:1em;padding:0.5em;}
-#footer                             {padding:1em;color:#9999a6;font-size:0.75em;}
+#footer                             {padding:1em 1em 1em 2.5em;color:#9999a6;font-size:0.75em;}
 #footer a                           {color:#9999a6;}
 #footer a:hover                     {color:#fff;}
 
@@ -52,5 +52,6 @@ body                    {font-family:"Lucida Grande",verdana,arial,helvetica,san
 
 
 /* setting selected tabs */
-body#page_dashboard .tabs li a.dashboard       {background-color:#e5e5e5;font-weight:bold;color:#000;}
+body#page_dashboard .tabs li a.dashboard,
+body#page_accounts .tabs li a.accounts           {background-color:#e5e5e5;font-weight:bold;color:#000;}
 

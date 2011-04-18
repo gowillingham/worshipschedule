@@ -38,7 +38,7 @@ class SessionsController < ApplicationController
   end
 
   def accounts
-    @context = "dashboard"
+    @context = "accounts"
     @accounts = current_user.accounts
   end
   

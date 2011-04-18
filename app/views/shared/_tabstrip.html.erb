@@ -1,0 +1,12 @@
+<% if @context == 'accounts' %>
+  <ul class="tabs">
+    <li><a href="#" class="accounts">Churches</a></li>
+    <li><%= link_to 'Sign out', signout_path, :method => :delete %></li>
+  </ul>
+<% elsif @context =='dashboard' %>
+  <ul class="tabs">
+    <li><a href="#" class="dashboard">Dashboard</a></li>
+    <li><a href="#">link 2</a></li>
+    <li><a href="#">link 3</a></li>
+  </ul>
+<% end %>
