@@ -4,6 +4,7 @@ class SessionsController < ApplicationController
   def new
     @user = User.new
     @title = 'sign in'
+    render :layout => 'signin'
   end
   
   def create
@@ -12,7 +13,7 @@ class SessionsController < ApplicationController
     if user.nil?
       @title = 'sign in'
       flash.now[:error] = 'Invalid email/password combination.'
-      render 'new'
+      render 'new', :layout => 'signin'
       
     else
       sign_in user
@@ -34,7 +35,7 @@ class SessionsController < ApplicationController
   def destroy
     sign_out
     flash[:success] = "Ok. Signed out. "
-    redirect_to root_path
+    redirect_to signin_path, :layout => 'signin'
   end
 
   def accounts

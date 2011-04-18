@@ -88,7 +88,7 @@ describe SessionsController do
       signin_user Factory(:user)
       delete :destroy
       controller.should_not be_signed_in
-      response.should redirect_to(root_path)
+      response.should redirect_to(signin_path)
       flash[:success] =~ /signed out/i
     end
   end

@@ -1,4 +1,6 @@
-<h1>Sign in</h1>
+<h3><%= "#{APP_NAME} sign in" %></h3>
+<%= render 'shared/show_flash' %>
+
 <%= form_for(:session, :url => sessions_path) do |f| %>
   <div class="field">
     <%= f.label :email %><br />
