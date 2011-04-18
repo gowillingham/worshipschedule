@@ -16,7 +16,7 @@ class SessionsController < ApplicationController
       
     else
       sign_in user
-      flash[:success] = "Welcome, #{user.name}!"
+      flash[:success] = "Welcome, #{user.name_or_email}!"
       
       if user.accounts.empty?
         # todo: handle orphaned users ..

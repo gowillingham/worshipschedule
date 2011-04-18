@@ -105,8 +105,8 @@ describe SessionsController do
       user.accounts << @another_account
       
       get :accounts
-      response.should have_selector('li', :content => @account.name)
-      response.should have_selector('li', :content => @another_account.name)
+      response.should have_selector('a', :content => @account.name)
+      response.should have_selector('a', :content => @another_account.name)
     end
   end
   

@@ -1,6 +1,6 @@
 body                    {font-family:"Lucida Grande",verdana,arial,helvetica,sans-serif;background:#e5e5e5 url("../images/header_bg.gif") repeat-x;}
 .container              {background-color:#e5e5e5;}
-.container a            {padding:0.2em 0.1em;}
+.container a            {padding:0.1em;}
 .container a:hover      {background-color:#253966;color:#d6ffcf;}
 
 #header                             {padding:0.5em 1em 0 1em;background-color:#c5e2e9;overflow:hidden;}
@@ -35,6 +35,8 @@ body                    {font-family:"Lucida Grande",verdana,arial,helvetica,san
 
 .round        {-moz-border-radius:10px;-webkit-border-radius:10px;border-radius:10px;}
 .small_round  {-moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;}
+.shadow       {-moz-box-shadow: 3px 3px 4px #999;-webkit-box-shadow: 3px 3px 4px #999;box-shadow: 3px 3px 4px #999;}
+
 
 .chooser                  {background-color:transparent;color:#fff;padding-left:0;}
 .chooser li               {font-size:2em;background-color:#3b5998;padding:0 5px;margin:0.2em 0;list-style-type:none;}

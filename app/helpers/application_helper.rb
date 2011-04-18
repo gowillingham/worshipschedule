@@ -4,6 +4,10 @@ module ApplicationHelper
   end
   
   def header_text
-    "header text placeholder"
+    unless current_account.nil?
+      current_account.name
+    else
+      APP_NAME
+    end
   end
 end

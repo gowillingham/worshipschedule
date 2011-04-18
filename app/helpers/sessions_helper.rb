@@ -49,7 +49,7 @@ module SessionsHelper
   end
   
   def current_account
-    @current_account ||= Account.find_by_id session[:user_id]
+    @current_account ||= Account.find_by_id session[:account_id]
   end
   
   def sign_out
