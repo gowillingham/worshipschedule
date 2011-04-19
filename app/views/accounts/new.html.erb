@@ -1,5 +1,9 @@
-<h1>Signup for an account!</h1>
-
+<h3><%= "Add your church to #{APP_NAME}!" %></h3>
+<p>
+  Create a <%= APP_NAME %> account to manage the volunteer teams at your church.
+  It costs nothing to sign up and try it out!
+</p> 
+<%= render 'shared/show_flash' %>
 <%= form_for :account, @account, :url => { :action => "create" } do |fa| %>
   <div class="field">
     <%= fa.label :name, "Church name" %><br />
@@ -13,6 +17,7 @@
   <% end %>
   <div class="actions">
     <%= fa.submit "Save!" %>
+    or <%= link_to 'Cancel', root_path, :class => 'cancel' %>
   </div>
 <% end %>
 

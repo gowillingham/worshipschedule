@@ -1,9 +1,12 @@
 class AccountsController < ApplicationController
   skip_before_filter :authenticate, :only => [:new, :create]
   
+  skip_before_filter :check_account, :except => [:show]
+  
   def new
     @title = "New account"
     @account = Account.new
+    render 'new', :layout => 'signin'
   end
 
   def create
@@ -11,9 +14,9 @@ class AccountsController < ApplicationController
     
     if params[:user][:email].blank?
       @title = 'New'
-      flash[:error] = "We'll need your email address to create a #{APP_NAME} account for you!"
+      flash[:error] = "We'll need your email address to create a #{APP_NAME} account for your church!"
       
-      render 'new'
+      render 'new', :layout => 'signin'
     else
 
       @account.save
@@ -38,5 +41,6 @@ class AccountsController < ApplicationController
   end
 
   def show
+
   end
 end

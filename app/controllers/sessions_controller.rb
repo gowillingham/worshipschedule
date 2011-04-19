@@ -1,5 +1,6 @@
 class SessionsController < ApplicationController
   skip_before_filter :authenticate, :except => [:destroy, :accounts]
+  skip_before_filter :check_account
   
   def new
     @user = User.new
@@ -23,8 +24,8 @@ class SessionsController < ApplicationController
         # todo: handle orphaned users ..
         redirect_to user
       elsif user.accounts.size == 1
-        current_account = user.accounts.find :first
-        session[:account_id] = current_account.id
+        account = user.accounts.find :first
+        set_session_account account
         redirect_to user
       else
         redirect_to sessions_accounts_path
@@ -45,8 +46,7 @@ class SessionsController < ApplicationController
   
   def set_account
     account = Account.find_by_id(params[:id])
-    session[:account_id] = account.id
-    current_account = account
+    set_session_account account
     redirect_to current_user
   end
 end

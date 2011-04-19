@@ -120,12 +120,16 @@ describe AccountsController do
     
     before(:each) do
       @signed_in_user = Factory(:user)
+      @account = Factory(:account)
+      @signed_in_user.accounts << @account
+      
       signin_user @signed_in_user
+      controller.set_session_account(@account)
     end
     
     describe "GET 'show'" do
       it "should be successful" do
-        get 'show', :id => @user
+        get 'show', :id => @account
         response.should be_success
       end
     end

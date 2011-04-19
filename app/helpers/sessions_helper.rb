@@ -8,6 +8,11 @@ module SessionsHelper
     end
   end
   
+  def check_account
+    flash[:error] = "You'll need to select one of your churches before you can access that page. "
+    redirect_to(sessions_accounts_path) unless account_set?
+  end
+  
   def check_session
     if (Time.now.utc - session[:starts]) > LOGIN_SESSION_LENGTH
       boot_session
@@ -22,6 +27,12 @@ module SessionsHelper
     redirect_to signin_path
   end
   
+  def set_session_account(account)
+    session[:account_id] = account.id
+    refresh_session
+    self.current_account = account
+  end
+  
   def sign_in(user)
     session[:user_id] = user.id
     refresh_session
@@ -34,6 +45,10 @@ module SessionsHelper
   
   def signed_in? 
     !current_user.nil?
+  end
+  
+  def account_set?
+    !current_account.nil?
   end
   
   def current_user=(user)

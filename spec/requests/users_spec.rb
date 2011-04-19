@@ -6,6 +6,9 @@ describe "Users" do
     
     before(:each) do
       user = Factory(:user)
+      account = Factory(:account)
+      user.accounts << account
+      
       visit signin_path
       fill_in "Email", :with => user.email
       fill_in "Password", :with => user.password

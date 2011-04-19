@@ -1,2 +1,11 @@
-<h1>Pages#home</h1>
-<p>Find me in app/views/pages/home.html.erb</p>
+<h3><%= "#{APP_NAME} home" %></h3>
+<ul>
+  <li>
+    <% if signed_in? %>
+      <%= link_to 'sign out', signout_path, :method => :delete %>
+    <% else %>
+      <%= link_to 'sign in', signin_path %>
+    <% end %>
+  </li>
+  <li><%= link_to 'New church', new_account_path %></li>
+</ul>
