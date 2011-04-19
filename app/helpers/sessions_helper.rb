@@ -9,8 +9,10 @@ module SessionsHelper
   end
   
   def check_account
-    flash[:error] = "You'll need to select one of your churches before you can access that page. "
-    redirect_to(sessions_accounts_path) unless account_set?
+    unless account_set?
+      flash[:error] = "You'll need to select one of your churches before you can access that page. "
+      redirect_to(sessions_accounts_path)
+    end
   end
   
   def check_session
