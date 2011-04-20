@@ -1,6 +1,10 @@
 module ApplicationHelper
   def title
-    "#{APP_NAME} | #{@title}"
+    unless current_account.nil?
+      "#{current_account.name} | #{@title}"
+    else
+      "#{APP_NAME} | #{@title}"
+    end
   end
   
   def header_text

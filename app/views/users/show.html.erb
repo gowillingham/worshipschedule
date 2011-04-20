@@ -1,5 +1,20 @@
-<h1>
-  <%= gravatar_for @user %>
-  <%= @user.name %>
-  <%= @user.email if @user.name.blank? %>
-</h1>
+<div class="header"><%= "Your upcoming events for #{current_account.name}" %></div>
+<table>
+  <thead>
+    <tr><th colspan="4"><%= current_user.name_or_email %>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="what"><span class='church'>Apr 28</span></td>
+      <td><%= link_to 'Sunday worship', root_path %></td>
+    <tr>
+    <tr>
+      <td class="what"><span class='church'>Apr 29</span></td>
+      <td><%= link_to 'Saturday worship', root_path %></td>
+    <tr>
+    <tr>
+      <td class="what"><span class='church'>May 7</span></td>
+      <td><%= link_to 'Ignite!', root_path %></td>
+    <tr>
+  </tbody>
+</table>

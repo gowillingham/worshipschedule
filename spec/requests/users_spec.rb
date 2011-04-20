@@ -74,4 +74,9 @@ describe "Users" do
       end
     end    
   end
+  
+  describe "index" do
+    
+    it "should have a link for adding administrators"
+  end
 end

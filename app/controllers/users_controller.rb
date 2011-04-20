@@ -24,9 +24,19 @@ class UsersController < ApplicationController
   def update
     
   end
+  
+  def index
+    @context = 'users'
+    @title = 'People'
+    
+    @users = current_account.users(:all)
+    render :layout => 'full'
+  end
 
   def show
     @user = User.find(params[:id])
-    @title = @user.name
+    
+    @context = 'dashboard'
+    @title = @user.name_or_email
   end
 end

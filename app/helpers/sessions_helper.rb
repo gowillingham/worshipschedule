@@ -23,6 +23,10 @@ module SessionsHelper
     end
   end
   
+  def admin?
+    Accountship.find_by_account_id_and_user_id(current_account.id, current_user.id).admin?
+  end
+  
   def boot_session
     sign_out
     flash[:error] = "Can't show you that page until you sign in!"

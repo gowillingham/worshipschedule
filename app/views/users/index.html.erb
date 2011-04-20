@@ -1,0 +1,25 @@
+<div class="header big">
+  <%= "Every person from your church" %>
+  <button class="button" style="float:right;">Add new person</button>
+</div>
+<table>
+  <thead>
+    <tr>
+      <th colspan="4" class="big">
+        <strong>Your church:</strong> <%= current_account.name %>
+        <span class="link">See the <%= link_to 'administrator list', "/", :class => 'cancel' %> to give or take away admin powers</span>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @users.each_slice(4) do |row| %>
+      <tr>
+        <% row.each do |user| %>
+          <td class="what"><span class='church'>Person</span></td>
+          <td><%= user.name_or_email %></td>
+        <% end %>
+      <tr>
+    <% end %>
+  </tbody>
+</table>
+

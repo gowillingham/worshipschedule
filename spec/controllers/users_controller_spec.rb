@@ -15,7 +15,7 @@ describe UsersController do
   describe "GET 'show'" do
     
     before(:each) do
-      @user = Factory(:user)
+      @user = Factory(:user, :email => Factory.next(:email))
     end
     
     it "should be successful" do
@@ -31,16 +31,6 @@ describe UsersController do
     it "should have the right title" do
       get :show, :id => @user
       response.should have_selector('title', :content => @user.last_name)
-    end
-    
-    it "should include the user's name" do
-      get :show, :id => @user
-      response.should have_selector('h1', :content => @user.last_name)
-    end
-    
-    it "should include the user gravatar image" do
-      get :show, :id => @user
-      response.should have_selector('img', :class => 'gravatar')
     end
   end
 
@@ -115,6 +105,47 @@ describe UsersController do
       it "should have a welcome message" do
         post :create, :user => @attr
         flash[:success] =~ /success/i
+      end
+    end
+  end
+  
+  describe "GET 'index'" do
+    
+    describe "when authenticated" do
+      
+      before(:each) do
+        @next_user = Factory(:user, :email => Factory.next(:email), :first_name => 'next', :last_name => 'user')
+        @another_user = Factory(:user, :email => Factory.next(:email), :first_name => 'another', :last_name => 'user')
+        @account.users << @next_user
+        @account.users << @another_user
+      end
+      
+      it "should be successful" do
+        get :index
+        response.should be_successful
+      end
+      
+      it "should return a list of users belonging to the account" do
+        get :index
+        response.should have_selector("a", :content => @next_user.name_or_email)
+        response.should have_selector("a", :content => @another_user.name_or_email)
+        response.should have_selector("a", :content => @signed_in_user.name_or_email)
+      end
+      
+      it "should not return users who only belong to another account" do
+        @incorrect_account = Factory(:account, :name => 'Incorrect church')
+        @incorrect_user = Factory(:user, :email => Factory.next(:email), :first_name => 'another', :last_name => 'user')
+        @incorrect_account.users << @incorrect_user
+        response.should_not have_selector("a", :content => @incorrect_user.name_or_email)
+      end
+    end
+    
+    describe "when not authenticated" do
+      
+      it "should redirect to signin page" do
+        controller.sign_out
+        get :index
+        response.should redirect_to signin_path
       end
     end
   end

@@ -3,10 +3,19 @@
     <li><a href="#" class="accounts">Churches</a></li>
     <li><%= link_to 'Sign out', signout_path, :method => :delete %></li>
   </ul>
-<% elsif @context =='dashboard' %>
+<% else %>
   <ul class="tabs">
-    <li><a href="#" class="dashboard">Dashboard</a></li>
-    <li><a href="#">link 2</a></li>
-    <li><a href="#">link 3</a></li>
+    <li><%= link_to 'Dashboard', current_user, :class => 'dashboard' %></li>
+    <li><a href="#">Your teams</a></li>
+    <li><a href="#">Your events</a></li>
   </ul>
+  <% if admin? %>
+    <ul class="tabs admin">
+      <li><%= link_to 'All people', users_path, :class => 'users' %></li>
+      <li><a href="#">Teams</a></li>
+      <li><a href="#">Events</a></li>
+      <li><a href="#">Files</a></li>
+      <li><a href="#">Email</a></li>
+    </ul>
+  <% end %>
 <% end %>
