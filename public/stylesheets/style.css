@@ -33,6 +33,10 @@ body                    {font-family:"Lucida Grande",verdana,arial,helvetica,san
 #main table.persons td .thumbnail div          {color:white;font-weight:bold;padding:0.1em;font-size:0.9em;text-align:center}
 #main table.persons td .thumbnail div.admin    {background-color:#008000;}
 
+div.button                          {display:inline;padding:0.6em 1.0em;border:solid 2px #bbb;background:#eee url("../images/icons/add.png") no-repeat 0.25em 50%;-moz-border-radius:1.3em;-webkit-border-radius:1.3em;border-radius:1.3em;}
+div.button a                        {color:#000;font-weight:bold;font-size:1.1em;text-decoration:none;padding:0 0 0 1.5em;}
+div.button a:hover                  {background-color:transparent;color:#000;}
+
 #sidebar                            {background-color:#ffffcc;margin:1em;padding:0.5em;}
 #footer                             {padding:1em 1em 1em 2.5em;color:#9999a6;font-size:0.75em;}
 #footer a                           {color:#9999a6;}

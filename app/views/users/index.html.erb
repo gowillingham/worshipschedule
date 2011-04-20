@@ -11,9 +11,9 @@
     </tr>
   </thead>
   <tbody>
-    <tr colspan="4">
+    <tr>
       <td>
-        <button class="button" style="float:left;">Add new person</button>
+        <%= render :partial => 'shared/button_link', :locals => {:url => new_user_path } %>
       </td>
     </tr>
     <% @users.each_slice(3) do |row| %>
