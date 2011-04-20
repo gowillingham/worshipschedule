@@ -114,10 +114,10 @@ describe UsersController do
     describe "when authenticated" do
       
       before(:each) do
-        @next_user = Factory(:user, :email => Factory.next(:email), :first_name => 'next', :last_name => 'user')
-        @another_user = Factory(:user, :email => Factory.next(:email), :first_name => 'another', :last_name => 'user')
-        @account.users << @next_user
-        @account.users << @another_user
+        @user_with_name = Factory(:user, :email => Factory.next(:email), :first_name => 'next', :last_name => 'user')
+        @user_with_only_email = Factory(:user, :email => Factory.next(:email))
+        @account.users << @user_with_name
+        @account.users << @user_with_only_email
       end
       
       it "should be successful" do
@@ -125,11 +125,12 @@ describe UsersController do
         response.should be_successful
       end
       
-      it "should return a list of users belonging to the account" do
+      it "should display the email or name of users belonging to the account" do
         get :index
-        response.should have_selector("a", :content => @next_user.name_or_email)
-        response.should have_selector("a", :content => @another_user.name_or_email)
-        response.should have_selector("a", :content => @signed_in_user.name_or_email)
+        response.should have_selector("h4", :content => @user_with_name.name)
+        response.should have_selector("a", :content => @user_with_only_email.email)
+        response.should have_selector("h4", :content => @signed_in_user.name)
+        response.should have_selector("a", :content => @signed_in_user.email)
       end
       
       it "should not return users who only belong to another account" do

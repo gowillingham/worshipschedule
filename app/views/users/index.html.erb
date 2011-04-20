@@ -1,8 +1,7 @@
 <div class="header big">
   <%= "Every person from your church" %>
-  <button class="button" style="float:right;">Add new person</button>
 </div>
-<table class="people">
+<table class="persons">
   <thead>
     <tr>
       <th colspan="4" class="big">
@@ -12,10 +11,17 @@
     </tr>
   </thead>
   <tbody>
+    <tr colspan="4">
+      <td>
+        <button class="button" style="float:left;">Add new person</button>
+      </td>
+    </tr>
     <% @users.each_slice(3) do |row| %>
       <tr>
         <% row.each do |user| %>
-          <%= render 'user_cell', :user => user %>
+          <td>
+            <%= render 'person', :user => user %>
+          </td>
         <% end %>
       <tr>
     <% end %>
