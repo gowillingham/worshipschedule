@@ -2,7 +2,7 @@
   <%= "Every person from your church" %>
   <button class="button" style="float:right;">Add new person</button>
 </div>
-<table>
+<table class="people">
   <thead>
     <tr>
       <th colspan="4" class="big">
@@ -12,11 +12,10 @@
     </tr>
   </thead>
   <tbody>
-    <% @users.each_slice(4) do |row| %>
+    <% @users.each_slice(3) do |row| %>
       <tr>
         <% row.each do |user| %>
-          <td class="what"><span class='church'>Person</span></td>
-          <td><%= user.name_or_email %></td>
+          <%= render 'user_cell', :user => user %>
         <% end %>
       <tr>
     <% end %>

@@ -1,0 +1,18 @@
+<td>
+  <div class="thumbnail">
+    <%= gravatar_for user %>
+    <% if user.accountships.find_by_account_id(current_account.id).admin? %>
+      <div class="admin">ADMIN</div>
+    <% else %>
+      <div>&nbsp;</div>
+    <% end %>
+  </div>
+  
+  <% unless user.name.nil? %>
+    <h4><%= user.name %></h4>
+  <% end %>
+  <div><%= link_to user.email, "#" %></div>
+  <div class="edit"><%= link_to 'Edit', edit_user_path(user), :class => 'cancel' %>
+</td>
+
+

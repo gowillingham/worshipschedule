@@ -25,6 +25,14 @@ body                    {font-family:"Lucida Grande",verdana,arial,helvetica,san
 #main td.what span                  {display:block;background-color:gray;padding:.1em .3em .1em .2em;text-align:right;}
 #main td.what span.church           {background-color:green;color:white;}
 
+#main table.people td                         {width:25%;border:none;padding:1em 0.4em;}
+#main table.people td h4                      {margin:0;font-weight:bold;line-height:1.0em;}
+#main table.people td .edit                   {margin-top:0.5em;}
+#main table.people td .thumbnail              {float:left;margin-right:.75em;}
+#main table.people td .thumbnail .gravatar    {margin:0;border:solid 1px #ddd;}
+#main table.people td .thumbnail div          {color:white;font-weight:bold;padding:0.1em;font-size:0.9em;text-align:center}
+#main table.people td .thumbnail div.admin    {background-color:#008000;}
+
 #sidebar                            {background-color:#ffffcc;margin:1em;padding:0.5em;}
 #footer                             {padding:1em 1em 1em 2.5em;color:#9999a6;font-size:0.75em;}
 #footer a                           {color:#9999a6;}

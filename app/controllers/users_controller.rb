@@ -29,7 +29,7 @@ class UsersController < ApplicationController
     @context = 'users'
     @title = 'People'
     
-    @users = current_account.users(:all)
+    @users = current_account.users(:all).order('last_name, first_name')
     render :layout => 'full'
   end
 
