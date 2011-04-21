@@ -32,21 +32,7 @@
       </div>
     </div>
     <div class="span-6 last">
-      <% if @context == 'users' %>
-        <div id="sidebar">
-          put a new team button and listing of teams over here ..
-        </div>
-      <% else %>
-        <div id="sidebar">
-          <ul>
-            <% if signed_in? %>
-              <li><%= link_to 'sign out', signout_path, :method => :delete %>
-            <% else %>
-              <li><%= link_to 'sign in', signin_path %>
-            <% end %>
-          </ul>  
-        </div>
-      <% end %>
+
     </div>
     <div class="span-24 last">
       <div id="footer">

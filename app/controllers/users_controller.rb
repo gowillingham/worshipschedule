@@ -15,6 +15,7 @@ class UsersController < ApplicationController
   def new
     @title = 'New'
     @user = User.new
+    @context = 'users'
   end
   
   def edit
