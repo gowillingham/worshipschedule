@@ -8,7 +8,11 @@ describe User do
       :last_name => 'Tufnel',
       :email => 'email@example.com',
       :password => 'password',
-      :password_confirmation => 'password'
+      :password_confirmation => 'password',
+      :home_phone => '5556667777',
+      :office_phone => '5556667777',
+      :mobile_phone => '5556667777',
+      :office_phone_ext => 'x225'
     }
   end
   
@@ -33,7 +37,7 @@ describe User do
     user.should_not be_valid
   end
   
-  it "should accept valid email addresses" do
+  it "should reject valid email addresses" do
     addresses = %w[user@foo,com user_at_foo.org example.user@foo.]
     addresses.each do |address|
       user = User.new @attr.merge(:email => address)
@@ -41,25 +45,12 @@ describe User do
     end
   end
   
-  it "should reject invalid email addresses" do
+  it "should accept invalid email addresses" do
     addresses = %w[user@foo.com THE_USER@foo.bar.org first.last@foo.jp]
     addresses.each do |address|
       user = User.new @attr.merge(:email => address)
       user.should be_valid
     end
-  end
-  
-  it "should reject duplicate email addresses" do
-    User.create! @attr
-    user = User.new(@attr)
-    user.should_not be_valid
-  end
-  
-  it "should reject duplicate email addresses by case" do
-    upcased_email = @attr[:email].upcase
-    User.create! @attr.merge(:email => upcased_email)
-    user = User.new @attr
-    user.should_not be_valid
   end
   
   describe "password validations" do

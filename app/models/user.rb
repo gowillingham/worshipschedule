@@ -2,7 +2,7 @@ require 'digest'
 
 class User < ActiveRecord::Base 
   attr_accessor :password
-  attr_accessible :email, :first_name, :last_name, :password, :password_confirmation
+  attr_accessible :email, :first_name, :last_name, :home_phone, :mobile_phone, :office_phone, :office_phone_ext, :password, :password_confirmation
   
   has_many :accountships
   has_many :accounts, :through => :accountships
@@ -14,6 +14,11 @@ class User < ActiveRecord::Base
   
   email_regex = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   validates :email, :presence => true, :format => { :with => email_regex }
+  
+  phone_regex = /^[\(\)0-9\- \+\.]{10,20}$/
+  validates_format_of :home_phone, :with => phone_regex
+  validates_format_of :office_phone, :with => phone_regex
+  validates_format_of :mobile_phone, :with => phone_regex
 
   before_save :encrypt_password
   

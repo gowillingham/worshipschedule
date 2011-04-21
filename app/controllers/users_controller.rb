@@ -13,9 +13,15 @@ class UsersController < ApplicationController
         flash[:success] = "#{@user.name_or_email} was added to your church! "
         redirect_to users_path
       else
-        existing_user.accounts << current_account
-        flash[:success] = "#{existing_user.name_or_email} was added to your church! "
-        redirect_to users_path
+        if existing_user.accounts(current_account).exists?
+          flash[:error] = "That email address already belongs to a person in your account. "
+          @title = 'New'
+          render 'new'
+        else
+          existing_user.accounts << current_account
+          flash[:success] = "#{existing_user.name_or_email} was added to your church! "
+          redirect_to users_path
+        end
       end
 
     else

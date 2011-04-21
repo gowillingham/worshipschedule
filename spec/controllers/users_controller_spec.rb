@@ -110,6 +110,16 @@ describe UsersController do
         @existing_user.accounts(@account).exists?.should be_true
       end
       
+      it "should not add user to the current account if they exist but already belong to the current account" do
+        @existing_user = Factory(:user, :email => 'gowillingham@gmail.com')
+        @existing_user.accounts << @account
+
+        post :create, :user => @attr
+        @existing_user.accounts.size.should == 1
+        response.should render_template('new')
+        flash[:error] =~ /already belongs/i
+      end
+      
       it "should redirect to the user index page" do
         post :create, :user => @attr
         response.should redirect_to(users_path)
