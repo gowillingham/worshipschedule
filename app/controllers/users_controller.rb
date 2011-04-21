@@ -3,9 +3,21 @@ class UsersController < ApplicationController
   def create
     @user = User.new params[:user]
     @user.password = generate_password
-    if @user.save
-      flash[:success] = "Ok! #{@user.email} was successfully created! "
-      redirect_to @user 
+    
+    if @user.valid?
+      
+      existing_user = User.find(:first, :conditions => ["lower(email) = ?", @user.email.downcase])
+      if existing_user.nil?
+        @user.save
+        @user.accounts << current_account
+        flash[:success] = "#{@user.name_or_email} was added to your church! "
+        redirect_to users_path
+      else
+        existing_user.accounts << current_account
+        flash[:success] = "#{existing_user.name_or_email} was added to your church! "
+        redirect_to users_path
+      end
+
     else
       @title = "New"
       render 'new'

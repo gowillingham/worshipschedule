@@ -91,21 +91,42 @@ describe UsersController do
         }
       end
       
-      it "should create a user" do
+      it "should create a user if the user doesn't already exist" do
         lambda do
           post :create, :user => @attr
         end.should change(User, :count).by(1)
       end
       
-      it "should redirect to the user show page" do
+      it "should not create the user if the user already exists" do
+        @existing_user = Factory(:user, :email => 'gowillingham@gmail.com')
+        lambda do
+          post :create, :user => @attr
+        end.should change(User, :count).by(0)
+      end
+      
+      it "should add the user to the current_account if the user already exists" do
+        @existing_user = Factory(:user, :email => 'gowillingham@gmail.com')
         post :create, :user => @attr
-        response.should redirect_to(user_path(assigns(:user)))
+        @existing_user.accounts(@account).exists?.should be_true
+      end
+      
+      it "should redirect to the user index page" do
+        post :create, :user => @attr
+        response.should redirect_to(users_path)
       end
       
       it "should have a welcome message" do
         post :create, :user => @attr
         flash[:success] =~ /success/i
       end
+      
+      it "should add a new user to the current account" do
+        post :create, :user => @attr
+        user = assigns(:user)
+        user.accounts(@account).exists?.should be_true
+      end
+      
+      it "should send a welcome email to the user with credentials"
     end
   end
   

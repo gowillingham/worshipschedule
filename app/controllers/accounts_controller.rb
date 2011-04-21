@@ -22,7 +22,7 @@ class AccountsController < ApplicationController
       @account.save
       
       # upsert and signin the user ..
-      @user = User.find_by_email(params[:user][:email])
+      @user = User.find(:first, :conditions => ["lower(email) = ?", params[:user][:email].downcase])
       if @user.nil?
         @user = User.create(
           :email => params[:user][:email],

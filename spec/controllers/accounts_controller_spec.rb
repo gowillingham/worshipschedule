@@ -85,6 +85,9 @@ describe AccountsController do
           post :create, @new_user_attr
           response.should redirect_to(user_path(assigns(:user)))
         end
+        
+        it "should send a welcome email with the users credentials"
+        it "should send a welcome email for the new account"
       end
       
       describe "failure" do

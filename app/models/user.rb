@@ -13,7 +13,7 @@ class User < ActiveRecord::Base
   validates :password, :presence => true, :confirmation => true, :length => { :within => 4..50 }
   
   email_regex = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
-  validates :email, :presence => true, :format => { :with => email_regex }, :uniqueness => { :case_sensitive => false }
+  validates :email, :presence => true, :format => { :with => email_regex }
 
   before_save :encrypt_password
   

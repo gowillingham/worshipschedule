@@ -45,7 +45,7 @@ body                    {font-family:"Lucida Grande",verdana,arial,helvetica,san
 #main fieldset.note             {padding:0.5em;}
 #main fieldset.note textarea    {width:40em;height:10em;}
 #main fieldset .extension       {width:3.5em;}
-#main div.action                {margin:0.5em 5em 2.0em 1.5em;padding-top:2em;border-top:dashed 1px #bbb;} 
+#main div.action                {margin:0.5em 5em 4em 1.5em;padding-top:2em;border-top:dashed 1px #bbb;} 
 #main div.action h2             {margin:0;} 
 #main div.action p              {margin-top:1em;line-height:1.3em;}
 
