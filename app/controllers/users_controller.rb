@@ -25,19 +25,21 @@ class UsersController < ApplicationController
       end
 
     else
-      @title = "New"
+      @title = "All people"
       render 'new'
     end
   end
   
   def new
-    @title = 'New'
+    @title = 'All people'
     @user = User.new
     @context = 'users'
   end
   
   def edit
     @user = User.find(params[:id])
+    @title = "All people"
+    @context = 'users'
   end
   
   def update
@@ -46,9 +48,9 @@ class UsersController < ApplicationController
   
   def index
     @context = 'users'
-    @title = 'People'
+    @title = 'All people'
     
-    @users = current_account.users(:all).order('last_name, first_name')
+    @users = current_account.users(:all).order('last_name, first_name, email')
     render :layout => 'full'
   end
 
@@ -56,6 +58,6 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     
     @context = 'dashboard'
-    @title = @user.name_or_email
+    @title = 'Dashboard'
   end
 end

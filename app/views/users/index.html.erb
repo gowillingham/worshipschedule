@@ -1,5 +1,6 @@
 <div class="header big">
-  <%= "Every person from your church" %>
+  <%= render :partial => 'shared/button_link', :locals => {:url => new_user_path } %>
+  <h1>Every person from your church</h1>
 </div>
 <table class="persons">
   <thead>
@@ -11,11 +12,6 @@
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <td class="new_button">
-        <%= render :partial => 'shared/button_link', :locals => {:url => new_user_path } %>
-      </td>
-    </tr>
     <% @users.each_slice(3) do |row| %>
       <tr>
         <% row.each do |user| %>

@@ -27,11 +27,6 @@ describe UsersController do
       get :show, :id => @user
       assigns(:user).should == @user
     end
-    
-    it "should have the right title" do
-      get :show, :id => @user
-      response.should have_selector('title', :content => @user.last_name)
-    end
   end
 
   describe "GET 'new'" do
@@ -68,11 +63,6 @@ describe UsersController do
         lambda do
           post :create, :user => @attr
         end.should_not change(User, :count)
-      end
-      
-      it "should have the correct title" do
-        post :create, :user => @attr
-        response.should have_selector('title', :content => 'New')
       end
       
       it "should render the new page" do
@@ -137,6 +127,40 @@ describe UsersController do
       end
       
       it "should send a welcome email to the user with credentials"
+    end
+  end
+  
+  describe "GET 'edit'" do
+    
+    before(:each) do
+      @user = Factory(:user, :email => Factory.next(:email))
+    end
+    
+    it "should be successful" do
+        get :edit, :id => @user.id
+        response.should be_success
+    end
+    
+    it "should redirect to signin page when not signed in" do
+      controller.sign_out
+      get :edit, :id => @user.id
+      response.should redirect_to signin_path
+    end
+    
+    describe "when the user to be edited is not the current user" do
+      
+      it "should show link to reset password feature" do
+        get :edit, :id => @user.id
+        response.should have_selector("a", :content => 'instructions to choose a new password')
+      end
+    end
+    
+    describe "when the user to be edited is the current user" do
+      
+      it "should display a link to edit the password"
+      it "should allow edit of first and last name"
+      it "should allow edit of email address if password is provided"
+      it "should update the user given valid attributes"
     end
   end
   

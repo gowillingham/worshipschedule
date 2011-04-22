@@ -37,7 +37,7 @@ describe User do
     user.should_not be_valid
   end
   
-  it "should reject valid email addresses" do
+  it "should reject invalid email addresses" do
     addresses = %w[user@foo,com user_at_foo.org example.user@foo.]
     addresses.each do |address|
       user = User.new @attr.merge(:email => address)
@@ -45,12 +45,30 @@ describe User do
     end
   end
   
-  it "should accept invalid email addresses" do
+  it "should accept valid email addresses" do
     addresses = %w[user@foo.com THE_USER@foo.bar.org first.last@foo.jp]
     addresses.each do |address|
       user = User.new @attr.merge(:email => address)
       user.should be_valid
     end
+  end
+  
+  it "should reject invalid phone numbers" do
+    user = User.new @attr.merge(:mobile_phone => '999-888-7777x24')
+    user.should_not be_valid
+    user = User.new @attr.merge(:mobile_phone => '123456789')
+    user.should_not be_valid
+    user = User.new @attr.merge(:mobile_phone => 'adbfjdksl')
+    user.should_not be_valid
+  end
+  
+  it "should accept valid phone numbers" do
+    phones = %w[999-888-7777 (612)435-2121 868.777.5555 9524316341]
+    phones.each do |phone|
+      user = User.new @attr.merge(:mobile_phone => phone)
+      user.should be_valid
+    end
+    user = User.new @attr.merge(:mobile_phone => '435 634 2222')
   end
   
   describe "password validations" do

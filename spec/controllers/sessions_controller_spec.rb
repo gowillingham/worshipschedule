@@ -75,6 +75,8 @@ describe SessionsController do
          response.should redirect_to(user_path controller.current_user)
        end
        
+       it "should redirect to orphaned user page for a user with no accounts"
+       
        it "should have the right flash message" do
          post :create, :session => @attr
          flash[:success] =~ /welcome/i

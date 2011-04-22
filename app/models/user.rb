@@ -16,11 +16,12 @@ class User < ActiveRecord::Base
   validates :email, :presence => true, :format => { :with => email_regex }
   
   phone_regex = /^[\(\)0-9\- \+\.]{10,20}$/
-  validates_format_of :home_phone, :with => phone_regex
-  validates_format_of :office_phone, :with => phone_regex
-  validates_format_of :mobile_phone, :with => phone_regex
+  validates_format_of :home_phone, :with => phone_regex, :allow_nil => true, :allow_blank => true
+  validates_format_of :office_phone, :with => phone_regex, :allow_nil => true, :allow_blank => true
+  validates_format_of :mobile_phone, :with => phone_regex, :allow_nil => true, :allow_blank => true
 
   before_save :encrypt_password
+  before_save :clean_phone_numbers
   
   def self.authenticate(email, submitted_password)
     user = find_by_email email
@@ -61,5 +62,11 @@ class User < ActiveRecord::Base
     
     def secure_hash(string)
       Digest::SHA2.hexdigest(string)
+    end
+    
+    def clean_phone_numbers
+      self.office_phone = self.office_phone.gsub(/[^0-9]/, '') unless self.office_phone.blank?
+      self.home_phone = self.home_phone.gsub(/[^0-9]/, '') unless self.home_phone.blank?
+      self.mobile_phone = self.mobile_phone.gsub(/[^0-9]/, '') unless self.mobile_phone.blank?
     end
 end

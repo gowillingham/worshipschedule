@@ -1,10 +1,59 @@
-<h1>Edit user</h1>
+<div class="header">
+  <h1>Edit <%= @user.name_or_email %></h1>
+</div>
+
+<div class="recover_email">
+  <h2>Need to find <%= @user.name_or_email.possessive %> password?</h2>
+  <p>
+    Each person's password is private to them, but you can email <%= @user.name_or_email %>
+    <%= link_to 'instructions to choose a new password', "/" %>.
+  </p>
+</div
 
 <%= form_for @user, :url => { :action => 'update' }  do |f| %>
-  <%= render 'fields', :f => f %>
-  <div class="actions">
-    <%= f.submit "Save" %>
-    or <a href="#">cancel</a>
+  <div class="avatar">
+    <%= gravatar_for @user %>
   </div>
+<fieldset class="edit">
+  <table>
+    <tbody>
+      <tr class="read_only">
+        <td>Name</td>
+        <td>
+          <% if @user.name.blank? %>
+            (not provided)
+          <% else %>
+            <%= @user.name %>
+          <% end %>
+        </td>
+      </tr>
+      <tr class="read_only">
+        <td>Email</td>
+        <td><%= @user.email %></td>
+      </tr>
+      <tr>
+        <td><%= f.label :office_phone, 'Office #' %></td>
+        <td>
+          <%= f.text_field :office_phone %>
+          <%= f.label :office_phone_ext, 'ext'%>
+          <%= f.text_field :office_phone_ext, :class => 'extension'%>
+        </td>
+      </tr>
+      <tr>
+        <td><%= f.label :home_phone, 'Home #' %></td>
+        <td><%= f.text_field :home_phone %></td>
+      </tr>
+      <tr>
+        <td><%= f.label :mobile_phone, 'Mobile #' %></td>
+        <td><%= f.text_field :mobile_phone %></td>
+      </tr>
+    </tbody>
+  </table>
+</fieldset>
+
+<div class="action">
+  <%= f.submit 'Save this person' %>
+  or <%= link_to 'Cancel', users_path, :class => "cancel" %>
+</div>
 <% end %>
 
