@@ -35,11 +35,6 @@ describe UsersController do
       response.should be_success
     end
     
-    it "should have the right title" do
-      get :new
-      response.should have_selector('title', :content => 'New')
-    end  
-    
     it "should not allow access if session has timed out" do
       @request.session[:starts] = (Time.now.utc - LOGIN_SESSION_LENGTH - 1.minute)
       get :new

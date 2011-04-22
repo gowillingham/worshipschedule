@@ -53,7 +53,8 @@ body                    {font-family:"Lucida Grande",verdana,arial,helvetica,san
 #main div.recover_email         {padding:0.5em 1em;margin:1.5em 12em 1.5em 1.5em;border:solid 1px #ccc;}
 #main div.recover_email h2      {margin:0;}
 #main div.recover_email p       {margin:0;}
-#main div.avatar                {margin:0 1em 0 1.5em;float:left;padding:1em 1em 1.5em;background-color:#eee;}
+#main div.avatar                {text-align:center;margin:0 1em 0 1.5em;float:left;padding:1em 1em 0.5em;background-color:#eee;}
+#main div.avatar div            {font-size:.8em;margin:.5em 0 0;}
 #main fieldset.edit             {background-color:transparent;}
 #main fieldset .read_only td    {padding-bottom:0.3em;}
 

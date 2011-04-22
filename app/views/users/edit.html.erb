@@ -12,7 +12,8 @@
 
 <%= form_for @user, :url => { :action => 'update' }  do |f| %>
   <div class="avatar">
-    <%= gravatar_for @user %>
+    <%= gravatar_for @user, :size => 60, :default => :identicon %>
+    <div>gravatar.com</div>
   </div>
 <fieldset class="edit">
   <table>
