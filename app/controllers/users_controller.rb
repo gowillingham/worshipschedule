@@ -17,6 +17,8 @@ class UsersController < ApplicationController
         if existing_user.accounts(current_account).exists?
           flash[:error] = "That email address already belongs to a person with your church. "
           @title = 'New'
+          @context = 'users'
+          @sidebar_partial = 'users/sidebar/placeholder'
           render 'new'
         else
           existing_user.accounts << current_account
@@ -27,6 +29,8 @@ class UsersController < ApplicationController
 
     else
       @title = "All people"
+      @context = 'users'
+      @sidebar_partial = 'users/sidebar/placeholder'
       render 'new'
     end
   end
@@ -35,6 +39,7 @@ class UsersController < ApplicationController
     @title = 'All people'
     @user = User.new
     @context = 'users'
+    @sidebar_partial = 'users/sidebar/placeholder'
   end
   
   def edit
@@ -44,6 +49,7 @@ class UsersController < ApplicationController
       redirect_to current_user
     end 
 
+    @sidebar_partial = 'users/sidebar/edit_user'
     @title = "All people"
     @context = 'users'
   end
@@ -57,7 +63,8 @@ class UsersController < ApplicationController
         redirect_to edit_user_path @user
       else
         @title = "All people"
-        @context = "users"
+        @context = 'users'
+        @sidebar_partial = 'users/sidebar/placeholder'
         render 'edit'
       end
     else
@@ -67,10 +74,10 @@ class UsersController < ApplicationController
   end
   
   def index
-    @context = 'users'
+    @users = current_account.users.includes(:accountships).order('last_name, first_name, email')
+
     @title = 'All people'
-    
-    @users = current_account.users(:all, :includes => :accountships).order('last_name, first_name, email')
+    @context = 'users'
     render :layout => 'full'
   end
 
@@ -82,6 +89,7 @@ class UsersController < ApplicationController
     end 
 
     @context = 'dashboard'
+    @sidebar_partial = 'users/sidebar/placeholder'
     @title = 'Dashboard'
   end
   

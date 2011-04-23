@@ -157,7 +157,10 @@ describe UsersController do
     
     describe "when the user to be edited is not the current user" do
       
-      it "should show a link to destroy the user"
+      it "should show a link to destroy the user" do
+        get :edit, :id => @user.id
+        response.should have_selector("a", :content => "Delete #{@user.name_or_email}")
+      end
       
       it "should show link to reset password feature" do
         get :edit, :id => @user.id
@@ -295,4 +298,6 @@ describe UsersController do
       end
     end
   end
+  
+  
 end

@@ -62,7 +62,11 @@ div.button                          {padding:0.3em 1.0em;border:solid 2px #bbb;b
 div.button a                        {color:#000;font-weight:bold;font-size:1.1em;text-decoration:none;padding:0 0 0 1.5em;}
 div.button a:hover                  {background-color:transparent;color:#000;}
 
-#sidebar                            {background-color:#ffffcc;margin:1em;padding:0.5em;}
+#sidebar                            {margin:1em 1em 1em 0}
+#sidebar h1                         {background-color:#edf3fe;color:#444;padding:0.75em;font-weight:bold;font-size:1em;}
+#sidebar p                          {font-size:1.0em;line-height:01.3em;margin:0.5em 0.5em 2.0em;}
+
+
 #footer                             {padding:1em 1em 1em 2.5em;color:#9999a6;font-size:0.75em;}
 #footer a                           {color:#9999a6;}
 #footer a:hover                     {color:#fff;}
@@ -76,7 +80,7 @@ select                    {margin:0;padding:0.2em;}
 
 .field                    {margin-bottom:1em;}
 .actions                  {margin-top:2em;}
-a.cancel                  {color:red;}
+a.cancel                  {color:red;font-size:0.9em;}
 a.cancel:hover            {color:#fff;background-color:red;}
 
 .field_with_errors        {display:inline;}

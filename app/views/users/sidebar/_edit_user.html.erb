@@ -1,0 +1,10 @@
+<div id="sidebar">
+  <h1>Delete this person?</h1>
+  <p>
+    This will permanently remove <%= @user.name_or_email %> from your <%= APP_NAME %> account.
+    You can always add them back, but they will be erased from any teams or events. 
+    <br /><%= link_to "Delete #{@user.name_or_email} now", user_path(@user), :method => :delete, :class => 'cancel' %>
+  </p>
+  
+  <h1><%= @user.name_or_email %> can access ..</h1>
+</div>
