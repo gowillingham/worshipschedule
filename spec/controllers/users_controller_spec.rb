@@ -8,14 +8,19 @@ describe UsersController do
     @account = Factory(:account)
     @signed_in_user.accounts << @account
     
+    @accountship = @signed_in_user.accountships.find_by_account_id(@account.id)
+    @accountship.admin = true
+    @accountship.save
+    
     signin_user @signed_in_user
     controller.set_session_account(@account)
   end
-  
+
   describe "GET 'show'" do
     
     before(:each) do
       @user = Factory(:user, :email => Factory.next(:email))
+      @user.accounts << @account
     end
     
     it "should be successful" do
@@ -129,6 +134,7 @@ describe UsersController do
     
     before(:each) do
       @user = Factory(:user, :email => Factory.next(:email))
+      @user.accounts << @account
     end
     
     it "should be successful" do
@@ -142,7 +148,16 @@ describe UsersController do
       response.should redirect_to signin_path
     end
     
+    it "should not allow edit of a user who doesn't belong to the current account" do
+      @user.accounts.clear
+      get :edit, :id => @user.id
+      response.should redirect_to(@signed_in_user)
+      flash[:error] =~ /don't have permission/i
+    end
+    
     describe "when the user to be edited is not the current user" do
+      
+      it "should show a link to destroy the user"
       
       it "should show link to reset password feature" do
         get :edit, :id => @user.id
@@ -156,6 +171,86 @@ describe UsersController do
       it "should allow edit of first and last name"
       it "should allow edit of email address if password is provided"
       it "should update the user given valid attributes"
+    end
+  end
+  
+  describe "PUT 'update'" do
+    
+    before(:each) do
+      @user_to_edit = Factory(:user, :email => Factory.next(:email), :first_name => 'First', :last_name => 'Last')
+      @user_to_edit.accounts << @account
+    end
+    
+    it "should redirect to signin when not signed in" do
+      controller.sign_out
+      put :update, :id => @user_to_edit.id, :user => @user_to_edit
+      response.should redirect_to(signin_path)
+    end
+    
+    it "should not allow update for a user who doesn't belong to the current account" do
+      @user_to_edit.accounts.clear
+      #put :update, :id => @user_to_edit.id, :user => @user_to_edit
+      get :edit, :id => @user_to_edit.id
+      response.should redirect_to(@signed_in_user)
+      flash[:error] =~ /don't have permission/i
+    end
+    
+    it "should not allow update if the current user is not an admin for the current account" do
+      @accountship.admin = false
+      @accountship.save
+      put :update, :id => @user_to_edit.id, :user => @user_to_edit
+      response.should redirect_to(@signed_in_user)
+      flash[:error] =~ /don't have permission/i
+    end
+    
+    describe "when the user to be edited is not the current user" do
+      
+      describe "success" do
+        
+        before(:each) do
+          @attr = {
+            :office_phone => '888-999-7777',
+            :office_phone_ext => '2255',
+            :home_phone => '888 999 7777',
+            :mobile_phone => '888.999.7777'
+          }
+        end
+    
+        it "should update the user given valid attributes" do
+          put :update, :id => @user_to_edit.id, :user => @attr
+          user = User.find_by_id(@user_to_edit.id)
+          
+          user.office_phone.should == '8889997777'
+          user.office_phone_ext.should == @attr[:office_phone_ext]
+          user.mobile_phone.should == '8889997777'
+          user.home_phone.should == '8889997777'
+        end
+        
+        it "should not change email, first_name, or last_name" do
+          put :update, :id => @user_to_edit.id, :user => @attr
+          user = User.find_by_id(@user_to_edit.id)
+          
+          user.email.should == @user_to_edit.email
+          user.first_name.should == @user_to_edit.first_name
+          user.last_name.should == @user_to_edit.last_name
+        end
+        
+        it "should render the edit page with a flash message" do
+          put :update, :id => @user_to_edit.id, :user => @attr
+          response.should redirect_to edit_user_path(@user_to_edit)
+          flash[:success].should =~ /the settings for this person have been saved successfully/i
+        end
+      end
+      
+      describe "failure" do
+        it "should not change the user"
+        it "should render the edit page"
+        
+      end
+    end
+    
+    describe "when the user to be edited is the current user" do
+      
     end
   end
   

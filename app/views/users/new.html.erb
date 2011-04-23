@@ -4,78 +4,78 @@
 
 <%= form_for @user, :url => { :action => 'create' } do |f| %>
   <%= render 'shared/errors', :object => f.object %>
-<div class="fieldset_desc">
-  This person's name will appear next to their events on your schedules.
-  If you don't provide a name, <%= APP_NAME %> will use their email address instead. 
-</div>
-<fieldset>
-  <table>
-    <tbody>
-      <tr>
-        <th><%= f.label :email %></th>
-        <td><%= f.text_field :email %></td>
-      </tr>
-      <tr>
-        <td><%= f.label :first_name %></td>
-        <td><%= f.text_field :first_name %></td>
-      </tr>
-      <tr>
-        <td><%= f.label :last_name %></td>
-        <td><%= f.text_field :last_name %></td>
-      </tr>
-    </tbody>
-  </table>
-</fieldset>
-
-<div class="fieldset_desc">
-  The rest is optional.
-  You can fill it in later if you would like. 
-</div>
-<fieldset>
-  <table>
-    <tbody>
-      <tr>
-        <td><%= f.label :office_phone, 'Office #' %></td>
-        <td>
-          <%= f.text_field :office_phone %>
-          <%= f.label :office_phone_ext, 'ext'%>
-          <%= f.text_field :office_phone_ext, :class => 'extension'%>
-        </td>
-      </tr>
-      <tr>
-        <td><%= f.label :home_phone, 'Home #' %></td>
-        <td><%= f.text_field :home_phone %></td>
-      </tr>
-      <tr>
-        <td><%= f.label :mobile_phone, 'Mobile #' %></td>
-        <td><%= f.text_field :mobile_phone %></td>
-      </tr>
-    </tbody>
-  </table>
-</fieldset>
-
-<h2>Include a personal note along with the invitation to set up their account?</h2>
-<div class="fieldset_desc">
-  This person will receive a welcome email with a link to set their own password.
-  You can also add a personalized note that will appear at the bottom of the email.
-  Please use plain text
-  (no HTML tags).
-</div>
-<fieldset class="note">
-  <%= text_area_tag :note, nil, :rows => 7, :columns => 60 %>
-</fieldset>
-
-<div class="action">
-  <h2>What happens now?</h2>
-  <p>
-    When you click the "Add this person" button below,
-    we'll fire off an invitation to the email address you entered above.
-    The email will contain a link to a web page where this person can complete the setup process
-    by picking their own password.
-    Plus, you can immediately adding them to your <%= APP_NAME %> teams and placing them on schedules
-    even before they've completed their account setup. 
-  </p>
-  <%= f.submit 'Add this person' %>
-  or <%= link_to "Cancel", users_path, :class => "cancel" %>
-</div>
+  <div class="fieldset_desc">
+    This person's name will appear next to their events on your schedules.
+    If you don't provide a name, <%= APP_NAME %> will use their email address instead. 
+  </div>
+  <fieldset>
+    <table>
+      <tbody>
+        <tr>
+          <th><%= f.label :email %></th>
+          <td><%= f.text_field :email %></td>
+        </tr>
+        <tr>
+          <td><%= f.label :first_name %></td>
+          <td><%= f.text_field :first_name %></td>
+        </tr>
+        <tr>
+          <td><%= f.label :last_name %></td>
+          <td><%= f.text_field :last_name %></td>
+        </tr>
+      </tbody>
+    </table>
+  </fieldset>
+  
+  <div class="fieldset_desc">
+    The rest is optional.
+    You can fill it in later if you would like. 
+  </div>
+  <fieldset>
+    <table>
+      <tbody>
+        <tr>
+          <td><%= f.label :office_phone, 'Office #' %></td>
+          <td>
+            <%= f.text_field :office_phone %>
+            <%= f.label :office_phone_ext, 'ext'%>
+            <%= f.text_field :office_phone_ext, :class => 'extension'%>
+          </td>
+        </tr>
+        <tr>
+          <td><%= f.label :home_phone, 'Home #' %></td>
+          <td><%= f.text_field :home_phone %></td>
+        </tr>
+        <tr>
+          <td><%= f.label :mobile_phone, 'Mobile #' %></td>
+          <td><%= f.text_field :mobile_phone %></td>
+        </tr>
+      </tbody>
+    </table>
+  </fieldset>
+  
+  <h2>Include a personal note along with the invitation to set up their account?</h2>
+  <div class="fieldset_desc">
+    This person will receive a welcome email with a link to set their own password.
+    You can also add a personalized note that will appear at the bottom of the email.
+    Please use plain text
+    (no HTML tags).
+  </div>
+  <fieldset class="note">
+    <%= text_area_tag :note, nil, :rows => 7, :columns => 60 %>
+  </fieldset>
+  
+  <div class="action">
+    <h2>What happens now?</h2>
+    <p>
+      When you click the "Add this person" button below,
+      we'll fire off an invitation to the email address you entered above.
+      The email will contain a link to a web page where this person can complete the setup process
+      by picking their own password.
+      Plus, you can immediately adding them to your <%= APP_NAME %> teams and placing them on schedules
+      even before they've completed their account setup. 
+    </p>
+    <%= f.submit 'Add this person' %>
+    or <%= link_to "Cancel", users_path, :class => "cancel" %>
+  </div>
 <% end %>

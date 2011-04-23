@@ -8,6 +8,13 @@ module SessionsHelper
     end
   end
   
+  def require_account_admin
+    unless admin?
+      flash[:error] = "You must be an administrator for #{current_account.name} to access that page. "
+      redirect_to current_user
+    end
+  end
+  
   def check_account
     unless account_set?
       flash[:error] = "You'll need to select one of your churches before you can access that page. "
@@ -24,7 +31,7 @@ module SessionsHelper
   end
   
   def admin?
-    Accountship.find_by_account_id_and_user_id(current_account.id, current_user.id).admin?
+    current_user.accountships.find_by_account_id(current_account.id).admin?
   end
   
   def boot_session

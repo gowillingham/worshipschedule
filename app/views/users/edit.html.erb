@@ -11,6 +11,7 @@
 </div
 
 <%= form_for @user, :url => { :action => 'update' }  do |f| %>
+  <%= render 'shared/errors', :object => f.object %>
   <div class="avatar">
     <%= gravatar_for @user, :size => 60, :default => :identicon %>
     <div>gravatar.com</div>

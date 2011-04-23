@@ -10,7 +10,11 @@ class User < ActiveRecord::Base
   validates :first_name, :length => { :maximum => 50 }
   validates :last_name, :length => { :maximum => 50 }
   
-  validates :password, :presence => true, :confirmation => true, :length => { :within => 4..50 }
+  validates :password,
+    :presence => true,
+    :confirmation => true,
+    :length => { :within => 4..50 },
+    :on => :create
   
   email_regex = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   validates :email, :presence => true, :format => { :with => email_regex }

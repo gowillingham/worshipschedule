@@ -7,7 +7,7 @@ describe "Users" do
     before(:each) do
       user = Factory(:user)
       account = Factory(:account)
-      user.accounts << account
+      user.accountships.create(:account_id => account.id, :admin => true)
       
       visit signin_path
       fill_in "Email", :with => user.email
