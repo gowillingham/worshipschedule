@@ -13,12 +13,7 @@
   <div class="container">
     <div class="span-24 last">
       <div id="header">
-        <div class="user">
-          <%= current_user.name_or_email %>
-          | <a href="#">My info</a>
-          | <%= link_to 'sign out', signout_path, :method => :delete %>
-          | <a href="#">Help</a>
-        </div>
+        <%= render :partial => 'shared/status' %>
         <h1><%= header_text %></h1>
         <%= render 'shared/tabstrip' %>
       </div>
