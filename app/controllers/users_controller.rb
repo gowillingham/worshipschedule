@@ -94,6 +94,20 @@ class UsersController < ApplicationController
   end
   
   def destroy
+    @user = User.find(params[:id])
     
+    unless @user.id == current_user.id
+      if current_account.users.exists? @user
+        flash[:success] = "#{@user.name_or_email} has been deleted. "
+        @user.destroy
+        redirect_to users_path
+      else
+        flash[:error] = "You don't have permission to access that person. "
+        redirect_to current_user
+      end
+    else
+      flash[:error] = "You are not allowed to remove your own account. "
+      redirect_to edit_user_path(@user)
+    end
   end
 end

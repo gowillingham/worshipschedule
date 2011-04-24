@@ -1,9 +1,13 @@
 <div class="thumbnail">
   <%= gravatar_for user %>
-  <% if user.accountships.find_by_account_id(current_account.id).admin? %>
-    <div class="admin">ADMIN</div>
-  <% else %>
-    <div>&nbsp;</div>
+  <% user.accountships.each do |accountship| %>
+    <% if accountship.account == current_account %>
+      <% if accountship.admin? %>
+        <div class="admin">ADMIN</div>
+      <% else %>
+        <div>&nbsp;</div>
+      <% end %>
+    <% end %>
   <% end %>
 </div>
 

@@ -299,5 +299,60 @@ describe UsersController do
     end
   end
   
-  
+  describe "DELETE 'destroy'" do
+    
+    before(:each) do
+      @user = Factory(:user, :email => Factory.next(:email))
+      @user.accounts << @account
+    end
+    
+    it "should remove the user" do
+      lambda do
+        delete :destroy, :id => @user
+      end.should change(User, :count).by(-1)
+    end
+    
+    it "should redirect to the index page" do
+      delete :destroy, :id => @user
+      response.should redirect_to users_path
+    end
+    
+    it "should not remove the user if the current user is not an admin" do
+      accountship = @signed_in_user.accountships.find_by_account_id(@account.id)
+      accountship.toggle(:admin).save
+      
+      lambda do
+        delete :destroy, :id => @user
+      end.should change(User, :count).by(0)
+    end
+    
+    it "should redirect to user show with flash message if the current user is not an admin" do
+      accountship = @signed_in_user.accountships.find_by_account_id(@account.id)
+      accountship.toggle(:admin).save
+
+      delete :destroy, :id => @user
+      response.should redirect_to(user_path @signed_in_user)
+      flash[:error] =~ /don't have permission/i
+    end
+
+    it "should not remove the current user account" do
+      lambda do
+        delete :destroy, :id => @signed_in_user
+      end.should change(User, :count).by(0)
+    end
+    
+    it "should redirect to user#show with flash message if the target user is the current user" do
+      delete :destroy, :id => @signed_in_user
+      response.should redirect_to(edit_user_path @signed_in_user)
+      flash[:error] =~ /cannot remove yourself/i
+    end
+    
+    it "should not remove the user if the current user is not signed in" do
+      controller.sign_out
+      
+      delete :destroy, :id => @user
+      response.should redirect_to(signin_path)
+      flash[:error] =~ /cannot remove yourself/i
+    end
+  end
 end
