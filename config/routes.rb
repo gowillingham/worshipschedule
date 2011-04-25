@@ -8,8 +8,6 @@ Worshipschedule::Application.routes.draw do
       put 'update_profile'
     end
   end
-  match 'users/:id/profile' => 'users#edit_profile', :via => :get 
-  match 'users/:id/profile' => 'users#update_profile', :via => :put
   
   resources :sessions, :only => [:new, :create, :destroy]
   get 'sessions/accounts'

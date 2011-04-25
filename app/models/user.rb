@@ -10,12 +10,17 @@ class User < ActiveRecord::Base
   validates :first_name, :length => { :maximum => 50 }
   validates :last_name, :length => { :maximum => 50 }
   
+  attr_accessor :validate_password
   validates :password,
     :presence => true,
     :confirmation => true,
     :length => { :within => 4..50 },
-    :on => :create
-  
+    :if => :should_validate_password?
+    
+  def should_validate_password?
+    validate_password || new_record?
+  end
+
   email_regex = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   validates :email, :presence => true, :format => { :with => email_regex }
   
@@ -25,7 +30,6 @@ class User < ActiveRecord::Base
   validates_format_of :mobile_phone, :with => phone_regex, :allow_nil => true, :allow_blank => true
 
   before_save :encrypt_password
-  before_save :clean_phone_numbers
   
   def self.authenticate(email, submitted_password)
     user = find_by_email email

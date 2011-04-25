@@ -9,12 +9,22 @@ class UsersController < ApplicationController
   end
   
   def update_profile
+    @user = User.find params[:id]
+    @user.validate_password = true
     
+    if @user.update_attributes(params[:user])
+      
+    else
+      @sidebar_partial = 'users/sidebar/placeholder'
+      @title = 'Your profile'
+      render 'profile'
+    end 
   end
   
   def create
     @user = User.new params[:user]
     @user.password = generate_password
+    @user.validate_password = true
     
     if @user.valid?
       

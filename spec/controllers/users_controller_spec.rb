@@ -225,10 +225,10 @@ describe UsersController do
         put :update, :id => @user_to_edit.id, :user => @attr
         user = User.find_by_id(@user_to_edit.id)
         
-        user.office_phone.should == '8889997777'
+        user.office_phone.should == @attr[:office_phone]
         user.office_phone_ext.should == @attr[:office_phone_ext]
-        user.mobile_phone.should == '8889997777'
-        user.home_phone.should == '8889997777'
+        user.mobile_phone.should == @attr[:mobile_phone]
+        user.home_phone.should == @attr[:home_phone]
       end
       
       it "should not update the user given invalid attributes" do
@@ -272,12 +272,12 @@ describe UsersController do
         put :update, :id => @signed_in_user, :user => @attr
         user = User.find_by_id(@signed_in_user.id)
         
-        user.office_phone.should == '8889997777'
+        user.office_phone.should == @attr[:office_phone]
         user.office_phone_ext.should == @attr[:office_phone_ext]
-        user.mobile_phone.should == '8889997777'
-        user.home_phone.should == '8889997777'
-        user.first_name == 'New_first_name'
-        user.last_name == 'New_last_name'
+        user.mobile_phone.should == @attr[:mobile_phone]
+        user.home_phone.should == @attr[:home_phone]
+        user.first_name == @attr[:first_name]
+        user.last_name == @attr[:last_name]
       end
       
       it "should re-render the edit page with a flash confirmation message" do
@@ -385,5 +385,21 @@ describe UsersController do
       response.should redirect_to(signin_path)
       flash[:error] =~ /cannot remove yourself/i
     end
+  end
+  
+  describe "GET 'edit_profile'" do
+    
+    it "should be success"
+    it "should have a link to change the avatar"
+    it "should redirect to user#show if the target user is not the current user"
+  end
+  
+  describe "PUT 'update_profile'" do
+    it "should not update the password if the target user is not the current user"
+    it "should redirect to user#show if the target user is not the current user"
+    it "should change password given valid attributes"
+    it "should not change the password given invalid attributes"
+    it "should redisplay with form errors given invalid attribures"
+    it "should redirect with flash message on success"
   end
 end

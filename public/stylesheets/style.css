@@ -18,7 +18,7 @@ body                    {font-family:"Lucida Grande",verdana,arial,helvetica,san
 #main .content .edit_profile a          {font-size:1.1em;font-weight:bold;}
 #main .content .edit_profile p          {font-size:1.2em;margin:1.0em 0;}
 #main .content .edit_profile td         {width:50%;}
-#main .content .edit_profile .card      {background-color:#e7e6e7;overflow:hidden;-moz-border-radius:10px;-webkit-border-radius:10px;border-radius:10px;}
+#main .content .edit_profile .card      {margin-left:1em;background-color:#e7e6e7;overflow:hidden;-moz-border-radius:10px;-webkit-border-radius:10px;border-radius:10px;}
 #main .content .edit_profile .top       {background-color:#444;color:#eee;padding:0.75em 1.5em 0.75em 1.25em;font-size:1.0em;font-weight:bold;border-top-left-radius:10px;border-top-right-radius:10px;-webkit-border-top-left-radius:10px;-webkit-border-top-right-radius:10px;-moz-border-radius-topleft:10px;-moz-border-radius-topright:10px;}
 
 #main .content .edit_profile .bottom    {padding:0.4em 0.5em 0.3em 1.2em;}

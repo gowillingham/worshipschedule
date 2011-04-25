@@ -2,7 +2,7 @@
   <h1>Update your <%= APP_NAME %> profile details</h1>
 </div>
 
-<%= form_for @user, :url => { :action => 'update' }  do |f| %>
+<%= form_for @user, :url => { :action => 'update_profile'}  do |f| %>
   <%= render 'shared/errors', :object => f.object %>
 
   <fieldset class="edit profile">
@@ -39,8 +39,8 @@
   <%= gravatar_for current_user, :size => 70, :default => :identicon %>
   <h3>Your gravatar image</h3>
   <p>
-    Your profile image is provided by the free Gravatar service, which generates unique avatar image for you from your email addres.
-    You may upload your own image to replace the image from Gravatar any time.
+    Your profile image is provided by the free Gravatar service, which generates a unique avatar image for you from your email address.
+    Replace it with your own custom image by visiting gravatar.com.
   </p>
   <p><%= link_to 'Change my Gravatar image', "http://en.gravatar.com/", :target => '_blank' %></p>
 </fieldset>
