@@ -44,14 +44,22 @@ class UsersController < ApplicationController
   
   def edit
     @user = User.find(params[:id])
+    
+    if @user == current_user
+      @sidebar_partial = 'users/sidebar/placeholder'
+      @title = "Your info"
+      @context = 'users'
+    else
+      @sidebar_partial = 'users/sidebar/edit_user'
+      @context = 'users'
+      @title = "All people"
+    end
+    
     unless current_account.users.exists? @user
       flash[:error] = "You don't have permission to access that person. "
       redirect_to current_user
     end 
 
-    @sidebar_partial = 'users/sidebar/edit_user'
-    @title = "All people"
-    @context = 'users'
   end
   
   def update
@@ -62,7 +70,11 @@ class UsersController < ApplicationController
         flash[:success] = "The settings for this person have been saved successfully. "
         redirect_to edit_user_path @user
       else
-        @title = "All people"
+        if @user == current_user
+          @title = "Your info"
+        else
+          @title = "All people"
+        end
         @context = 'users'
         @sidebar_partial = 'users/sidebar/placeholder'
         render 'edit'

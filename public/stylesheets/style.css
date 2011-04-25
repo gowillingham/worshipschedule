@@ -1,20 +1,38 @@
 body                    {font-family:"Lucida Grande",verdana,arial,helvetica,sans-serif;background:#e5e5e5 url("../images/header_bg.gif") repeat-x;}
+
 .container              {background-color:#e5e5e5;}
 .container a            {padding:0.1em;}
 .container a:hover      {background-color:#253966;color:#d6ffcf;}
 
-#header                             {padding:0.5em 1em 0 1em;background-color:#c5e2e9;overflow:hidden;}
-#header .status                     {float:right;font-size:.9em;}
-#header h1                          {font-size:2em;margin:0.5em 0 1em 0;}
+#header                                 {padding:0.5em 1em 0 1em;background-color:#c5e2e9;overflow:hidden;}
+#header .status                         {float:right;font-size:.9em;}
+#header h1                              {font-size:2em;margin:0.5em 0 1em 0;}
 
-#main                               {padding:1.0em;}
-#main .content                      {background-color:#fff;overflow:hidden;}
-#main .content .header              {background-color:#edf3fe;overflow:hidden;padding:1em 1.5em;font-weight:bold;}
-#main .content .header h1           {font-size:1.1em;font-weight:bold;margin:0;padding:0;}
-#main .content .header .button      {float:right;}
-#main .content .big h1              {font-size:1.2em;font-weight:bold;margin:0.6em 0;padding:0;}
-#main .content ul                   {margin:1em;}
-#main .content h2                   {margin:0 1.5em;padding:0;font-size:1.1em;font-weight:bold;}
+#main                                   {padding:1.0em;}
+#main .content                          {background-color:#fff;overflow:hidden;}
+#main .content .header                  {background-color:#edf3fe;overflow:hidden;padding:1em 1.5em;font-weight:bold;}
+#main .content .header h1               {font-size:1.1em;font-weight:bold;margin:0;padding:0;}
+#main .content .header .button          {float:right;}
+#main .content .big h1                  {font-size:1.2em;font-weight:bold;margin:0.6em 0;padding:0;}
+#main .content .edit_profile            {margin:0;padding:0;}
+#main .content .edit_profile a          {font-size:1.1em;font-weight:bold;}
+#main .content .edit_profile p          {font-size:1.2em;margin:1.0em 0;}
+#main .content .edit_profile td         {width:50%;}
+#main .content .edit_profile .card      {background-color:#e7e6e7;overflow:hidden;-moz-border-radius:10px;-webkit-border-radius:10px;border-radius:10px;}
+#main .content .edit_profile .top       {background-color:#444;color:#eee;padding:0.75em 1.5em 0.75em 1.25em;font-size:1.0em;font-weight:bold;border-top-left-radius:10px;border-top-right-radius:10px;-webkit-border-top-left-radius:10px;-webkit-border-top-right-radius:10px;-moz-border-radius-topleft:10px;-moz-border-radius-topright:10px;}
+
+#main .content .edit_profile .bottom    {padding:0.4em 0.5em 0.3em 1.2em;}
+#main .content .edit_profile .bottom ul {padding:0 0 0 5.5em;margin:0;list-style-type:none;}
+#main .content .edit_profile .bottom ul .name     {font-weight:bold;font-size:1.1em;}
+#main .content .edit_profile .bottom ul .email    {font-size:1.1em;}
+#main .content .edit_profile .bottom ul .pass     {margin-top:1.2em}
+#main .content .edit_profile .bottom .padlock     {margin:0.3em 0 0.5em;float:right;}
+#main .content .edit_profile .gravatar  {float:left;margin-top:0.5em;}
+#main .content .edit_profile .gravatar  {float:left;}
+#main .content h2.profile               {margin:1em 4em 0em 1.5em;}
+
+#main .content ul                       {margin:1em;}
+#main .content h2                       {margin:0 1.5em;padding:0;font-size:1.1em;font-weight:bold;}
 
 #main table                         {font-size:0.9em;margin:2.0em auto;width:95%;}
 #main tbody tr:nth-child(even) td,
@@ -84,9 +102,10 @@ a.cancel                  {color:red;font-size:0.9em;}
 a.cancel:hover            {color:#fff;background-color:red;}
 
 .field_with_errors        {display:inline;}
-.field_with_errors label  {color:#b11f3d;}
-.field_with_errors input  {border-color:#b11f3d;}
+.field_with_errors label  {color:red;font-weight:bold !important;}
+.field_with_errors input  {border-color:red;}
 #error_explanation        {margin:1em;}
+#error_explanation h3     {font-size:1.0em;font-weight:bold;}
 #error_explanation ol     {margin-bottom:0;}
 
 

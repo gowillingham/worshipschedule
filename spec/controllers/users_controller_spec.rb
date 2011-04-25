@@ -174,6 +174,11 @@ describe UsersController do
         get :edit, :id => @signed_in_user
         response.should have_selector("a", :content => "Edit your personal information")
       end
+      
+      it "should not display a link to delete the user" do
+        get :edit, :id => @signed_in_user
+        response.should_not have_selector("a", :content => "Delete #{@user.name_or_email}")
+      end
     end
   end
   
@@ -226,7 +231,13 @@ describe UsersController do
         user.home_phone.should == '8889997777'
       end
       
-      it "should not update the user given invalid attributes" 
+      it "should not update the user given invalid attributes" do
+        @attr = { :office_phone => 'booger' }
+        
+        put :update, :id => @user_to_edit, :user => @attr
+        response.should render_template('edit')
+        response.should have_selector("div#error_explanation")
+      end
       
       it "should not change email, first_name, or last_name" do
         put :update, :id => @user_to_edit.id, :user => @attr
@@ -245,8 +256,35 @@ describe UsersController do
     end
     
     describe "when the user to be edited is the current user" do
-      it "should update the contact details given valid attributes"
-      it "should re-render the edit page with a flash confirmation message"
+      
+      before(:each) do
+        @attr = {
+          :first_name => 'New_first_name',
+          :last_name => 'New_last_name',
+          :office_phone => '888-999-7777',
+          :office_phone_ext => '2255',
+          :home_phone => '888 999 7777',
+          :mobile_phone => '888.999.7777'
+        }
+      end
+      
+      it "should update the contact details given valid attributes" do
+        put :update, :id => @signed_in_user, :user => @attr
+        user = User.find_by_id(@signed_in_user.id)
+        
+        user.office_phone.should == '8889997777'
+        user.office_phone_ext.should == @attr[:office_phone_ext]
+        user.mobile_phone.should == '8889997777'
+        user.home_phone.should == '8889997777'
+        user.first_name == 'New_first_name'
+        user.last_name == 'New_last_name'
+      end
+      
+      it "should re-render the edit page with a flash confirmation message" do
+        put :update, :id => @signed_in_user, :user => @attr
+        response.should redirect_to(edit_user_path @signed_in_user)
+        flash[:success] =~ /saved successfully/i
+      end
     end
   end
   
