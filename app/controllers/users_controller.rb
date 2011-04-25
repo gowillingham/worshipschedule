@@ -1,6 +1,14 @@
 class UsersController < ApplicationController
   before_filter :require_account_admin, :except => :show
   
+  def edit_profile
+    
+  end
+  
+  def update_profile
+    
+  end
+  
   def create
     @user = User.new params[:user]
     @user.password = generate_password

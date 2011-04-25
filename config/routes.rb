@@ -1,7 +1,15 @@
 Worshipschedule::Application.routes.draw do
 
   resources :accounts
-  resources :users
+  
+  resources :users do
+    member do
+      get 'edit_profile'
+      put 'update_profile'
+    end
+  end
+  match 'users/:id/profile' => 'users#edit_profile', :via => :get 
+  match 'users/:id/profile' => 'users#update_profile', :via => :put
   
   resources :sessions, :only => [:new, :create, :destroy]
   get 'sessions/accounts'
