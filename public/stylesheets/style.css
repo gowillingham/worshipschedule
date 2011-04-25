@@ -75,6 +75,13 @@ body                    {font-family:"Lucida Grande",verdana,arial,helvetica,san
 #main div.avatar div            {font-size:.8em;margin:.5em 0 0;}
 #main fieldset.edit             {background-color:transparent;}
 #main fieldset .read_only td    {padding-bottom:0.3em;}
+#main fieldset.profile td       {font-size:1.2em;line-height:1.2em;padding:1.0em 1em 0em 0;}
+#main fieldset.profile tr.hint td       {padding:0 1em 0 0;}
+#main fieldset.profile tr.hint div      {padding:.2em .2em .2em 0;width:25em;white-space:normal;font-size:0.85em;line-height:1.1em;color:#9999bc;}
+#main fieldset.edit_gravatar            {margin-top:-2em;padding:1.5em;line-height:1.0em;}
+#main fieldset.edit_gravatar p          {padding-left:85px;font-size:0.9em;color:#555;margin:.5em 0;}
+#main fieldset.edit_gravatar h3         {padding-left:85px;font-weight:bold;font-size:0.9em;color:#444;}
+#main fieldset.edit_gravatar .gravatar  {float:left;}
 
 div.button                          {padding:0.3em 1.0em;border:solid 2px #bbb;background:#eee url("../images/icons/add.png") no-repeat 0.25em 50%;-moz-border-radius:1.3em;-webkit-border-radius:1.3em;border-radius:1.3em;}
 div.button a                        {color:#000;font-weight:bold;font-size:1.1em;text-decoration:none;padding:0 0 0 1.5em;}

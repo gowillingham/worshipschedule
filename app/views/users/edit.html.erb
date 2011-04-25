@@ -4,7 +4,7 @@
       <tbody>
         <tr>
           <td>
-            <p><%= link_to 'Edit your personal information', edit_user_path(current_user) %></p>
+            <p><%= link_to 'Edit your personal information', edit_profile_user_path(current_user) %></p>
             <p>Change your photo or password for your <%= APP_NAME %> account. </p>
           </td>
           <td>
@@ -14,7 +14,7 @@
                 <%= gravatar_for current_user, :size => 50, :default => :identicon %>
                 <ul>
                   <li class="name"><%= current_user.name unless current_user.name.blank? %></li>
-                  <li class="email"><%= current_user.email%></li>
+                  <li class="email"><%= truncate current_user.email, :length => 25%></li>
                   <li class="pass">Password: &bull;&bull;&bull;&bull;&bull;&bull;</li>
                 </ul>
                 <div class="padlock"><%= image_tag "/images/icons/lock.png", :alt => "Secure" %></div>
@@ -50,61 +50,65 @@
       <div>gravatar.com</div>
     </div>
   <% end %>
-<fieldset class="edit">
-  <table>
-    <tbody>
-      <% if @user == current_user %>
+  <fieldset class="edit">
+    <table>
+      <tbody>
+        <% if @user == current_user %>
+          <tr>
+            <td><%= f.label :first_name, 'First name' %></td>
+            <td><%= f.text_field :first_name %>
+          </tr>
+          <tr>
+            <td><%= f.label :last_name, 'Last name' %></td>
+            <td><%= f.text_field :last_name %>
+          </tr>
+          <tr>
+            <td><%= f.label :email, 'Email' %></td>
+            <td><%= f.text_field :email %>
+          </tr>
+        <% else %>
+          <tr class="read_only">
+            <td>Name</td>
+            <td>
+              <% if @user.name.blank? %>
+                (not provided)
+              <% else %>
+                <%= @user.name %>
+              <% end %>
+            </td>
+          </tr>
+          <tr class="read_only">
+            <td>Email</td>
+            <td><%= @user.email %></td>
+          </tr>
+        <% end %>
         <tr>
-          <td><%= f.label :first_name, 'First name' %></td>
-          <td><%= f.text_field :first_name %>
-        </tr>
-        <tr>
-          <td><%= f.label :last_name, 'Last name' %></td>
-          <td><%= f.text_field :last_name %>
-        </tr>
-        <tr>
-          <td><%= f.label :email, 'Email' %></td>
-          <td><%= f.text_field :email %>
-        </tr>
-      <% else %>
-        <tr class="read_only">
-          <td>Name</td>
+          <td><%= f.label :office_phone, 'Office #' %></td>
           <td>
-            <% if @user.name.blank? %>
-              (not provided)
-            <% else %>
-              <%= @user.name %>
-            <% end %>
+            <%= f.text_field :office_phone %>
+            <%= f.label :office_phone_ext, 'ext'%>
+            <%= f.text_field :office_phone_ext, :class => 'extension'%>
           </td>
         </tr>
-        <tr class="read_only">
-          <td>Email</td>
-          <td><%= @user.email %></td>
+        <tr>
+          <td><%= f.label :home_phone, 'Home #' %></td>
+          <td><%= f.text_field :home_phone %></td>
         </tr>
-      <% end %>
-      <tr>
-        <td><%= f.label :office_phone, 'Office #' %></td>
-        <td>
-          <%= f.text_field :office_phone %>
-          <%= f.label :office_phone_ext, 'ext'%>
-          <%= f.text_field :office_phone_ext, :class => 'extension'%>
-        </td>
-      </tr>
-      <tr>
-        <td><%= f.label :home_phone, 'Home #' %></td>
-        <td><%= f.text_field :home_phone %></td>
-      </tr>
-      <tr>
-        <td><%= f.label :mobile_phone, 'Mobile #' %></td>
-        <td><%= f.text_field :mobile_phone %></td>
-      </tr>
-    </tbody>
-  </table>
-</fieldset>
+        <tr>
+          <td><%= f.label :mobile_phone, 'Mobile #' %></td>
+          <td><%= f.text_field :mobile_phone %></td>
+        </tr>
+      </tbody>
+    </table>
+  </fieldset>
 
-<div class="action">
-  <%= f.submit 'Save this person' %>
-  or <%= link_to 'Cancel', users_path, :class => "cancel" %>
-</div>
+  <div class="action">
+    <% if @user == current_user %>
+      <%= f.submit 'Save changes' %>
+    <% else %>
+      <%= f.submit 'Save this person' %>
+    <% end %>
+    or <%= link_to 'Cancel', users_path, :class => "cancel" %>
+  </div>
 <% end %>
 

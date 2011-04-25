@@ -1,0 +1,46 @@
+<div class="header big">
+  <h1>Update your <%= APP_NAME %> profile details</h1>
+</div>
+
+<%= form_for @user, :url => { :action => 'update' }  do |f| %>
+  <%= render 'shared/errors', :object => f.object %>
+
+  <fieldset class="edit profile">
+    <table>
+      <tbody>
+        <tr>
+          <td><%= f.label :password %></td>
+          <td>
+            <%= f.password_field :password %>
+          </td>
+        </tr>
+        <tr class="hint">
+          <td>&nbsp;</td>
+          <td>
+            <div>4 characters or longer. Add at least one number for extra safety. </div>
+          </td>
+        </tr>
+        <tr>
+          <td><%= f.label :password_confirmation, 'Confirm<br />password'.html_safe %></td>
+          <td>
+            <%= f.password_field :password_confirmation %>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </fieldset>
+  <div class="action">
+    <%= f.submit 'Change password' %>
+    or <%= link_to 'Cancel', edit_user_path(current_user), :class => 'cancel' %>
+  </div>
+<% end %>
+
+<fieldset class="edit_gravatar">
+  <%= gravatar_for current_user, :size => 70, :default => :identicon %>
+  <h3>Your gravatar image</h3>
+  <p>
+    Your profile image is provided by the free Gravatar service, which generates unique avatar image for you from your email addres.
+    You may upload your own image to replace the image from Gravatar any time.
+  </p>
+  <p><%= link_to 'Change my Gravatar image', "http://en.gravatar.com/", :target => '_blank' %></p>
+</fieldset>

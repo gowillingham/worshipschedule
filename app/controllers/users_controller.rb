@@ -2,7 +2,10 @@ class UsersController < ApplicationController
   before_filter :require_account_admin, :except => :show
   
   def edit_profile
-    
+    @user = User.find params[:id]
+    @sidebar_partial = 'users/sidebar/placeholder'
+    @title = 'Your profile'
+    render 'profile'
   end
   
   def update_profile
@@ -24,7 +27,7 @@ class UsersController < ApplicationController
       else
         if existing_user.accounts(current_account).exists?
           flash[:error] = "That email address already belongs to a person with your church. "
-          @title = 'New'
+          @title = 'All users'
           @context = 'users'
           @sidebar_partial = 'users/sidebar/placeholder'
           render 'new'
