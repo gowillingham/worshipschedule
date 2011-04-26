@@ -103,10 +103,10 @@ input.title,
 textarea,
 select                    {margin:0;padding:0.2em;}
 
-.field                    {margin-bottom:1em;}
-.actions                  {margin-top:2em;}
-a.cancel                  {color:red;font-size:0.9em;}
-a.cancel:hover            {color:#fff;background-color:red;}
+#main .field                    {margin-bottom:1em;}
+#main .signin .action           {margin:2em 0 0 0;}
+#main a.cancel                  {color:red;font-size:0.9em;}
+#main a.cancel:hover            {color:#fff;background-color:red;}
 
 .field_with_errors        {display:inline;}
 .field_with_errors label  {color:red;font-weight:bold !important;}

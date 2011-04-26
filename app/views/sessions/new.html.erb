@@ -2,6 +2,7 @@
 <%= render 'shared/show_flash' %>
 
 <%= form_for(:session, :url => sessions_path) do |f| %>
+<div class='signin'>
   <div class="field">
     <%= f.label :email %><br />
     <%= f.email_field :email %>
@@ -10,7 +11,8 @@
     <%= f.label :password %><br />
     <%= f.password_field :password %>
   </div>
-  <div class="actions">
+  <div class="action">
     <%= f.submit 'Sign in' %>
   </div>
+</div>
 <% end %>

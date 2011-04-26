@@ -4,7 +4,11 @@ Worshipschedule::Application.routes.draw do
   
   resources :users
   
-  resource :profile, :only => [:edit, :update]
+  resource :profile, :only => [:edit, :update] do
+    get :forgot
+    put :send_reset
+    put :reset
+  end
   
   resources :sessions, :only => [:new, :create, :destroy]
   get 'sessions/accounts'

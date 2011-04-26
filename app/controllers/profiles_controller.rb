@@ -1,4 +1,6 @@
 class ProfilesController < ApplicationController
+  skip_before_filter :authenticate, :only => [:forgot, :send_reset, :reset]
+  skip_before_filter :check_account, :only => [:forgot, :send_reset, :reset]
   
   def edit
     @user = User.find(current_user.id)
@@ -19,5 +21,17 @@ class ProfilesController < ApplicationController
       @title = 'Your profile'
       render 'edit'
     end 
+  end
+  
+  def forgot
+    
+  end
+  
+  def send_reset
+    
+  end
+  
+  def reset
+    
   end
 end
