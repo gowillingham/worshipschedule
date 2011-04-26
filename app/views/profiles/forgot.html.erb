@@ -1,0 +1,34 @@
+<table>
+  <tbody>
+    <tr>
+      <td>
+        <h3>Can't sign in? Forget your password?</h3>
+        <p>
+          Enter your email address below and we'll send you password reset instructions.
+        </p>
+        <%= form_for(:user, :url => send_reset_profile_path) do |f| %>
+          <div class="field">
+            <%= f.label :email, 'Enter your email address' %><br />
+            <%= f.text_field :email %>
+            <div>
+              <%= f.submit "Send me reset instructions" %>
+            </div>
+          </div>
+          
+        <% end %>
+      </td>
+      <td>
+        <div class="spam_note">
+          <h3>A note about spam filters</h3>
+          <p>
+            If you don't get a note from us within a couple minutes please be sure to check your spam filter.
+            <strong>The email will be coming from <%= "DONOTREPLY@email.com" %></strong>
+          </p>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<div class="action">
+  Nevermind, <%= link_to "send me back to the sign in screen", forgot_profile_path %>
+</div>

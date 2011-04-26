@@ -4,7 +4,9 @@ describe ProfilesController do
   render_views
   
   before(:each) do
-    @signed_in_user = Factory(:user)
+    @user = Factory(:user, :password => 'password', :password_confirmation => 'password')
+    
+    @signed_in_user = Factory(:user, :email => Factory.next(:email))
     @account = Factory(:account)
     @signed_in_user.accounts << @account
     
@@ -84,4 +86,75 @@ describe ProfilesController do
       flash[:success] =~ /password was changed/i
     end
   end
+  
+  describe "GET 'forgot'" do
+    
+    it "should not require a signed in user" do
+      controller.sign_out
+      get :forgot
+      response.should render_template('forgot')
+    end
+    
+    it "should have a link to return to the signin screen" do
+      get :forgot
+      response.should have_selector('a', :content => 'send me back to the sign in screen')
+    end
+  end
+  
+  describe "PUT 'reset'" do
+    
+  end
+  
+  describe "PUT 'send_reset'" do
+    
+    describe "for a user email not found" do
+      
+      before(:each) do
+        @attr = {
+          :email => 'this_user@wont_be_found.com'
+        }
+      end
+      
+      it "should not require a signed in user" do
+        controller.sign_out
+        put :send_reset, :user => @attr
+        response.should render_template('forgot')
+      end
+      
+      it "should redisplay the forgot screen with a flash message" do
+        put :send_reset, :user => @attr
+        response.should render_template('forgot')
+      end
+    end
+    
+    describe "for a found user email" do
+      
+      before(:each) do
+        @user = Factory(:user, :email => Factory.next(:email))
+        @attr = {:email => @user.email}
+      end
+      
+      it "should not require a signed in user" do
+        controller.sign_out
+        put :send_reset, :user => @attr
+        response.should redirect_to(signin_path)
+      end
+      
+      it "should display the signin page with flash confirmation" do
+        put :send_reset, :user => @attr
+        response.should redirect_to(signin_path)
+      end
+      
+      it "should update user's password reset fields" do
+        user = User.find_by_email(@user.email)
+        user.reset_password_token_created_at.should_not be_nil
+        user.reset_password_token.should_not be_nil
+        user.reset_password_complete.should_not be_true
+      end
+      
+      it "should email the password reset token to the user"
+    end
+  end
 end
+  
+  

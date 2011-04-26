@@ -24,7 +24,8 @@ class ProfilesController < ApplicationController
   end
   
   def forgot
-    
+    @user = User.new
+    render :layout => 'signin'
   end
   
   def send_reset
