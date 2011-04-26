@@ -2,6 +2,8 @@ require 'digest'
 
 class User < ActiveRecord::Base 
   attr_accessor :password
+  attr_accessor :validate_password
+  
   attr_accessible :email, :first_name, :last_name, :home_phone, :mobile_phone, :office_phone, :office_phone_ext, :password, :password_confirmation
   
   has_many :accountships
@@ -10,17 +12,12 @@ class User < ActiveRecord::Base
   validates :first_name, :length => { :maximum => 50 }
   validates :last_name, :length => { :maximum => 50 }
   
-  attr_accessor :validate_password
   validates :password,
     :presence => true,
     :confirmation => true,
     :length => { :within => 4..50 },
     :if => :should_validate_password?
     
-  def should_validate_password?
-    validate_password || new_record?
-  end
-
   email_regex = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   validates :email, :presence => true, :format => { :with => email_regex }
   
@@ -55,6 +52,10 @@ class User < ActiveRecord::Base
   
   private
   
+    def should_validate_password?
+      validate_password || new_record?
+    end
+
     def encrypt_password
       self.salt = make_salt if self.new_record?
       self.encrypted_password = encrypt(self.password)

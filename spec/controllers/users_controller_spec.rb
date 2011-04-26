@@ -304,6 +304,11 @@ describe UsersController do
         response.should be_successful
       end
       
+      it "should have a link to the administrator list" do
+        get :index
+        response.should have_selector('a', :content => 'administrator list')
+      end
+      
       it "should display the email or name of users belonging to the account" do
         get :index
         response.should have_selector("h4", :content => @user_with_name.name)
@@ -385,21 +390,5 @@ describe UsersController do
       response.should redirect_to(signin_path)
       flash[:error] =~ /cannot remove yourself/i
     end
-  end
-  
-  describe "GET 'edit_profile'" do
-    
-    it "should be success"
-    it "should have a link to change the avatar"
-    it "should redirect to user#show if the target user is not the current user"
-  end
-  
-  describe "PUT 'update_profile'" do
-    it "should not update the password if the target user is not the current user"
-    it "should redirect to user#show if the target user is not the current user"
-    it "should change password given valid attributes"
-    it "should not change the password given invalid attributes"
-    it "should redisplay with form errors given invalid attribures"
-    it "should redirect with flash message on success"
   end
 end

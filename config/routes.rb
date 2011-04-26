@@ -2,12 +2,9 @@ Worshipschedule::Application.routes.draw do
 
   resources :accounts
   
-  resources :users do
-    member do
-      get 'edit_profile'
-      put 'update_profile'
-    end
-  end
+  resources :users
+  
+  resource :profile, :only => [:edit, :update]
   
   resources :sessions, :only => [:new, :create, :destroy]
   get 'sessions/accounts'

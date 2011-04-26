@@ -1,26 +1,6 @@
 class UsersController < ApplicationController
   before_filter :require_account_admin, :except => :show
   
-  def edit_profile
-    @user = User.find params[:id]
-    @sidebar_partial = 'users/sidebar/placeholder'
-    @title = 'Your profile'
-    render 'profile'
-  end
-  
-  def update_profile
-    @user = User.find params[:id]
-    @user.validate_password = true
-    
-    if @user.update_attributes(params[:user])
-      
-    else
-      @sidebar_partial = 'users/sidebar/placeholder'
-      @title = 'Your profile'
-      render 'profile'
-    end 
-  end
-  
   def create
     @user = User.new params[:user]
     @user.password = generate_password

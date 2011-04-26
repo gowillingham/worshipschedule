@@ -2,7 +2,7 @@
   <h1>Update your <%= APP_NAME %> profile details</h1>
 </div>
 
-<%= form_for @user, :url => { :action => 'update_profile'}  do |f| %>
+<%= form_for @user, :url => { :action => :update }  do |f| %>
   <%= render 'shared/errors', :object => f.object %>
 
   <fieldset class="edit profile">
@@ -36,7 +36,7 @@
 <% end %>
 
 <fieldset class="edit_gravatar">
-  <%= gravatar_for current_user, :size => 70, :default => :identicon %>
+  <%= gravatar_for @user, :size => 70, :default => :identicon %>
   <h3>Your gravatar image</h3>
   <p>
     Your profile image is provided by the free Gravatar service, which generates a unique avatar image for you from your email address.
