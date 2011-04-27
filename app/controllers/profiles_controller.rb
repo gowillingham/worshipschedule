@@ -40,8 +40,4 @@ class ProfilesController < ApplicationController
       redirect_to signin_url
     end
   end
-  
-  def send_reset
-    
-  end
 end
