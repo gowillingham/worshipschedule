@@ -11,10 +11,11 @@
   <% end %>
 </div>
 
-<% unless user.name.nil? %>
-  <h4><%= user.name %></h4>
-<% end %>
-<div><%= link_to user.email, "#" %></div>
-<div class="edit"><%= link_to 'Edit', edit_user_path(user), :class => 'cancel' %>
-
+<ul>
+  <% unless user.name.blank? %>
+    <li><h4><%= user.name %></h4></li>
+  <% end %>
+  <li><%= link_to user.email, "#" %></li>
+  <li><%= link_to 'Edit', edit_user_path(user), :class => 'cancel' %></li>
+</ul>
 

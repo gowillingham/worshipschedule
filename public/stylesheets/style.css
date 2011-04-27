@@ -10,9 +10,32 @@ body                    {font-family:"Lucida Grande",verdana,arial,helvetica,san
 
 #main                                   {padding:1.0em;}
 #main .content                          {background-color:#fff;overflow:hidden;}
-/*#main .content .header                  {background-color:#edf3fe;overflow:hidden;padding:1em 1.5em;font-weight:bold;}*/
-/*#main .content .header h1               {font-size:1.1em;font-weight:bold;margin:0;padding:0;}*/
-/*#main .content .header .button          {float:right;}*/
+#main .content .header                  {background-color:#edf3fe;overflow:hidden;padding:0 1.5em;font-weight:bold;}
+#main .content .header h1               {font-size:1.3em;font-weight:bold;margin:1.5em 0;padding:0;}
+
+#main .content .header .big_button      {float:right;}
+
+/* overrides blueprint table stripe */
+#main tbody tr:nth-child(even) td,
+#main tbody tr.even td              {background:none;}
+
+#main table                         {font-size:0.9em;margin:2.0em auto;width:96%;}
+#main th                            {padding:.25em .75em;font-size:1.4em;background:#e9e9e9;font-weight:normal;}                                              
+#main th .link                      {font-size:0.75em;float:right;margin-top:.2em;}        
+
+#main table.persons td                          {width:25%;border:none;padding:2em 0.4em 0;}
+#main table.persons ul                          {list-style-type:none;}
+#main table.persons ul h4                       {margin:0;padding:0;font-weight:bold;}
+#main table.persons td .thumbnail               {float:left;margin-right:.75em;}
+#main table.persons td .thumbnail .gravatar     {margin:0;border:solid 1px #ddd;}
+#main table.persons td .thumbnail div           {color:white;font-weight:bold;padding:0.1em;font-size:0.9em;text-align:center}
+#main table.persons td .thumbnail div.admin     {background-color:#008000;}
+
+div.big_button                          {margin:1.5em 0 0 0;padding:.1em;}
+div.big_button                          {border:solid 2px #bbb;background:#eee url("../images/icons/add.png") no-repeat 0.25em 50%;-moz-border-radius:1.3em;-webkit-border-radius:1.3em;border-radius:1.3em;}
+div.big_button a                        {padding:.2em 1em .2em 2em;color:#000;font-weight:bold;font-size:1.1em;line-height:1.7em;text-decoration:none;}
+div.big_button a:hover                  {background-color:transparent;color:#000;}
+
 /*#main .content .big h1                  {font-size:1.2em;font-weight:bold;margin:0.6em 0;padding:0;}*/
 /*#main .content .edit_profile            {margin:0;padding:0;}*/
 /*#main .content .edit_profile a          {font-size:1.1em;font-weight:bold;}*/
@@ -46,13 +69,6 @@ body                    {font-family:"Lucida Grande",verdana,arial,helvetica,san
 /*#main td.what span                  {display:block;background-color:gray;padding:.1em .3em .1em .2em;text-align:right;}*/
 /*#main td.what span.church           {background-color:green;color:white;}*/
 /**/
-/*#main table.persons td                          {width:25%;border:none;padding:2em 0.4em 0;}*/
-/*#main table.persons td h4                       {margin:0;font-weight:bold;line-height:1.0em;}*/
-/*#main table.persons td .edit                    {margin-top:0.5em;}*/
-/*#main table.persons td .thumbnail               {float:left;margin-right:.75em;}*/
-/*#main table.persons td .thumbnail .gravatar     {margin:0;border:solid 1px #ddd;}*/
-/*#main table.persons td .thumbnail div           {color:white;font-weight:bold;padding:0.1em;font-size:0.9em;text-align:center}*/
-/*#main table.persons td .thumbnail div.admin     {background-color:#008000;}*/
 /**/
 /*#main .fieldset_desc            {font-size:1.0em;color:#777;margin:.5em 4em .5em 1.5em;line-height:1.3em;}*/
 /*#main fieldset                  {margin:0.5em 4em 2.0em 1.5em;padding:1.5em 0;border:none;background-color:#e9e9e9;}*/
@@ -83,9 +99,6 @@ body                    {font-family:"Lucida Grande",verdana,arial,helvetica,san
 /*#main fieldset.edit_gravatar h3         {padding-left:85px;font-weight:bold;font-size:0.9em;color:#444;}*/
 /*#main fieldset.edit_gravatar .gravatar  {float:left;}*/
 
-div.button                          {padding:0.3em 1.0em;border:solid 2px #bbb;background:#eee url("../images/icons/add.png") no-repeat 0.25em 50%;-moz-border-radius:1.3em;-webkit-border-radius:1.3em;border-radius:1.3em;}
-div.button a                        {color:#000;font-weight:bold;font-size:1.1em;text-decoration:none;padding:0 0 0 1.5em;}
-div.button a:hover                  {background-color:transparent;color:#000;}
 
 #sidebar                            {margin:1em 1em 1em 0}
 #sidebar h1                         {background-color:#edf3fe;color:#444;padding:0.75em;font-weight:bold;font-size:1em;}

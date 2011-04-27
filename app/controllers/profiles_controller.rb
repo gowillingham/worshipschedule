@@ -35,6 +35,7 @@ class ProfilesController < ApplicationController
       flash[:error] = "Sorry, we couldn't find anyone with that email address. "
       redirect_to forgot_profile_url
     else
+      # do stuff ..
       flash[:success] = "Instructions for signing in have been emailed to you. "
       redirect_to signin_url
     end
