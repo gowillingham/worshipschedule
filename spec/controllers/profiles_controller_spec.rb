@@ -118,12 +118,13 @@ describe ProfilesController do
       it "should not require a signed in user" do
         controller.sign_out
         put :send_reset, :user => @attr
-        response.should render_template('forgot')
+        response.should redirect_to(forgot_profile_url)
       end
       
       it "should redisplay the forgot screen with a flash message" do
         put :send_reset, :user => @attr
-        response.should render_template('forgot')
+        response.should redirect_to(forgot_profile_url)
+        flash[:error].should =~ /couldn't find anyone/i
       end
     end
     
@@ -143,13 +144,15 @@ describe ProfilesController do
       it "should display the signin page with flash confirmation" do
         put :send_reset, :user => @attr
         response.should redirect_to(signin_path)
+        flash[:success] =~ /have been emailed/i
       end
       
       it "should update user's password reset fields" do
+        put :send_reset, :user => @attr
+        
         user = User.find_by_email(@user.email)
-        user.reset_password_token_created_at.should_not be_nil
-        user.reset_password_token.should_not be_nil
-        user.reset_password_complete.should_not be_true
+        user.forgot_hash.should_not be_nil
+        user.forgot_hash_created_at.should_not be_nil
       end
       
       it "should email the password reset token to the user"

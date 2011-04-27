@@ -60,6 +60,7 @@ module SessionsHelper
   def refresh_forgot_hash(user)
     user.forgot_hash_created_at = Time.now
     user.forgot_hash = Digest::SHA1.hexdigest "#{user.encrypted_password}--#{user.id}"
+    user.save
   end
   
   def signed_in? 
