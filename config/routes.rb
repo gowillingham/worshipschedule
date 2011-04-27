@@ -6,8 +6,8 @@ Worshipschedule::Application.routes.draw do
   
   resource :profile, :only => [:edit, :update] do
     get :forgot
-    put :send_reset
-    put :reset
+    post :send_reset
+    post :reset
   end
   
   resources :sessions, :only => [:new, :create, :destroy]

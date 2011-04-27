@@ -24,15 +24,23 @@ class ProfilesController < ApplicationController
   end
   
   def forgot
+    @title = "sign in"
     @user = User.new
     render :layout => 'signin'
   end
   
-  def send_reset
-    
+  def reset
+    @user = User.find_by_email(params[:user][:email])
+    if @user.nil?
+      flash[:error] = "Sorry, we couldn't find anyone with that email address. "
+      redirect_to forgot_profile_url
+    else
+      flash[:success] = "Instructions for signing in have been emailed to you. "
+      redirect_to signin_url
+    end
   end
   
-  def reset
+  def send_reset
     
   end
 end

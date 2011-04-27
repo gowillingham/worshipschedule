@@ -1,22 +1,23 @@
-<h3><%= "#{APP_NAME} sign in" %></h3>
-<%= render 'shared/show_flash' %>
 
-<%= form_for(:session, :url => sessions_path) do |f| %>
-<div class='signin'>
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email %>
-  </div>
-  <div class="field">
-    <%= f.label :password %><br />
-    <%= f.password_field :password %>
-  </div>
-  <div>
-    <%= f.submit 'Sign in' %>
-  </div>
-  <div class="action">
-    <strong>Help: </strong>
-    <%= link_to "I forgot my email or password", forgot_profile_path %>
-  </div>
+<div class="content round shadow signin">
+  <h3><%= "#{APP_NAME} sign in" %></h3>
+  <%= render 'shared/show_flash' %>
+  
+  <%= form_for(:session, :url => sessions_path) do |f| %>
+      <div class="field">
+        <%= f.label :email %><br />
+        <%= f.email_field :email %>
+      </div>
+      <div class="field">
+        <%= f.label :password %><br />
+        <%= f.password_field :password %>
+      </div>
+      <div class="action">
+        <%= f.submit 'Sign in' %>
+      </div>
+      <div class="footer">
+        <strong>Help: </strong>
+        <%= link_to "I forgot my email or password", forgot_profile_path %>
+      </div>
+  <% end %>
 </div>
-<% end %>

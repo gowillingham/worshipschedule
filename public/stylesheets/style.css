@@ -10,78 +10,78 @@ body                    {font-family:"Lucida Grande",verdana,arial,helvetica,san
 
 #main                                   {padding:1.0em;}
 #main .content                          {background-color:#fff;overflow:hidden;}
-#main .content .header                  {background-color:#edf3fe;overflow:hidden;padding:1em 1.5em;font-weight:bold;}
-#main .content .header h1               {font-size:1.1em;font-weight:bold;margin:0;padding:0;}
-#main .content .header .button          {float:right;}
-#main .content .big h1                  {font-size:1.2em;font-weight:bold;margin:0.6em 0;padding:0;}
-#main .content .edit_profile            {margin:0;padding:0;}
-#main .content .edit_profile a          {font-size:1.1em;font-weight:bold;}
-#main .content .edit_profile p          {font-size:1.2em;margin:1.0em 0;}
-#main .content .edit_profile td         {width:50%;}
-#main .content .edit_profile .card      {margin-left:1em;background-color:#e7e6e7;overflow:hidden;-moz-border-radius:10px;-webkit-border-radius:10px;border-radius:10px;}
-#main .content .edit_profile .top       {background-color:#444;color:#eee;padding:0.75em 1.5em 0.75em 1.25em;font-size:1.0em;font-weight:bold;border-top-left-radius:10px;border-top-right-radius:10px;-webkit-border-top-left-radius:10px;-webkit-border-top-right-radius:10px;-moz-border-radius-topleft:10px;-moz-border-radius-topright:10px;}
-
-#main .content .edit_profile .bottom    {padding:0.4em 0.5em 0.3em 1.2em;}
-#main .content .edit_profile .bottom ul {padding:0 0 0 5.5em;margin:0;list-style-type:none;}
-#main .content .edit_profile .bottom ul .name     {font-weight:bold;font-size:1.1em;}
-#main .content .edit_profile .bottom ul .email    {font-size:1.1em;}
-#main .content .edit_profile .bottom ul .pass     {margin-top:1.2em}
-#main .content .edit_profile .bottom .padlock     {margin:0.3em 0 0.5em;float:right;}
-#main .content .edit_profile .gravatar  {float:left;margin-top:0.5em;}
-#main .content .edit_profile .gravatar  {float:left;}
-#main .content h2.profile               {margin:1em 4em 0em 1.5em;}
-
-#main .content ul                       {margin:1em;}
-#main .content h2                       {margin:0 1.5em;padding:0;font-size:1.1em;font-weight:bold;}
-
-#main table                         {font-size:0.9em;margin:2.0em auto;width:95%;}
-#main tbody tr:nth-child(even) td,
-#main tbody tr.even td              {background:none;}        /* overrides blueprint table stripe */
-#main th                            {background:#e9e9e9;font-weight:normal;}        
-#main th.big                        {font-size:1.3em;padding:.3em;}        
-#main th .link                      {font-size:0.8em;float:right;margin-top:.2em;}        
-#main td, #main th                  {padding:0.4em;}        
-#main td                            {border-bottom:solid 1px #efefef;}        
-#main td.what                       {width:6em;}        
-#main td.what span                  {display:block;background-color:gray;padding:.1em .3em .1em .2em;text-align:right;}
-#main td.what span.church           {background-color:green;color:white;}
-
-#main table.persons td                          {width:25%;border:none;padding:2em 0.4em 0;}
-#main table.persons td h4                       {margin:0;font-weight:bold;line-height:1.0em;}
-#main table.persons td .edit                    {margin-top:0.5em;}
-#main table.persons td .thumbnail               {float:left;margin-right:.75em;}
-#main table.persons td .thumbnail .gravatar     {margin:0;border:solid 1px #ddd;}
-#main table.persons td .thumbnail div           {color:white;font-weight:bold;padding:0.1em;font-size:0.9em;text-align:center}
-#main table.persons td .thumbnail div.admin     {background-color:#008000;}
-
-#main .fieldset_desc            {font-size:1.0em;color:#777;margin:.5em 4em .5em 1.5em;line-height:1.3em;}
-#main fieldset                  {margin:0.5em 4em 2.0em 1.5em;padding:1.5em 0;border:none;background-color:#e9e9e9;}
-#main fieldset table            {width:auto;background-color:transparent;margin:0;}
-#main fieldset table td,
-#main fieldset table th         {width:1px;background-color:transparent;padding:0.2em 0.5em;white-space:nowrap;border:none;}
-#main fieldset table th         {}
-#main fieldset table td label   {font-weight:normal;}
-#main fieldset.note             {padding:0.5em;}
-#main fieldset.note textarea    {width:40em;height:10em;}
-#main fieldset .extension       {width:3.5em;}
-#main div.action                {margin:0.5em 4em 4em 1.5em;padding-top:2em;border-top:dashed 1px #bbb;} 
-#main div.action h2             {margin:0;} 
-#main div p                     {margin-top:1em;line-height:1.3em;}
-
-#main div.recover_email         {padding:0.5em 1em;margin:1.5em 12em 1.5em 1.5em;border:solid 1px #ccc;}
-#main div.recover_email h2      {margin:0;}
-#main div.recover_email p       {margin:0;}
-#main div.avatar                {text-align:center;margin:0 1em 0 1.5em;float:left;padding:1em 1em 0.5em;background-color:#eee;}
-#main div.avatar div            {font-size:.8em;margin:.5em 0 0;}
-#main fieldset.edit             {background-color:transparent;}
-#main fieldset .read_only td    {padding-bottom:0.3em;}
-#main fieldset.profile td       {font-size:1.2em;line-height:1.2em;padding:1.0em 1em 0em 0;}
-#main fieldset.profile tr.hint td       {padding:0 1em 0 0;}
-#main fieldset.profile tr.hint div      {padding:.2em .2em .2em 0;width:25em;white-space:normal;font-size:0.85em;line-height:1.1em;color:#9999bc;}
-#main fieldset.edit_gravatar            {margin-top:-2em;padding:1.5em;line-height:1.0em;}
-#main fieldset.edit_gravatar p          {padding-left:85px;font-size:0.9em;color:#555;margin:.5em 0;}
-#main fieldset.edit_gravatar h3         {padding-left:85px;font-weight:bold;font-size:0.9em;color:#444;}
-#main fieldset.edit_gravatar .gravatar  {float:left;}
+/*#main .content .header                  {background-color:#edf3fe;overflow:hidden;padding:1em 1.5em;font-weight:bold;}*/
+/*#main .content .header h1               {font-size:1.1em;font-weight:bold;margin:0;padding:0;}*/
+/*#main .content .header .button          {float:right;}*/
+/*#main .content .big h1                  {font-size:1.2em;font-weight:bold;margin:0.6em 0;padding:0;}*/
+/*#main .content .edit_profile            {margin:0;padding:0;}*/
+/*#main .content .edit_profile a          {font-size:1.1em;font-weight:bold;}*/
+/*#main .content .edit_profile p          {font-size:1.2em;margin:1.0em 0;}*/
+/*#main .content .edit_profile td         {width:50%;}*/
+/*#main .content .edit_profile .card      {margin-left:1em;background-color:#e7e6e7;overflow:hidden;-moz-border-radius:10px;-webkit-border-radius:10px;border-radius:10px;}*/
+/*#main .content .edit_profile .top       {background-color:#444;color:#eee;padding:0.75em 1.5em 0.75em 1.25em;font-size:1.0em;font-weight:bold;border-top-left-radius:10px;border-top-right-radius:10px;-webkit-border-top-left-radius:10px;-webkit-border-top-right-radius:10px;-moz-border-radius-topleft:10px;-moz-border-radius-topright:10px;}*/
+/**/
+/*#main .content .edit_profile .bottom    {padding:0.4em 0.5em 0.3em 1.2em;}*/
+/*#main .content .edit_profile .bottom ul {padding:0 0 0 5.5em;margin:0;list-style-type:none;}*/
+/*#main .content .edit_profile .bottom ul .name     {font-weight:bold;font-size:1.1em;}*/
+/*#main .content .edit_profile .bottom ul .email    {font-size:1.1em;}*/
+/*#main .content .edit_profile .bottom ul .pass     {margin-top:1.2em}*/
+/*#main .content .edit_profile .bottom .padlock     {margin:0.3em 0 0.5em;float:right;}*/
+/*#main .content .edit_profile .gravatar  {float:left;margin-top:0.5em;}*/
+/*#main .content .edit_profile .gravatar  {float:left;}*/
+/*#main .content h2.profile               {margin:1em 4em 0em 1.5em;}*/
+/**/
+/*#main .content ul                       {margin:1em;}*/
+/*#main .content h2                       {margin:0 1.5em;padding:0;font-size:1.1em;font-weight:bold;}*/
+/**/
+/*#main table                         {font-size:0.9em;margin:2.0em auto;width:95%;}*/
+/*#main tbody tr:nth-child(even) td,*/
+/*#main tbody tr.even td              {background:none;}        /* overrides blueprint table stripe */*/
+/*#main th                            {background:#e9e9e9;font-weight:normal;}        */
+/*#main th.big                        {font-size:1.3em;padding:.3em;}        */
+/*#main th .link                      {font-size:0.8em;float:right;margin-top:.2em;}        */
+/*#main td, #main th                  {padding:0.4em;}        */
+/*#main td                            {border-bottom:solid 1px #efefef;}        */
+/*#main td.what                       {width:6em;}        */
+/*#main td.what span                  {display:block;background-color:gray;padding:.1em .3em .1em .2em;text-align:right;}*/
+/*#main td.what span.church           {background-color:green;color:white;}*/
+/**/
+/*#main table.persons td                          {width:25%;border:none;padding:2em 0.4em 0;}*/
+/*#main table.persons td h4                       {margin:0;font-weight:bold;line-height:1.0em;}*/
+/*#main table.persons td .edit                    {margin-top:0.5em;}*/
+/*#main table.persons td .thumbnail               {float:left;margin-right:.75em;}*/
+/*#main table.persons td .thumbnail .gravatar     {margin:0;border:solid 1px #ddd;}*/
+/*#main table.persons td .thumbnail div           {color:white;font-weight:bold;padding:0.1em;font-size:0.9em;text-align:center}*/
+/*#main table.persons td .thumbnail div.admin     {background-color:#008000;}*/
+/**/
+/*#main .fieldset_desc            {font-size:1.0em;color:#777;margin:.5em 4em .5em 1.5em;line-height:1.3em;}*/
+/*#main fieldset                  {margin:0.5em 4em 2.0em 1.5em;padding:1.5em 0;border:none;background-color:#e9e9e9;}*/
+/*#main fieldset table            {width:auto;background-color:transparent;margin:0;}*/
+/*#main fieldset table td,*/
+/*#main fieldset table th         {width:1px;background-color:transparent;padding:0.2em 0.5em;white-space:nowrap;border:none;}*/
+/*#main fieldset table th         {}*/
+/*#main fieldset table td label   {font-weight:normal;}*/
+/*#main fieldset.note             {padding:0.5em;}*/
+/*#main fieldset.note textarea    {width:40em;height:10em;}*/
+/*#main fieldset .extension       {width:3.5em;}*/
+/*#main div.action                {margin:0.5em 4em 4em 1.5em;padding-top:2em;border-top:dashed 1px #bbb;} */
+/*#main div.action h2             {margin:0;} */
+/*#main div p                     {margin-top:1em;line-height:1.3em;}*/
+/**/
+/*#main div.recover_email         {padding:0.5em 1em;margin:1.5em 12em 1.5em 1.5em;border:solid 1px #ccc;}*/
+/*#main div.recover_email h2      {margin:0;}*/
+/*#main div.recover_email p       {margin:0;}*/
+/*#main div.avatar                {text-align:center;margin:0 1em 0 1.5em;float:left;padding:1em 1em 0.5em;background-color:#eee;}*/
+/*#main div.avatar div            {font-size:.8em;margin:.5em 0 0;}*/
+/*#main fieldset.edit             {background-color:transparent;}*/
+/*#main fieldset .read_only td    {padding-bottom:0.3em;}*/
+/*#main fieldset.profile td       {font-size:1.2em;line-height:1.2em;padding:1.0em 1em 0em 0;}*/
+/*#main fieldset.profile tr.hint td       {padding:0 1em 0 0;}*/
+/*#main fieldset.profile tr.hint div      {padding:.2em .2em .2em 0;width:25em;white-space:normal;font-size:0.85em;line-height:1.1em;color:#9999bc;}*/
+/*#main fieldset.edit_gravatar            {margin-top:-2em;padding:1.5em;line-height:1.0em;}*/
+/*#main fieldset.edit_gravatar p          {padding-left:85px;font-size:0.9em;color:#555;margin:.5em 0;}*/
+/*#main fieldset.edit_gravatar h3         {padding-left:85px;font-weight:bold;font-size:0.9em;color:#444;}*/
+/*#main fieldset.edit_gravatar .gravatar  {float:left;}*/
 
 div.button                          {padding:0.3em 1.0em;border:solid 2px #bbb;background:#eee url("../images/icons/add.png") no-repeat 0.25em 50%;-moz-border-radius:1.3em;-webkit-border-radius:1.3em;border-radius:1.3em;}
 div.button a                        {color:#000;font-weight:bold;font-size:1.1em;text-decoration:none;padding:0 0 0 1.5em;}
@@ -103,10 +103,25 @@ input.title,
 textarea,
 select                    {margin:0;padding:0.2em;}
 
-#main .field                    {margin-bottom:1em;}
-#main .signin .action           {margin:2em 0 0 0;}
-#main a.cancel                  {color:red;font-size:0.9em;}
-#main a.cancel:hover            {color:#fff;background-color:red;}
+/* styling signin style forms */
+.signin div.field         {margin-bottom:1em;}
+.signin div.action        {margin:1.5em 0;}
+.signin div.footer        {margin:1.5em 0 0 0;padding:1em 0 0 0;border-top:dashed 1px #bbb;}
+.signin h2                {font-weight:bold;font-size:1.1em;}
+.signin td                {padding:0;}
+.signin td p              {margin-bottom:1em;}
+.signin td.left           {width:60%;}
+.signin td.right          {width:40%;}
+.signin td.right div      {border-left:solid 3px orange;padding-left:1em;}
+.signin td.right div p    {margin:0;line-height:1.1em;}
+.signin td                {margin:0;padding:0;}
+.signin td h2             {margin:0 1em 0 0;padding:0;}
+.signin td p              {margin:0 1em 1.5em 0;padding:0;}
+
+#main #forgot_password    {width:50em}
+
+a.cancel                  {color:red;font-size:0.9em;}
+a.cancel:hover            {color:#fff;background-color:red;}
 
 .field_with_errors        {display:inline;}
 .field_with_errors label  {color:red;font-weight:bold !important;}

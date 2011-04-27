@@ -1,24 +1,29 @@
-<h3><%= "Add your church to #{APP_NAME}!" %></h3>
-<p>
-  Create a <%= APP_NAME %> account to manage the volunteer teams at your church.
-  It costs nothing to sign up and try it out!
-</p> 
-<%= render 'shared/show_flash' %>
-<%= form_for :account, @account, :url => { :action => "create" } do |fa| %>
-  <div class="field">
-    <%= fa.label :name, "Church name" %><br />
-    <%= fa.text_field :name %>
-  </div>
-  <%= fields_for :user, @user do |fu| %>
+<div class="content round shadow signin">
+  <h3><%= "Add your church to #{APP_NAME}!" %></h3>
+  <p>
+    Create a <%= APP_NAME %> account to manage the volunteer teams at your church.
+    It costs nothing to sign up and try it out!
+  </p> 
+  <%= render 'shared/show_flash' %>
+  <%= form_for :account, @account, :url => { :action => "create" } do |fa| %>
     <div class="field">
-      <%= fu.label :email, "Your email" %><br />
-      <%= fu.text_field :email %>
+      <%= fa.label :name, "Church name" %><br />
+      <%= fa.text_field :name %>
+    </div>
+    <%= fields_for :user, @user do |fu| %>
+      <div class="field">
+        <%= fu.label :email, "Your email" %><br />
+        <%= fu.text_field :email %>
+      </div>
+    <% end %>
+    <div class="action">
+      <%= fa.submit "Save!" %>
+      or <%= link_to 'Cancel', root_path, :class => 'cancel' %>
+    </div>
+    <div class="footer">
+      No thanks, I'm <%= link_to "looking for the sign in screen", signin_path %>
     </div>
   <% end %>
-  <div class="action">
-    <%= fa.submit "Save!" %>
-    or <%= link_to 'Cancel', root_path, :class => 'cancel' %>
-  </div>
-<% end %>
+</div>
 
 
