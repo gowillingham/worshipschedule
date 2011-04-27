@@ -1,114 +1,117 @@
-<div class="header big">
-  <% if @user == current_user %>
-    <table class="edit_profile">
-      <tbody>
-        <tr>
-          <td>
-            <p><%= link_to 'Edit your personal information', edit_profile_path %></p>
-            <p>Change the password or photo for your <%= APP_NAME %> account. </p>
-          </td>
-          <td>
-            <div class="card shadow">
-              <div class="top">Your <%= APP_NAME %> profile</div>
-              <div class="bottom">
-                <%= gravatar_for current_user, :size => 50, :default => :identicon %>
-                <ul>
-                  <li class="name"><%= current_user.name unless current_user.name.blank? %></li>
-                  <li class="email"><%= truncate current_user.email, :length => 22 %></li>
-                  <li class="pass">Password: &bull;&bull;&bull;&bull;&bull;&bull;</li>
-                </ul>
-                <div class="padlock"><%= image_tag "/images/icons/lock.png", :alt => "Secure" %></div>
-              </div>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  <% else %>
-    <h1>Edit <%= @user.name_or_email %></h1>
-  <% end %>
-</div>
-
-<% if @user == current_user %>
-  <h2 class="profile">Your contact information for this <%= APP_NAME %> account</h2>
-<% else %>
-  <div class="recover_email">
-    <h2>Need to find <%= @user.name_or_email.possessive %> password?</h2>
-    <p>
-      Each person's password is private to them, but you can email <%= @user.name_or_email %>
-      <%= link_to 'instructions to choose a new password', "/" %>.
-    </p>
-  </div
-<% end %>
-
-<%= form_for @user, :url => { :action => 'update' }  do |f| %>
-  <%= render 'shared/errors', :object => f.object %>
-  
-  <% unless @user == current_user %>
-    <div class="avatar">
-      <%= gravatar_for @user, :size => 60, :default => :identicon %>
-      <div>gravatar.com</div>
-    </div>
-  <% end %>
-  <fieldset class="edit">
-    <table>
-      <tbody>
-        <% if @user == current_user %>
+<div class="content shadow">
+  <div class="header">
+    <% if @user == current_user %>
+      <table class="edit_profile">
+        <tbody>
           <tr>
-            <td><%= f.label :first_name, 'First name' %></td>
-            <td><%= f.text_field :first_name %>
-          </tr>
-          <tr>
-            <td><%= f.label :last_name, 'Last name' %></td>
-            <td><%= f.text_field :last_name %>
-          </tr>
-          <tr>
-            <td><%= f.label :email, 'Email' %></td>
-            <td><%= f.text_field :email %>
-          </tr>
-        <% else %>
-          <tr class="read_only">
-            <td>Name</td>
             <td>
-              <% if @user.name.blank? %>
-                (not provided)
-              <% else %>
-                <%= @user.name %>
-              <% end %>
+              <p><%= link_to 'Edit your personal information', edit_profile_path %></p>
+              <p>Change the password or photo for your <%= APP_NAME %> account. </p>
+            </td>
+            <td>
+              <div class="card shadow">
+                <div class="top">Your <%= APP_NAME %> profile</div>
+                <div class="bottom">
+                  <%= gravatar_for current_user, :size => 50, :default => :identicon %>
+                  <ul>
+                    <li class="name"><%= current_user.name unless current_user.name.blank? %></li>
+                    <li class="email"><%= truncate current_user.email, :length => 22 %></li>
+                    <li class="pass">Password: &bull;&bull;&bull;&bull;&bull;&bull;</li>
+                  </ul>
+                  <div class="padlock"><%= image_tag "/images/icons/lock.png", :alt => "Secure" %></div>
+                </div>
+              </div>
             </td>
           </tr>
-          <tr class="read_only">
-            <td>Email</td>
-            <td><%= @user.email %></td>
-          </tr>
-        <% end %>
-        <tr>
-          <td><%= f.label :office_phone, 'Office #' %></td>
-          <td>
-            <%= f.text_field :office_phone %>
-            <%= f.label :office_phone_ext, 'ext'%>
-            <%= f.text_field :office_phone_ext, :class => 'extension'%>
-          </td>
-        </tr>
-        <tr>
-          <td><%= f.label :home_phone, 'Home #' %></td>
-          <td><%= f.text_field :home_phone %></td>
-        </tr>
-        <tr>
-          <td><%= f.label :mobile_phone, 'Mobile #' %></td>
-          <td><%= f.text_field :mobile_phone %></td>
-        </tr>
-      </tbody>
-    </table>
-  </fieldset>
-
-  <div class="action">
-    <% if @user == current_user %>
-      <%= f.submit 'Save changes' %>
+        </tbody>
+      </table>
     <% else %>
-      <%= f.submit 'Save this person' %>
+      <h2>Edit <%= @user.name_or_email %></h2>
     <% end %>
-    or <%= link_to 'Cancel', users_path, :class => "cancel" %>
   </div>
-<% end %>
-
+  
+  <div class="form">
+    <% if @user == current_user %>
+      <h2 class="profile">Your contact information for this <%= APP_NAME %> account</h2>
+    <% else %>
+      <div class="recover_email">
+        <h2>Need to find <%= @user.name_or_email.possessive %> password?</h2>
+        <p>
+          Each person's password is private to them, but you can email <%= @user.name_or_email %>
+          <%= link_to 'instructions to choose a new password', "/" %>.
+        </p>
+      </div
+    <% end %>
+    
+    <%= form_for @user, :url => { :action => 'update' }  do |f| %>
+      <%= render 'shared/errors', :object => f.object %>
+      
+      <% unless @user == current_user %>
+        <div class="avatar">
+          <%= gravatar_for @user, :size => 60, :default => :identicon %>
+          <div>gravatar.com</div>
+        </div>
+      <% end %>
+      <fieldset class="edit">
+        <table>
+          <tbody>
+            <% if @user == current_user %>
+              <tr>
+                <td><%= f.label :first_name, 'First name' %></td>
+                <td><%= f.text_field :first_name %>
+              </tr>
+              <tr>
+                <td><%= f.label :last_name, 'Last name' %></td>
+                <td><%= f.text_field :last_name %>
+              </tr>
+              <tr>
+                <td><%= f.label :email, 'Email' %></td>
+                <td><%= f.text_field :email %>
+              </tr>
+            <% else %>
+              <tr class="read_only">
+                <td>Name</td>
+                <td>
+                  <% if @user.name.blank? %>
+                    (not provided)
+                  <% else %>
+                    <%= @user.name %>
+                  <% end %>
+                </td>
+              </tr>
+              <tr class="read_only">
+                <td>Email</td>
+                <td><%= @user.email %></td>
+              </tr>
+            <% end %>
+            <tr>
+              <td><%= f.label :office_phone, 'Office #' %></td>
+              <td>
+                <%= f.text_field :office_phone %>
+                <%= f.label :office_phone_ext, 'ext'%>
+                <%= f.text_field :office_phone_ext, :class => 'ext'%>
+              </td>
+            </tr>
+            <tr>
+              <td><%= f.label :home_phone, 'Home #' %></td>
+              <td><%= f.text_field :home_phone %></td>
+            </tr>
+            <tr>
+              <td><%= f.label :mobile_phone, 'Mobile #' %></td>
+              <td><%= f.text_field :mobile_phone %></td>
+            </tr>
+          </tbody>
+        </table>
+      </fieldset>
+    
+      <div class="footer">
+        <% if @user == current_user %>
+          <%= f.submit 'Save changes' %>
+        <% else %>
+          <%= f.submit 'Save this person' %>
+        <% end %>
+        or <%= link_to 'Cancel', users_path, :class => "cancel" %>
+      </div>
+    <% end %>
+  </div>
+</div>

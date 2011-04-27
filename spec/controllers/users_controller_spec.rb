@@ -155,6 +155,8 @@ describe UsersController do
       flash[:error] =~ /don't have permission/i
     end
     
+    it "should show listing of permissions in sidebar"
+    
     describe "when the user to be edited is not the current user" do
       
       it "should show a link to destroy the user" do
