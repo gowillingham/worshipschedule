@@ -22,10 +22,16 @@ body                    {font-family:"Lucida Grande",verdana,arial,helvetica,san
 #main .content .form div.recover_email        {padding:.75em;margin:1.5em 0;border:solid 1px #ccc;}
 #main .content .form div.recover_email p      {margin:0;line-height:1.2em;}
 #main .content .form div.recover_email h2     {margin:0 0 .25em;}
+#main .content .form div.avatar               {margin:0 1em 0 0;text-align:center;float:left;background-color:#eee;}
+#main .content .form div.avatar img           {margin:1.1em 1.1em 0;}
+#main .content .form div.avatar div           {font-size:.8em;margin:0 0 .5em;}
 
-#main .content .form fieldset textarea  {width:40em;height:10em;}
-#main .content .form fieldset           {border:none;background-color:#e9e9e9;padding:1em .25em;margin:.3em 0 1em 0;}
-#main .content .form fieldset .ext      {width:3.5em;}
+#main .content .form fieldset textarea        {width:40em;height:10em;}
+#main .content .form fieldset                 {border:none;background-color:#e9e9e9;padding:1em .25em;margin:.3em 0 1em 0;}
+#main .content .form fieldset .ext            {width:3.5em;}
+#main .content .form fieldset.edit            {background-color:transparent;}
+#main .content .form fieldset .read_only td   {padding-bottom:0.3em;}
+
 #main .content .form table              {width:auto;background-color:transparent;margin:0;}
 #main .content .form table td,
 #main .content .form table th           {white-space:nowrap;padding:.2em;font-weight:normal;font-size:1em;width:1px;}
@@ -35,11 +41,23 @@ body                    {font-family:"Lucida Grande",verdana,arial,helvetica,san
 #main .content .form .footer h2         {margin:1em 0 .5em;}
 #main .content .form p                  {margin:0 0 1em 0;}
 
-#main .content .form div.avatar         {margin:0 1em 0 0;text-align:center;float:left;background-color:#eee;}
-#main .content .form div.avatar img     {margin:1.1em 1.1em 0;}
-#main .content .form div.avatar div     {font-size:.8em;margin:0 0 .5em;}
-#main .content .form fieldset.edit      {background-color:transparent;}
-#main fieldset .read_only td            {padding-bottom:0.3em;}
+#main .content .edit_profile td         {width:50%;}
+#main .content .edit_profile .card      {margin-left:1em;background-color:#e7e6e7;overflow:hidden;-moz-border-radius:10px;-webkit-border-radius:10px;border-radius:10px;}
+#main .content .edit_profile .top       {background-color:#444;color:#eee;padding:0.75em 1.5em 0.75em 1.25em;font-size:1.0em;font-weight:bold;border-top-left-radius:10px;border-top-right-radius:10px;-webkit-border-top-left-radius:10px;-webkit-border-top-right-radius:10px;-moz-border-radius-topleft:10px;-moz-border-radius-topright:10px;}
+
+/* styles id card on edit current user screen */
+#main .content .edit_profile .bottom              {padding:0.4em 0.5em 0.3em 1.2em;}
+#main .content .edit_profile .bottom ul           {padding:0 0 0 5.5em;margin:0;list-style-type:none;}
+#main .content .edit_profile .bottom ul .name     {font-weight:bold;font-size:1.1em;}
+#main .content .edit_profile .bottom ul .email    {font-size:1.1em;}
+#main .content .edit_profile .bottom ul .pass     {margin-top:1.2em}
+#main .content .edit_profile .bottom .padlock     {margin:0.3em 0 0.5em;float:right;}
+#main .content .edit_profile .gravatar            {float:left;margin-top:0.5em;}
+#main .content .edit_profile .gravatar            {float:left;}
+
+#main .content .edit_profile            {margin:1em 1em 2em;padding:0;}
+#main .content .edit_profile a          {font-size:1.2em;font-weight:bold;}
+#main .content .edit_profile p          {font-size:1.1em;margin:.6em 0;line-height:1.4em;}
 
 /* overrides blueprint table stripe */
 #main tbody tr:nth-child(even) td,

@@ -9,18 +9,7 @@
               <p>Change the password or photo for your <%= APP_NAME %> account. </p>
             </td>
             <td>
-              <div class="card shadow">
-                <div class="top">Your <%= APP_NAME %> profile</div>
-                <div class="bottom">
-                  <%= gravatar_for current_user, :size => 50, :default => :identicon %>
-                  <ul>
-                    <li class="name"><%= current_user.name unless current_user.name.blank? %></li>
-                    <li class="email"><%= truncate current_user.email, :length => 22 %></li>
-                    <li class="pass">Password: &bull;&bull;&bull;&bull;&bull;&bull;</li>
-                  </ul>
-                  <div class="padlock"><%= image_tag "/images/icons/lock.png", :alt => "Secure" %></div>
-                </div>
-              </div>
+              <%= render 'users/card', :user => current_user %>
             </td>
           </tr>
         </tbody>
