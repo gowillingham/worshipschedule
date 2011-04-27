@@ -15,8 +15,7 @@ body                    {font-family:"Lucida Grande",verdana,arial,helvetica,san
 #main .content .header h2               {font-size:1.1em;font-weight:bold;margin:.75em 0;padding:0;}
 #main .content .header .big_button      {float:right;}
 
-#main .content .form                      {padding:.4em 4em 3em 1.5em;}
-
+#main .content .form                          {padding:.4em 4em 3em 1.5em;}
 #main .content .form div.fieldset_desc        {color:#777;line-height:1.3em;}
 #main .content .form div.fieldset_desc h2     {margin:2em 0 .5em;}
 #main .content .form div.recover_email        {padding:.75em;margin:1.5em 0;border:solid 1px #ccc;}
@@ -109,7 +108,8 @@ div.field         {margin-bottom:1em;}
 div.action        {margin:1.5em 0;}
 div.footer        {margin:1.5em 0 0 0;padding:1em 0 0 0;border-top:dashed 1px #bbb;}
 .signin h2                {font-weight:bold;font-size:1.1em;}
-.signin td                {padding:0;}
+.signin table             {margin:0 auto 2em !important;}
+.signin td                {font-size:1.2em;padding:0;}
 .signin td p              {margin-bottom:1em;}
 .signin td.left           {width:60%;}
 .signin td.right          {width:40%;}
@@ -118,6 +118,7 @@ div.footer        {margin:1.5em 0 0 0;padding:1em 0 0 0;border-top:dashed 1px #b
 .signin td                {margin:0;padding:0;}
 .signin td h2             {margin:0 1em 0 0;padding:0;}
 .signin td p              {margin:0 1em 1.5em 0;padding:0;}
+.signin td .action        {margin:-.25em 0 0;}
 
 #main #forgot_password    {width:50em}
 
