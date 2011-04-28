@@ -1,6 +1,6 @@
 class ProfilesController < ApplicationController
-  skip_before_filter :authenticate, :only => [:forgot, :send_reset, :reset]
-  skip_before_filter :check_account, :only => [:forgot, :send_reset, :reset]
+  skip_before_filter :authenticate, :only => [:forgot, :send_reset, :reset, :update_reset]
+  skip_before_filter :check_account, :only => [:forgot, :send_reset, :reset, :update_reset]
   
   def edit
     @user = User.find(current_user.id)
@@ -46,5 +46,8 @@ class ProfilesController < ApplicationController
     @user = User.find_by_forgot_hash(params[:id])
     # check for expired token ..
     render 'reset', :layout => 'signin'
+  end
+  
+  def update_reset
   end
 end

@@ -5,7 +5,7 @@
     Please use the form below to set a new password.
   </p>
   <%= image_tag '/images/lock.png', { :alt => 'Secure' } %>
-  <%= form_for @user, :url => { :action => :update }  do |f| %>
+  <%= form_for @user, :url => { :action => 'update_reset' }  do |f| %>
     <%= render 'shared/errors', :object => f.object %>
   
     <fieldset>

@@ -109,6 +109,7 @@ div.action        {margin:1.5em 0;}
 div.footer        {margin:1.5em 0 0 0;padding:1em 0 0 0;border-top:dashed 1px #bbb;}
 
 .signin h2                {font-weight:bold;font-size:1.1em;}
+.signin p.last            {margin-bottom:0;}
 .signin table             {margin:0 auto 2em !important;}
 .signin img               {float:left;width:75px;}
 .signin fieldset          {border:none;padding:0 1em;}
