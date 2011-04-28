@@ -17,6 +17,26 @@ Worshipschedule::Application.configure do
   # Don't care if the mailer can't send
   config.action_mailer.raise_delivery_errors = false
 
+  # my email settings for papercut.exe
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    :address          => "localhost",
+    :port             => 25,
+    :enable_starttles => true
+  }
+
+  ## my email settings for gmail ..
+  #config.action_mailer.delivery_method = :smtp
+  #config.action_mailer.smtp_settings = {
+  #  :address          => "smtp.gmail.com",
+  #  :port             => 587,
+  #  :domain           => "lakevillejuniors.com",
+  #  :authentication   => "plain",
+  #  :user_name        => "lakevillejuniors@gmail.com",
+  #  :password         => "reneepaul",
+  #  :enable_starttles => true
+  #}
+
   # Print deprecation notices to the Rails logger
   config.active_support.deprecation = :log
 
