@@ -1,1 +1,28 @@
-<%= @user.name_or_email unless @user.nil? %>
+<div class="content round shadow signin">
+  <h3>Reset your <%= APP_NAME %> password</h3>
+  <p>
+    Hello <%= @user.first_name_or_email %>,<br />
+    Please use the form below to set a new password.
+  </p>
+  <%= image_tag '/images/lock.png', { :alt => 'Secure' } %>
+  <%= form_for @user, :url => { :action => :update }  do |f| %>
+    <%= render 'shared/errors', :object => f.object %>
+  
+    <fieldset>
+      <div class="field">
+        <%= f.label :password %><br />
+        <%= f.password_field :password %>
+        <div class="hint">
+          6 characters or longer. Add at least one number for extra safety.
+        </div>
+      </div>
+      <div class="field">
+        <%= f.label :password_confirmation, 'Confirm your new password' %><br />
+        <%= f.password_field :password_confirmation %>
+      </div>
+    </fieldset>
+    <div class="footer">
+      <%= f.submit 'Reset my password' %>
+    </div>
+  <% end %>
+</div>

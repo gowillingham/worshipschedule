@@ -50,6 +50,14 @@ class User < ActiveRecord::Base
     end
   end
   
+  def first_name_or_email
+    unless self.first_name.blank?
+      self.first_name
+    else
+      self.email
+    end
+  end
+  
   private
   
     def should_validate_password?
