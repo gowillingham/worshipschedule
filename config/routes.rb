@@ -6,9 +6,9 @@ Worshipschedule::Application.routes.draw do
   
   resource :profile, :only => [:edit, :update] do
     get :forgot
-    post :reset
     post :send_reset
   end
+  match "profile/reset/:id", :to => 'profiles#reset', :as => 'profile/reset'
   
   resources :sessions, :only => [:new, :create, :destroy]
   get 'sessions/accounts'

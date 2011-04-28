@@ -36,13 +36,15 @@ class ProfilesController < ApplicationController
       redirect_to forgot_profile_url
     else
       refresh_forgot_hash @user
-      # send message ..
+      UserNotifier.forgot_password(@user).deliver
       flash[:success] = "Instructions for signing in have been emailed to you. "
       redirect_to signin_url
     end
   end
   
   def reset
-    
+    @user = User.find_by_forgot_hash(params[:id])
+    # check for expired token ..
+    render 'reset', :layout => 'signin'
   end
 end
