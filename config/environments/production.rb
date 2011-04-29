@@ -47,6 +47,6 @@ Worshipschedule::Application.configure do
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
   
-  # config for devise gem ..
+  # config for generating links inside mailers ..
   config.action_mailer.default_url_options = { :host => 'worshipschedule.com' }
 end

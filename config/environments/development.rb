@@ -16,7 +16,7 @@ Worshipschedule::Application.configure do
 
   # Don't care if the mailer can't send
   config.action_mailer.raise_delivery_errors = false
-
+  
   # my email settings for papercut.exe
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
@@ -43,7 +43,7 @@ Worshipschedule::Application.configure do
   # Only use best-standards-support built into browsers
   config.action_dispatch.best_standards_support = :builtin
   
-  # config for devise gem ..
-  config.action_mailer.default_url_options = { :host => 'localhost:3000' }
+  # set a default host for generating links inside mailers ..
+  config.action_mailer.default_url_options = { :host => 'localhost:3000'}
 end
 
