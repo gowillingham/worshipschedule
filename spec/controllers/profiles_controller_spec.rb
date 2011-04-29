@@ -150,7 +150,7 @@ describe ProfilesController do
       it "should update user's password reset fields" do
         put :send_reset, :user => @attr
         
-        user = User.find_by_email(@user.email)
+        user = User.find(:first, :conditions => [ "lower(email) = ?", @user.email.downcase ])
         user.forgot_hash.should_not be_nil
         user.forgot_hash_created_at.should_not be_nil
       end

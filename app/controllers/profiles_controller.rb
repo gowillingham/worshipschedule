@@ -30,7 +30,7 @@ class ProfilesController < ApplicationController
   end
   
   def send_reset
-    @user = User.find_by_email(params[:user][:email])
+    @user = User.find(:first, :conditions => [ "lower(email) = ?", params[:user][:email].downcase ])
     if @user.nil?
       flash[:error] = "Sorry, we couldn't find anyone with that email address. "
       redirect_to forgot_profile_url
