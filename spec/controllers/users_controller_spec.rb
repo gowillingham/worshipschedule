@@ -156,6 +156,7 @@ describe UsersController do
     end
     
     it "should show listing of permissions in sidebar"
+    it "reset password feature should be working"
     
     describe "when the user to be edited is not the current user" do
       
@@ -392,5 +393,11 @@ describe UsersController do
       response.should redirect_to(signin_path)
       flash[:error] =~ /cannot remove yourself/i
     end
+  end
+
+  describe "POST 'send_reset" do
+    
+    it "should generate an email"
+    it "should redirect to edit_user_path with a flash message"
   end
 end

@@ -3,6 +3,7 @@ Worshipschedule::Application.routes.draw do
   resources :accounts
   
   resources :users
+  match "users/:id/send_reset", :to => 'users#send_reset', :as => 'users/send_reset', :only => 'post'
   
   resource :profile, :only => [:edit, :update] do
     get :forgot

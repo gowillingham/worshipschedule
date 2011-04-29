@@ -103,6 +103,8 @@ describe ProfilesController do
   
   describe "PUT 'reset'" do
     
+    it "should display the password edit screen"
+    it "should display the expired screen after the timeout interval"
   end
   
   describe "PUT 'send_reset'" do
@@ -156,6 +158,21 @@ describe ProfilesController do
       end
       
       it "should email the password reset token to the user"
+    end
+  end
+  
+  describe "PUT 'update_reset" do
+    
+    describe "with invalid password/password_confirmation" do
+      
+      it "should not change the password"
+      it "should redisplay the reset password form with error messages"
+    end
+    
+    describe "with valid password/password_confirmation" do
+      
+      it "should change the password"
+      it "should signin the user"
     end
   end
 end

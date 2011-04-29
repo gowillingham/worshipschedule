@@ -27,7 +27,7 @@
         <h2>Need to find <%= @user.name_or_email.possessive %> password?</h2>
         <p>
           Each person's password is private to them, but you can email <%= @user.name_or_email %>
-          <%= link_to 'instructions to choose a new password', "/" %>.
+          <%= link_to 'instructions to choose a new password', users_send_reset_path(@user) %>.
         </p>
       </div
     <% end %>

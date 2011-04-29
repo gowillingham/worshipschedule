@@ -123,4 +123,12 @@ class UsersController < ApplicationController
       redirect_to edit_user_path(@user)
     end
   end
+  
+  def send_reset
+    @user = User.find(params[:id])
+    refresh_forgot_hash(@user)
+    UserNotifier.forgot_password(@user).deliver
+    flash[:success] = "This person has been emailed instructions to change their password. "
+    redirect_to edit_user_url(@user)
+  end
 end
