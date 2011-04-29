@@ -19,17 +19,7 @@ class SessionsController < ApplicationController
     else
       sign_in user
       flash[:success] = "Welcome, #{user.name_or_email}!"
-      
-      if user.accounts.empty?
-        # todo: handle orphaned users ..
-        redirect_to user
-      elsif user.accounts.size == 1
-        account = user.accounts.find :first
-        set_session_account account
-        redirect_to user
-      else
-        redirect_to sessions_accounts_path
-      end
+      redirect_to_landing_page_for user      
     end
   end
   

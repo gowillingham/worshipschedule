@@ -111,7 +111,8 @@ div.footer        {margin:1.5em 0 0 0;padding:1em 0 0 0;border-top:dashed 1px #b
 .signin h2                {font-weight:bold;font-size:1.1em;}
 .signin p.last            {margin-bottom:0;}
 .signin table             {margin:0 auto 2em !important;}
-.signin img               {float:left;width:75px;}
+.signin img               {float:left;width:75px;margin-bottom:5em;}
+.signin #error_explanation  {margin:1em 0 2em;}
 .signin fieldset          {border:none;padding:0 1em;}
 .signin fieldset .hint    {color:#000;font-size:.8em;padding-left:.2em;}
 .signin td                {font-size:1.2em;padding:0;}

@@ -9,6 +9,19 @@ module SessionsHelper
     end
   end
   
+  def redirect_to_landing_page_for(user)
+    if user.accounts.empty?
+      # todo: handle orphaned users ..
+      redirect_to user
+    elsif user.accounts.size == 1
+      account = user.accounts.find :first
+      set_session_account account
+      redirect_to user
+    else
+      redirect_to sessions_accounts_path
+    end
+  end
+  
   def require_account_admin
     unless admin?
       flash[:error] = "You must be an administrator for #{current_account.name} to access that page. "

@@ -43,11 +43,35 @@ class ProfilesController < ApplicationController
   end
   
   def reset
-    @user = User.find_by_forgot_hash(params[:id])
-    # check for expired token ..
-    render 'reset', :layout => 'signin'
+    @user = User.find_by_forgot_hash(params[:token])
+    @title = 'sign in'
+    
+    if Time.now > (@user.forgot_hash_created_at + RESET_PASSWORD_TOKEN_TIMEOUT)
+      render 'expired', :layout => 'signin'
+    else
+      render 'reset', :layout => 'signin'
+    end
   end
   
   def update_reset
+    @user = User.find(params[:id])
+    @user.validate_password = true
+    
+    if @user.update_attributes(:password => params[:user][:password], :password_confirmation => params[:user][:password_confirmation])
+      
+      @user = User.authenticate(@user.email, params[:user][:password])
+      if @user.nil?
+        @title = 'sign in'
+        flash.now[:error] = 'Invalid email/password combination.'
+        render 'new', :layout => 'signin'
+      else
+        sign_in @user
+        flash[:success] = "Welcome, #{@user.name_or_email}!"
+        redirect_to_landing_page_for @user    
+      end
+      
+    else
+      render 'reset', :layout => 'signin'
+    end
   end
 end

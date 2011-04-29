@@ -4,11 +4,15 @@
     Hello <%= @user.first_name_or_email %>,<br />
     Please use the form below to set a new password.
   </p>
-  <%= image_tag '/images/lock.png', { :alt => 'Secure' } %>
-  <%= form_for @user, :url => { :action => 'update_reset' }  do |f| %>
+  <%= form_for @user, :url => { :action => 'update_reset', :id => @user.id }  do |f| %>
     <%= render 'shared/errors', :object => f.object %>
   
+    <%= image_tag '/images/lock.png', { :alt => 'Secure' } %>
     <fieldset>
+      <div class="field">
+        <%= f.label :email, 'Your email' %><br />
+        <%= f.text_field :email %>
+      </div>
       <div class="field">
         <%= f.label :password %><br />
         <%= f.password_field :password %>
