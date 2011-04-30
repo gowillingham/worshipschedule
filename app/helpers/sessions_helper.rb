@@ -70,8 +70,14 @@ module SessionsHelper
     session[:starts] = Time.now.utc
   end
   
-  def refresh_forgot_hash(user)
+  def reset_forgot_hash_with_timeout_for(user)
     user.forgot_hash_created_at = Time.now
+    user.forgot_hash = Digest::SHA1.hexdigest "#{user.encrypted_password}--#{user.id}"
+    user.save
+  end
+  
+  def reset_forgot_hash_for(user)
+    user.forgot_hash_created_at = nil
     user.forgot_hash = Digest::SHA1.hexdigest "#{user.encrypted_password}--#{user.id}"
     user.save
   end

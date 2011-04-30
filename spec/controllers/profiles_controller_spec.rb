@@ -103,9 +103,23 @@ describe ProfilesController do
   
   describe "PUT 'reset'" do
     
-    it "should display the password edit screen"
-    it "should display the expired screen after the timeout interval"
-  end
+    before(:each) do
+      controller.refresh_forgot_hash_with_timeout @user
+    end
+    
+    it "should display the password edit screen" do
+      put :reset, :token => @user.forgot_hash
+      response.should render_template('reset')
+    end
+    
+    it "should display the expired screen after the timeout interval" do
+      @user.forgot_hash_created_at = (@user.forgot_hash_created_at - RESET_PASSWORD_TOKEN_TIMEOUT - 1.minute)
+      @user.save
+      
+      put :reset, :token => @user.forgot_hash
+      response.should render_template('expired')
+    end
+end
   
   describe "PUT 'send_reset'" do
     
@@ -165,14 +179,57 @@ describe ProfilesController do
     
     describe "with invalid password/password_confirmation" do
       
-      it "should not change the password"
-      it "should redisplay the reset password form with error messages"
+      before(:each) do
+        @user = Factory(:user)
+        @attr = {
+          :password => 'password',
+          :password_confirmation => 'invalid'
+        }
+      end
+      
+      it "should not change the password" do
+        original_hash = @user.encrypted_password
+        
+        put :update_reset, :id => @user, :user => @attr
+        user = User.find(@user)
+        user.encrypted_password.should == original_hash
+      end
+      
+      it "should redisplay the reset password form with error messages" do
+        put :update_reset, :id => @user, :user => @attr
+        response.should render_template('reset')
+      end
     end
     
     describe "with valid password/password_confirmation" do
       
-      it "should change the password"
-      it "should signin the user"
+      before(:each) do
+        @user = Factory(:user)
+        @attr = {
+          :password => 'new password',
+          :password_confirmation => 'new password'
+        }
+      end
+      
+      it "should change the password" do
+        original_hash = @user.encrypted_password
+        
+        put :update_reset, :id => @user, :user => @attr
+        user = User.find(@user)
+        user.encrypted_password.should_not == original_hash
+      end
+      
+      it "should redirect to user#show (since only one account defined for user above)" do
+        put :update_reset, :id => @user, :user => @attr
+        response.should redirect_to(@user)
+      end
+      
+      it "should signin the user" do
+        put :update_reset, :id => @user, :user => @attr
+        @user.id.should == @request.session[:user_id]
+        @user.id.should == controller.current_user.id
+        controller.should be_signed_in
+      end
     end
   end
 end

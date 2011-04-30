@@ -156,7 +156,6 @@ describe UsersController do
     end
     
     it "should show listing of permissions in sidebar"
-    it "reset password feature should be working"
     
     describe "when the user to be edited is not the current user" do
       
@@ -397,7 +396,13 @@ describe UsersController do
 
   describe "POST 'send_reset" do
     
-    it "should generate an email"
-    it "should redirect to edit_user_path with a flash message"
+    before(:each) do
+      @user = Factory(:user, :email => Factory.next(:email))
+    end
+    
+    it "should redirect to edit_user_path with a flash message" do
+      get :send_reset, :id => @user
+      response.should redirect_to(edit_user_path(@user))
+    end
   end
 end

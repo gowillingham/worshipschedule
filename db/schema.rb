@@ -49,5 +49,4 @@ ActiveRecord::Schema.define(:version => 20110427200233) do
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["forgot_hash"], :name => "index_users_on_forgot_hash", :unique => true
-
 end

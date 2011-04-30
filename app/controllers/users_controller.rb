@@ -12,6 +12,7 @@ class UsersController < ApplicationController
       if existing_user.nil?
         @user.save
         @user.accounts << current_account
+        #todo: send welcome email w/ password reset ..
         flash[:success] = "#{@user.name_or_email} was added to your church! "
         redirect_to users_path
       else
@@ -23,6 +24,7 @@ class UsersController < ApplicationController
           render 'new'
         else
           existing_user.accounts << current_account
+          #todo: send welcome email w/o password reset ..
           flash[:success] = "#{existing_user.name_or_email} was added to your church! "
           redirect_to users_path
         end
@@ -126,7 +128,7 @@ class UsersController < ApplicationController
   
   def send_reset
     @user = User.find(params[:id])
-    refresh_forgot_hash(@user)
+    reset_forgot_hash_with_timeout_for(@user)
     UserNotifier.forgot_password(@user).deliver
     flash[:success] = "This person has been emailed instructions to change their password. "
     redirect_to edit_user_url(@user)
