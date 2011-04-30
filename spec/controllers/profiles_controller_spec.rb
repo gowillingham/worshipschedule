@@ -104,7 +104,7 @@ describe ProfilesController do
   describe "PUT 'reset'" do
     
     before(:each) do
-      controller.refresh_forgot_hash_with_timeout @user
+      controller.reset_forgot_hash_with_timeout_for @user
     end
     
     it "should display the password edit screen" do

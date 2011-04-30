@@ -1,8 +1,21 @@
 <div class="content round shadow signin">
-  <h3>Reset your <%= APP_NAME %> password</h3>
+  <h3>
+    <% if @user.forgot_hash_created_at.nil? %>
+      Set your <%= APP_NAME %> password
+    <% else %>
+      Reset your <%= APP_NAME %> password
+    <% end %>
+  </h3>
   <p>
-    Hello <%= @user.first_name_or_email %>,<br />
-    Please use the form below to set a new password.
+    <% if @user.forgot_hash_created_at.nil? %>
+      Hello <%= @user.first_name_or_email %>,<br />
+      Welcome to <%= APP_NAME %>! 
+      Please use the form below to set the password for your new account.
+      You'll use your email address as your login name. 
+    <% else %>
+      Hello <%= @user.first_name_or_email %>,<br />
+      Please use the form below to set a new password.
+    <% end %>
   </p>
   <%= form_for @user, :url => { :action => 'update_reset', :id => @user.id }  do |f| %>
     <%= render 'shared/errors', :object => f.object %>
@@ -26,7 +39,11 @@
       </div>
     </fieldset>
     <div class="footer">
-      <%= f.submit 'Reset my password' %>
+      <% if @user.forgot_hash_created_at.nil? %>
+        <%= f.submit 'Set my password' %>
+      <% else %>
+        <%= f.submit 'Reset my password' %>
+      <% end %>
     </div>
   <% end %>
 </div>

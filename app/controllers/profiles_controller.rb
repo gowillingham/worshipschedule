@@ -46,10 +46,21 @@ class ProfilesController < ApplicationController
     @user = User.find_by_forgot_hash(params[:token])
     @title = 'sign in'
     
-    if Time.now > (@user.forgot_hash_created_at + RESET_PASSWORD_TOKEN_TIMEOUT)
+    if @user.nil?
+      # used or expired token ..
       render 'expired', :layout => 'signin'
     else
-      render 'reset', :layout => 'signin'
+      if @user.forgot_hash_created_at.nil?
+        # this is initial password set ..
+        render 'reset', :layout => 'signin'
+      else
+        # this is a reset so check for timeout ..
+        if Time.now > (@user.forgot_hash_created_at + RESET_PASSWORD_TOKEN_TIMEOUT)
+          render 'expired', :layout => 'signin'
+        else
+          render 'reset', :layout => 'signin'
+        end
+      end
     end
   end
   
@@ -62,7 +73,7 @@ class ProfilesController < ApplicationController
       @user = User.authenticate(@user.email, params[:user][:password])
       if @user.nil?
         @title = 'sign in'
-        flash.now[:error] = 'There was a problem with your login. Please try to signin again.'
+        flash.now[:error] = 'There was a problem with your login. Please try signing in again.'
         render 'new', :layout => 'signin'
       else
         sign_in @user
