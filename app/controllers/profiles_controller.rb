@@ -77,6 +77,11 @@ class ProfilesController < ApplicationController
         render 'new', :layout => 'signin'
       else
         sign_in @user
+        
+        @user.forgot_hash = nil
+        @user.forgot_hash_created_at = nil
+        @user.save
+        
         flash[:success] = "Welcome, #{@user.name_or_email}!"
         redirect_to_landing_page_for @user    
       end

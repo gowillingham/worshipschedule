@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+  </head>
+  <body>
+    <table width="100%" style="font-size:1.0em;"><tr><td>
+      <p><%= @account.name %></p>
+      <h2>You are added to our <%= APP_NAME %> web scheduling and collaboration system</h2>
+      <p>Hi <%= @user.first_name_or_email %>,</p>
+      <p>
+        <%= @added_by.name_or_email %> just set up an account for you with <%= @account.name %>.
+        Since you have already used <%= APP_NAME %> in the past, no action is necessary on your part.
+        The next time you sign in to <%= APP_NAME %>, <%= @account.name %> will included in your profile.
+        <div style="background-color:#ebf3fe;padding:1em;margin:1em;border:solid 1px #acd5e8;">
+          <strong>Click this link to get started: </strong>
+          <br />
+          <%= link_to signin_url, signin_url %>
+        </div>
+      </p>
+      <% unless @msg.blank? %>
+        <p><%= @added_by.first_name_or_email %> also says: </p>
+        <div style=background-color:transparent;padding:1em;margin:1em:padding:0;>
+          <%= @msg %>
+        </div>
+      <% end %>
+      <hr />
+      <p style="font-size:0.8em;">
+        Have questions?
+        Contact <%= @added_by.name_or_email %> - your account administrator - at <%= mail_to @added_by.email %>.
+      </p>
+    </td></tr></table>
+  </body>
+</html>
+
+
+
+
+
+
+
+

@@ -125,8 +125,6 @@ describe UsersController do
         user = assigns(:user)
         user.accounts(@account).exists?.should be_true
       end
-      
-      it "should send a welcome email to the user with credentials"
     end
   end
   
@@ -155,7 +153,10 @@ describe UsersController do
       flash[:error] =~ /don't have permission/i
     end
     
-    it "should show listing of permissions in sidebar"
+    it "should show listing of permissions in sidebar" do
+      get :edit, :id => @user
+      response.should have_selector("p", :class => 'permissions')
+    end
     
     describe "when the user to be edited is not the current user" do
       
@@ -296,7 +297,7 @@ describe UsersController do
       
       before(:each) do
         @user_with_name = Factory(:user, :email => Factory.next(:email), :first_name => 'next', :last_name => 'user')
-        @user_with_only_email = Factory(:user, :email => Factory.next(:email))
+        @user_with_only_email = Factory(:user, :first_name => '', :last_name => '', :email => Factory.next(:email))
         @account.users << @user_with_name
         @account.users << @user_with_only_email
       end
@@ -317,6 +318,34 @@ describe UsersController do
         response.should have_selector("a", :content => @user_with_only_email.email)
         response.should have_selector("h4", :content => @signed_in_user.name)
         response.should have_selector("a", :content => @signed_in_user.email)
+      end
+      
+      it "should display the users in non-case sensitive alphabetical order" do
+        user_aa = Factory(:user, :last_name => 'aa', :first_name => 'first', :email => Factory.next(:email))
+        user_Ab = Factory(:user, :last_name => 'aB', :first_name => 'first', :email => Factory.next(:email))
+        user_ZZ = Factory(:user, :last_name => 'ZZ', :first_name => 'first', :email => Factory.next(:email))
+        @account.users << user_aa
+        @account.users << user_Ab
+        @account.users << user_ZZ
+        
+        get :index
+        users = assigns(:users)
+        users.first.should eq(user_aa)
+        users.last.should eq(user_ZZ)
+      end
+      
+      it "should order by email if the name is missing" do
+        user_aa = Factory(:user, :last_name => '', :first_name => 'first', :email => 'aa@aa.com')
+        user_bb = Factory(:user, :last_name => 'bb', :first_name => 'first', :email => 'bb@bb.com')
+        user_zz = Factory(:user, :last_name => '', :first_name => 'first', :email => 'zz@zz.com')
+        user_aa.accounts << @account
+        user_bb.accounts << @account
+        user_zz.accounts << @account
+        
+        get :index
+        users = assigns(:users)
+        users.first.should eq(user_aa)
+        users.last.should eq(user_zz)
       end
       
       it "should not return users who only belong to another account" do

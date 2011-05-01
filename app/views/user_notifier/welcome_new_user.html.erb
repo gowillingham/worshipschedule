@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+  </head>
+  <body>
+    <table width="100%" style="font-size:1.0em;"><tr><td>
+      <p><%= @account.name %></p>
+      <h2>You are invited to join our <%= APP_NAME %> web scheduling and collaboration system</h2>
+      <p>Hi <%= @user.first_name_or_email %>,</p>
+      <p>
+        <%= @added_by.name_or_email %> just set up an account for you.
+        <div style="background-color:#ebf3fe;padding:1em;margin:1em;border:solid 1px #acd5e8;">
+          <strong>All you need to do is choose a password.</strong>
+          <br />
+          It only takes a few seconds.
+          <br /><br />
+          <strong>Click this link to get started: </strong>
+          <br />
+          <%= link_to profile_reset_url(@user.forgot_hash), profile_reset_url(@user.forgot_hash) %>
+        </div>
+      </p>
+      <% unless @msg.blank? %>
+        <p><%= @added_by.first_name_or_email %> also says: </p>
+        <div style=background-color:transparent;padding:1em;margin:1em:padding:0;>
+          <%= @msg %>
+        </div>
+      <% end %>
+      <hr />
+      <p style="font-size:0.8em;">
+        Have questions?
+        Contact <%= @added_by.name_or_email %> - your account administrator - at <%= mail_to @added_by.email %>.
+      </p>
+    </td></tr></table>
+  </body>
+</html>
+
+
+
+
+
+
+
+

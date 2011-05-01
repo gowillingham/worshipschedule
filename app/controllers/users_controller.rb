@@ -12,7 +12,9 @@ class UsersController < ApplicationController
       if existing_user.nil?
         @user.save
         @user.accounts << current_account
-        #todo: send welcome email w/ password reset ..
+        
+        reset_forgot_hash_for @user
+        UserNotifier.welcome_new_user(@user, current_account, params[:msg], current_user).deliver
         flash[:success] = "#{@user.name_or_email} was added to your church! "
         redirect_to users_path
       else
@@ -24,7 +26,8 @@ class UsersController < ApplicationController
           render 'new'
         else
           existing_user.accounts << current_account
-          #todo: send welcome email w/o password reset ..
+          
+          UserNotifier.welcome_existing_user(@user, current_account, params[:msg], current_user).deliver
           flash[:success] = "#{existing_user.name_or_email} was added to your church! "
           redirect_to users_path
         end
@@ -89,7 +92,7 @@ class UsersController < ApplicationController
   end
   
   def index
-    @users = current_account.users.includes(:accountships).order('last_name, first_name, email')
+    @users = current_account.users.all(:order => 'CASE WHEN (LENGTH(last_name) = 0) THEN LOWER(email) ELSE LOWER(last_name) END')
 
     @title = 'All people'
     @context = 'users'

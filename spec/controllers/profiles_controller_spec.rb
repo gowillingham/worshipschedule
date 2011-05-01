@@ -170,8 +170,6 @@ end
         user.forgot_hash.should_not be_nil
         user.forgot_hash_created_at.should_not be_nil
       end
-      
-      it "should email the password reset token to the user"
     end
   end
   
@@ -229,6 +227,13 @@ end
         @user.id.should == @request.session[:user_id]
         @user.id.should == controller.current_user.id
         controller.should be_signed_in
+      end
+      
+      it "should clear the forgot_hash and forgot_hash_created_at attributes" do
+        put :update_reset, :id => @user, :user => @attr
+        user = User.find(@user)
+        user.forgot_hash.should be_nil
+        user.forgot_hash_created_at.should be_nil
       end
     end
   end

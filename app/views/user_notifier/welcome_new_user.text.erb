@@ -1,0 +1,16 @@
+====================================================================
+<%= @account.name %>
+
+You are invited to join our <%= APP_NAME %> web scheduling and
+collaboration system
+====================================================================
+
+Hello <%= @user.first_name_or_email %>,
+
+<%= @added_by.name_or_email %> just set up an account for you. All you need to do is choose a password. It only takes a few seconds.
+
+Click this link to get started (watch wrapping) ..
+<%= profile_reset_url(@user.forgot_hash) %>
+
+<%= "#{@added_by.first_name_or_email} also says:\n \n#{@msg}" unless @msg.blank? %>
+Have questions? Contact <%= @added_by.name_or_email %> - your account administrator - at mailto:<%= @added_by.email %>.
