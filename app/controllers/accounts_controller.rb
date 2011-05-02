@@ -1,6 +1,5 @@
 class AccountsController < ApplicationController
   skip_before_filter :authenticate, :only => [:new, :create]
-  
   skip_before_filter :check_account, :except => [:show]
   
   def new
@@ -24,10 +23,9 @@ class AccountsController < ApplicationController
       # upsert and signin the user ..
       @user = User.find(:first, :conditions => ["lower(email) = ?", params[:user][:email].downcase])
       if @user.nil?
-        @user = User.create(
-          :email => params[:user][:email],
-          :password => generate_password
-        )
+        @user = User.new(:email => params[:user][:email])
+        @user.validate_password = false
+        @user.save
       end
       
       # associate and sign_in the user ..

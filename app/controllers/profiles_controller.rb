@@ -35,6 +35,7 @@ class ProfilesController < ApplicationController
       flash[:error] = "Sorry, we couldn't find anyone with that email address. "
       redirect_to forgot_profile_url
     else
+      @user.validate_password = false
       reset_forgot_hash_with_timeout_for @user
       UserNotifier.forgot_password(@user).deliver
       flash[:success] = "Instructions for signing in have been emailed to you. "

@@ -61,7 +61,11 @@ class User < ActiveRecord::Base
   private
   
     def should_validate_password?
-      validate_password || new_record?
+      if self.validate_password.nil?
+        true
+      else
+        self.validate_password
+      end
     end
 
     def encrypt_password

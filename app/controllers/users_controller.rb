@@ -3,8 +3,7 @@ class UsersController < ApplicationController
   
   def create
     @user = User.new params[:user]
-    @user.password = generate_password
-    @user.validate_password = true
+    @user.validate_password = false
     
     if @user.valid?
       
@@ -70,6 +69,7 @@ class UsersController < ApplicationController
   
   def update
     @user = User.find(params[:id])
+    @user.validate_password = false
     
     if current_account.users.exists? @user
       if @user.update_attributes(params[:user])

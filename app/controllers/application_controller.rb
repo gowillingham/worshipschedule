@@ -4,11 +4,4 @@ class ApplicationController < ActionController::Base
 
   before_filter :authenticate
   before_filter :check_account
-  
-  def generate_password(length=6)
-    chars = 'abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ23456789'
-    password = ''
-    length.times { |i| password << chars[rand(chars.length)] }
-    password
-  end
 end
