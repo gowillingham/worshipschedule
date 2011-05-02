@@ -8,7 +8,7 @@
   </h3>
   <p>
     <% if @user.forgot_hash_created_at.nil? %>
-      Hello <%= @user.first_name_or_email %>,<br />
+      Hello <%= @user.first_name_or_email %>,<br /><br />
       Welcome to <%= APP_NAME %>! 
       Please use the form below to set the password for your new account.
       You'll use your email address as your login name. 

@@ -31,7 +31,7 @@ class AccountsController < ApplicationController
         @user.accountships.find_by_account_id(@account).toggle!(:admin)
         
         UserNotifier.welcome_new_account(@account, @user).deliver
-        flash[:success] = "#{@account.name} was added to #{APP_NAME}. You'll need to create a password to sign in."
+        flash[:success] = "Your church '#{@account.name}' was added to #{APP_NAME}! Just create a password to sign in."
         redirect_to profile_reset_url(@user.forgot_hash)
       else
         reset_forgot_hash_with_timeout_for @user
@@ -40,7 +40,7 @@ class AccountsController < ApplicationController
         @user.accountships.find_by_account_id(@account).toggle!(:admin)
         
         UserNotifier.welcome_new_account(@account, @user).deliver
-        flash[:success] = "#{@account.name} was added to #{APP_NAME}. You just need to sign in."
+        flash[:success] = "Your church '#{@account.name}' was added to #{APP_NAME}. You just need to sign in."
         redirect_to signin_url
       end
     end

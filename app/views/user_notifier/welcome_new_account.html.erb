@@ -9,8 +9,8 @@
       <h2>Thank you for adding <%= @account.name %> to <%= APP_NAME %>!</h2>
       <p>Hi <%= @user.first_name_or_email %>,</p>
       <p>
-        You have successfully set up your account.
-        If you already have an account with us through another church or organization,
+        You have added <%= @account.name %> to <%= APP_NAME %>.
+        If you're already using <%= APP_NAME %> with another church or organization,
         you'll use your existing login credentials to sign in.
         If you are brand new to <%= APP_NAME %>,
         you can set a new password for your account from the reset link below.
@@ -28,7 +28,7 @@
         </div>
       </p>
       <p>
-        Sign in to begin adding people, events, and schedules to your account - everything should be all set to go!
+        Sign in to begin adding people, teams, and events to your account - everything should be all set to go!
         If you have questions or need assistance, our support staff will give you any help you need.
         Just send them a note at <%= mail_to SUPPORT_EMAIL %>.
       </p>
