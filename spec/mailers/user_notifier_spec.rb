@@ -93,4 +93,36 @@ describe UserNotifier do
       @mail.body.encoded.should match(@added_by.name_or_email)
     end
   end
+  
+  describe "welcome_new_account" do
+    
+    before(:each) do
+      @user = Factory(:user, :forgot_hash => 'hash')
+      @account = Factory(:account)
+      @mail = UserNotifier.welcome_new_account @account, @user
+    end
+    
+    it "should have the correct subject" do
+      @mail.subject.should =~ /new account/i
+    end
+    
+    it "should send to the correct recipient" do
+      @mail.to.should == [@user.email]
+    end
+    
+    it "should include a link to reset a password" do
+      @mail.body.encoded.should have_selector("a", :content => profile_reset_url(@user.forgot_hash))
+      @mail.body.encoded.should match(profile_reset_url(@user.forgot_hash))
+    end
+    
+    it "should include a link to signin" do
+      @mail.body.encoded.should have_selector("a", :content => signin_url)
+      @mail.body.encoded.should match(signin_url)
+    end
+    
+    it "should include a link to email support" do
+      @mail.body.encoded.should have_selector("a", :content => SUPPORT_EMAIL)
+      @mail.body.encoded.should match("mailto:#{SUPPORT_EMAIL}")
+    end
+  end
 end

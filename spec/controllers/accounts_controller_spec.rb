@@ -70,24 +70,21 @@ describe AccountsController do
           account.users.should include(assigns(:user))
         end
         
-        it "should signin the user creating the account" do
-          post :create, @new_user_attr
-          @request.session[:user_id].should_not be_nil
-        end
-        
         it "should make the user an account administrator" do
           post :create, @new_user_attr
           account = assigns(:account)
           account.accountships.find_by_user_id(assigns(:user)).should be_admin
         end
         
-        it "should render the user#show page" do
-          post :create, @new_user_attr
-          response.should redirect_to(user_path(assigns(:user)))
+        it "should render signin page for an existing user" do
+          post :create, @existing_user_attr
+          response.should redirect_to(signin_path)
         end
         
-        it "should send a welcome email with the users credentials"
-        it "should send a welcome email for the new account"
+        it "should render the password set page for a new user" do
+          post :create, @new_user_attr
+          response.should redirect_to(profile_reset_path(assigns(:user).forgot_hash))
+        end
       end
       
       describe "failure" do

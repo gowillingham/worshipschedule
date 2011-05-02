@@ -27,4 +27,12 @@ class UserNotifier < ActionMailer::Base
     mail :to => @user.email
     mail :subject => "[#{APP_NAME}] **You have been added to #{account.name}**"
   end
+  
+  def welcome_new_account(account, user)
+    @account = account
+    @user = user
+    
+    mail :to => @user.email
+    mail :subject => "[#{APP_NAME}] **Info for your new account**"
+  end
 end
