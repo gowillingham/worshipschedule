@@ -12,7 +12,8 @@ module SessionsHelper
   def redirect_to_landing_page_for(user)
     if user.accounts.empty?
       # todo: handle orphaned users ..
-      redirect_to user
+      flash[:notice] = "No accounts for this user. "
+      redirect_to orphan_user_path user
     elsif user.accounts.size == 1
       account = user.accounts.find :first
       set_session_account account

@@ -1,5 +1,10 @@
 class UsersController < ApplicationController
-  before_filter :require_account_admin, :except => :show
+  before_filter :require_account_admin, :except => [:show, :orphan]
+  skip_before_filter :check_account, :only => :orphan
+  
+  def orphan
+    
+  end
   
   def create
     @user = User.new params[:user]

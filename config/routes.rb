@@ -2,7 +2,12 @@ Worshipschedule::Application.routes.draw do
 
   resources :accounts
   
-  resources :users
+  resources :users do
+    member do
+      get 'orphan'
+    end
+  end
+  
   match "users/:id/send_reset", :to => 'users#send_reset', :as => 'users/send_reset', :only => 'post'
   
   resource :profile, :only => [:edit, :update] do
