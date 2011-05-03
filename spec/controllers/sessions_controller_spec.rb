@@ -80,7 +80,11 @@ describe SessionsController do
          response.should redirect_to(user_path controller.current_user)
        end
        
-       it "should redirect to orphaned user page for a user with no accounts"
+       it "should redirect to sessions/accounts page for a user with no accounts" do
+         @user.accounts.clear
+         post :create, :session => @attr
+         response.should redirect_to(sessions_accounts_path)
+       end
        
        it "should have the right flash message" do
          post :create, :session => @attr

@@ -207,6 +207,7 @@ end
           :password => 'new password',
           :password_confirmation => 'new password'
         }
+        @user.accounts << @account
       end
       
       it "should change the password" do

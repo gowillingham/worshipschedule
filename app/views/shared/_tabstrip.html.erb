@@ -1,11 +1,12 @@
 <% if @context == 'accounts' %>
   <ul class="tabs">
-    <li><a href="#" class="accounts">Churches</a></li>
+    <li><%= link_to 'Churches', sessions_accounts_path, :class => 'accounts' %></li>
     <li><%= link_to 'Sign out', signout_path, :method => :delete %></li>
   </ul>
 <% else %>
   <ul class="tabs">
     <li><%= link_to 'Dashboard', current_user, :class => 'dashboard' %></li>
+    <li><%= link_to 'Churches', sessions_accounts_path, :class => 'accounts' %></li>
     <li><a href="#">Your teams</a></li>
     <li><a href="#">Your events</a></li>
   </ul>

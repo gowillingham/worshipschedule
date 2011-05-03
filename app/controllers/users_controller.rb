@@ -1,10 +1,5 @@
 class UsersController < ApplicationController
-  before_filter :require_account_admin, :except => [:show, :orphan]
-  skip_before_filter :check_account, :only => :orphan
-  
-  def orphan
-    
-  end
+  before_filter :require_account_admin, :except => [:show]
   
   def create
     @user = User.new params[:user]
@@ -69,7 +64,6 @@ class UsersController < ApplicationController
       flash[:error] = "You don't have permission to access that person. "
       redirect_to current_user
     end 
-
   end
   
   def update
@@ -133,7 +127,7 @@ class UsersController < ApplicationController
       redirect_to edit_user_path(@user)
     end
   end
-  
+    
   def send_reset
     @user = User.find(params[:id])
     reset_forgot_hash_with_timeout_for(@user)
