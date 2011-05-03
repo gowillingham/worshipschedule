@@ -115,8 +115,14 @@ class UsersController < ApplicationController
     
     unless @user.id == current_user.id
       if current_account.users.exists? @user
+        accountship = Accountship.where('user_id = ? AND account_id = ?', @user.id, current_account.id)
+        Accountship.destroy accountship
+        
+        if @user.accounts.empty?
+          User.destroy @user
+        end
+        
         flash[:success] = "#{@user.name_or_email} has been deleted. "
-        @user.destroy
         redirect_to users_path
       else
         flash[:error] = "You don't have permission to access that person. "

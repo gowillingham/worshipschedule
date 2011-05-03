@@ -370,15 +370,31 @@ describe UsersController do
     
     before(:each) do
       @user = Factory(:user, :email => Factory.next(:email))
+      @another_account = Factory(:account)
       @user.accounts << @account
     end
     
-    it "should remove the user" do
+    it "should not destroy the user if they have multiple accounts" do
+      @user.accounts << @another_account
+      lambda do
+        delete :destroy, :id => @user
+      end.should change(User, :count).by(0)
+    end
+    
+    it "should only remove the user from the current account" do
+      @user.accounts << @another_account
+      delete :destroy, :id => @user
+      
+      user = assigns(:user)
+      user.accounts.exists?(@another_account).should be_true
+    end
+    
+    it "should delete the user if the current account is the user's only account" do
       lambda do
         delete :destroy, :id => @user
       end.should change(User, :count).by(-1)
     end
-    
+
     it "should redirect to the index page" do
       delete :destroy, :id => @user
       response.should redirect_to users_path
@@ -416,10 +432,9 @@ describe UsersController do
     
     it "should not remove the user if the current user is not signed in" do
       controller.sign_out
-      
-      delete :destroy, :id => @user
-      response.should redirect_to(signin_path)
-      flash[:error] =~ /cannot remove yourself/i
+      lambda do
+        delete :destroy, :id => @user
+      end.should change(User, :count).by(0)
     end
   end
 
