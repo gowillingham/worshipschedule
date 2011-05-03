@@ -1,20 +1,68 @@
-<div class="header"><%= "Your upcoming events for #{current_account.name}" %></div>
-<table>
-  <thead>
-    <tr><th colspan="4"><%= current_user.name_or_email %>
-  </thead>
-  <tbody>
-    <tr>
-      <td class="what"><span class='church'>Apr 28</span></td>
-      <td><%= link_to 'Sunday worship', root_path %></td>
-    <tr>
-    <tr>
-      <td class="what"><span class='church'>Apr 29</span></td>
-      <td><%= link_to 'Saturday worship', root_path %></td>
-    <tr>
-    <tr>
-      <td class="what"><span class='church'>May 7</span></td>
-      <td><%= link_to 'Ignite!', root_path %></td>
-    <tr>
-  </tbody>
-</table>
+<div class="content shadow">
+  <div class="header">
+    <h2>Latest activity for your teams</h2>
+  </div>
+  <div class="dashboard">
+  
+    <h1>Your team: <a href="/">Worship team</a></h1>
+    <table>
+      <thead>
+        <tr>
+          <th colspan="4"><a href="#"><%=current_account.name %> &mdash; <span>Tech team</span></a></th>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="what"><span class='availability'>Availability</span></td>
+          <td><a href="#">New events added</a></td>
+          <td class="who">posted by <span>Jim D</span></td>
+          <td class="last">May 2</td>
+        <tr>
+        <tr>
+          <td class="what"><span class='church'>Apr 28</span></td>
+          <td><%= link_to 'Sunday worship', root_path %></td>
+          <td class="who">posted by <span>Jim D</span></td>
+          <td class="last">&nbsp;</td>
+        <tr>
+        <tr>
+          <td class="what"><span class='church'>Apr 29</span></td>
+          <td><%= link_to 'Saturday worship', root_path %></td>
+          <td class="who">posted by <span>Jim D</span></td>
+          <td class="last">&nbsp;</td>
+        <tr>
+        <tr>
+          <td class="what"><span class='church'>May 7</span></td>
+          <td><%= link_to 'Ignite!', root_path %></td>
+          <td class="who">posted by <span>Jim D</span></td>
+          <td class="last">&nbsp;</td>
+        <tr>
+      </tbody>
+    </table>
+    <h1>Your team: <a href="/">Tech team</a></h1>
+    <table>
+      <thead>
+        <tr>
+          <th colspan="4"><a href="#"><%=current_account.name %> &mdash; <span>Tech team</span></a></th>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="what"><span class='church'>Apr 28</span></td>
+          <td><%= link_to 'Sunday worship', root_path %></td>
+          <td class="who">posted by <span>Jim D</span></td>
+          <td class="last">&nbsp;</td>
+        <tr>
+        <tr>
+          <td class="what"><span class='church'>Apr 29</span></td>
+          <td><%= link_to 'Saturday worship', root_path %></td>
+          <td class="who">posted by <span>Stephen W</span></td>
+          <td class="last">Mar 14</td>
+        <tr>
+        <tr>
+          <td class="what"><span class='church'>May 7</span></td>
+          <td><%= link_to 'Ignite!', root_path %></td>
+          <td class="who">posted by <span>Stephen W</span></td>
+          <td class="last">Apr 29</td>
+        <tr>
+      </tbody>
+    </table>
+  </div>
+</div>
