@@ -22,6 +22,20 @@ namespace:db do
     account.owner = admin
     account.save
     
+    5.times do |n|
+      first_name = Faker::Name.first_name
+      last_name = Faker::Name.last_name
+      email = "admin-email-#{n+1}@longdomainhere.org"
+      password = "password"
+      user = User.create!(
+        :first_name => first_name,
+        :last_name => last_name,
+        :email => email,
+        :password => "password",
+        :password_confirmation => "password"
+      )
+      user.accountships.create(:account_id => account.id, :admin => true)
+    end
     
     99.times do |n|
       first_name = Faker::Name.first_name
