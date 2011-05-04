@@ -6,6 +6,18 @@ describe Account do
     @attr = { :name => 'Church name' }
   end
   
+  it "should create a new instance" do
+    Account.create! @attr
+  end
+  
+  describe "owner" do
+    it "should have an owner method" do
+      owner = Factory(:user)
+      account = Account.create!(:name => 'Account name', :owner_id => owner.id)
+      account.should respond_to(:owner)
+    end
+  end
+  
   describe "accountships" do
     
     before(:each) do

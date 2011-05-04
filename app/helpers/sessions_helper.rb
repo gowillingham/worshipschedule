@@ -20,7 +20,7 @@ module SessionsHelper
   end
   
   def require_account_admin
-    unless admin?
+    unless (admin? || owner?)
       flash[:error] = "You must be an administrator for #{current_account.name} to access that page. "
       redirect_to current_user
     end
@@ -43,6 +43,10 @@ module SessionsHelper
   
   def admin?
     current_user.accountships.find_by_account_id(current_account.id).admin?
+  end
+  
+  def owner?
+    current_user == current_account.owner
   end
   
   def boot_session

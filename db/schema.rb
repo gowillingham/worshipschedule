@@ -10,12 +10,13 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110427200233) do
+ActiveRecord::Schema.define(:version => 20110504120827) do
 
   create_table "accounts", :force => true do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "owner_id"
   end
 
   create_table "accountships", :force => true do |t|
@@ -49,4 +50,5 @@ ActiveRecord::Schema.define(:version => 20110427200233) do
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["forgot_hash"], :name => "index_users_on_forgot_hash", :unique => true
+
 end

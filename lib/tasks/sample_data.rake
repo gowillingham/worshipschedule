@@ -19,6 +19,9 @@ namespace:db do
       )
     admin.accountships.create(:account_id => account.id, :admin => true)
     
+    account.owner = admin
+    account.save
+    
     
     99.times do |n|
       first_name = Faker::Name.first_name

@@ -99,6 +99,7 @@ body                    {font-family:"Lucida Grande",verdana,arial,helvetica,san
 #main table.persons td .thumbnail .gravatar     {margin:0;border:solid 1px #ddd;}
 #main table.persons td .thumbnail div           {color:white;font-weight:bold;padding:0.1em;font-size:0.9em;text-align:center}
 #main table.persons td .thumbnail div.admin     {background-color:#008000;}
+#main table.persons td .thumbnail div.owner     {background-color:#FC4B00}
 
 div.big_button                          {margin:1.5em 0 0 0;padding:.1em;}
 div.big_button                          {border:solid 2px #bbb;background:#eee url("../images/icons/add.png") no-repeat 0.25em 50%;-moz-border-radius:1.3em;-webkit-border-radius:1.3em;border-radius:1.3em;}

@@ -2,7 +2,9 @@
   <%= gravatar_for user %>
   <% user.accountships.each do |accountship| %>
     <% if accountship.account == current_account %>
-      <% if accountship.admin? %>
+      <% if user == current_account.owner %>
+        <div class="owner">OWNER</div>
+      <% elsif accountship.admin? %>
         <div class="admin">ADMIN</div>
       <% else %>
         <div>&nbsp;</div>

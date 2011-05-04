@@ -28,6 +28,9 @@ class AccountsController < ApplicationController
         reset_forgot_hash_for @user
         
         @account.users << @user
+        @account.owner = @user
+        @account.save
+        
         @user.accountships.find_by_account_id(@account).toggle!(:admin)
         
         UserNotifier.welcome_new_account(@account, @user).deliver
@@ -37,6 +40,9 @@ class AccountsController < ApplicationController
         reset_forgot_hash_with_timeout_for @user
         
         @account.users << @user
+        @account.owner = @user
+        @account.save
+
         @user.accountships.find_by_account_id(@account).toggle!(:admin)
         
         UserNotifier.welcome_new_account(@account, @user).deliver
