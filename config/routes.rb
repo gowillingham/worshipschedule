@@ -1,6 +1,11 @@
 Worshipschedule::Application.routes.draw do
 
-  resources :accounts
+  resources :accounts do
+    member do
+      get :admins
+      put :admins, :to => 'accounts#update_admins'
+    end
+  end
   
   resources :users 
   

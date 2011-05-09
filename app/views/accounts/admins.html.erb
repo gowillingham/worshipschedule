@@ -1,0 +1,39 @@
+<div class="content shadow">
+  <div class="header">
+    <h2>Set administrators</h2>
+  </div>
+  <div class="form admins">
+    <%= form_for current_account, { :url => admins_account_path(current_account), :method => 'put' } do %>
+      <div class="action">
+        <%= submit_tag "Save these changes" %>
+        <%= link_to "&laquo;  Cancel".html_safe, users_path %>
+        <span>and don't change <br />administrators</span>
+      </div>
+  
+      <table>
+        <tbody>
+          <tr><td class="note">Note: The "Administrators setting applies across all teams. </td></tr>
+          <tr><td class="note"><strong>Which people are administrators? </strong></td></tr>
+          
+          <% @accountships.each do |accountship| %>
+            <tr>
+              <td>
+                <label>
+                  <% unless (accountship.user == current_user) || (accountship.user == current_account.owner) %>
+                    <%= check_box_tag "accountship_ids[]", accountship.id, accountship.admin? %>
+                    <%= accountship.user.name %>
+                  <% else %>
+                    <%= check_box_tag "place_holder", accountship.id, true, :disabled => 'disabled' %>
+                    <%= accountship.user.name %>
+                    <%= "(Account Holder)" if (accountship.user == current_account.owner) %>
+                  <% end %>
+                </label>
+              </td>
+            </tr>
+          <% end %>
+          
+        </tbody>
+      </table>
+    <% end %>
+  </div>
+</div>

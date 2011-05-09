@@ -10,7 +10,7 @@
       <tr>
         <th colspan="4" class="big">
           <strong>Your church:</strong> <%= current_account.name %>
-          <span class="link">See the <%= link_to 'administrator list', "/", :class => 'cancel' %> to give or take away admin powers</span>
+          <span class="link">See the <%= link_to 'administrator list', admins_account_path(current_account), :class => 'cancel' %> to give or take away admin powers</span>
         </th>
       </tr>
     </thead>

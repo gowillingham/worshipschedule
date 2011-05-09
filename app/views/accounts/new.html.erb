@@ -5,7 +5,7 @@
     It costs nothing to sign up and try it out!
   </p> 
   <%= render 'shared/show_flash' %>
-  <%= form_for :account, @account, :url => { :action => "create" } do |fa| %>
+  <%= form_for @account, :url => { :action => "create" } do |fa| %>
     <div class="field">
       <%= fa.label :name, "Church name" %><br />
       <%= fa.text_field :name %>

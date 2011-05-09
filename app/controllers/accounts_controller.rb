@@ -1,6 +1,7 @@
 class AccountsController < ApplicationController
   skip_before_filter :authenticate, :only => [:new, :create]
   skip_before_filter :check_account, :except => [:show]
+  before_filter :require_account_admin, :only => [:admins, :update_admins]
   
   def new
     @title = "New account"
@@ -52,7 +53,19 @@ class AccountsController < ApplicationController
     end
   end
 
+  def admins
+    @accountships = Accountship.where(:account_id => current_account)
+    @sidebar_partial = "/users/sidebar/admins"
+  end
+  
+  def update_admins
+    @account = Account.find(params[:id])
+    @account.assign_administrators(params[:accountship_ids], current_user)
+    flash[:success] = "Your administrator permission changes have been saved. "
+    redirect_to users_url
+  end
+  
   def show
-
+    @sidebar_partial = "/users/sidebar/placeholder"
   end
 end
