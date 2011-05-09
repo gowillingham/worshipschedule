@@ -99,7 +99,7 @@ body                    {font-family:"Lucida Grande",verdana,arial,helvetica,san
 
 #main table                         {font-size:0.9em;margin:2.0em auto;width:96%;}
 #main th                            {padding:.25em .75em;font-size:1.4em;background:#e9e9e9;font-weight:normal;}                                              
-#main th .link                      {font-size:0.75em;float:right;margin-top:.2em;}        
+#main th .link                      {font-size:0.8em;float:right;margin-top:.2em;}        
 
 #main table.persons td                          {width:25%;border:none;padding:2em 0.4em 0;}
 #main table.persons ul                          {list-style-type:none;}

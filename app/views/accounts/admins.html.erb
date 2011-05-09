@@ -20,8 +20,10 @@
               <td>
                 <label>
                   <% unless (accountship.user == current_user) || (accountship.user == current_account.owner) %>
-                    <%= check_box_tag "accountship_ids[]", accountship.id, accountship.admin? %>
-                    <%= accountship.user.name %>
+                    <% if accountship.admin? %>
+                      <%= check_box_tag "accountship_ids[]", accountship.id, accountship.admin? %>
+                      <%= accountship.user.name %>
+                    <% end %>
                   <% else %>
                     <%= check_box_tag "place_holder", accountship.id, true, :disabled => 'disabled' %>
                     <%= accountship.user.name %>
@@ -31,6 +33,21 @@
               </td>
             </tr>
           <% end %>
+          <% @accountships.each do |accountship| %>
+            <tr>
+              <td>
+                <label>
+                  <% unless (accountship.user == current_user) || (accountship.user == current_account.owner) %>
+                    <% unless accountship.admin? %>
+                      <%= check_box_tag "accountship_ids[]", accountship.id, accountship.admin? %>
+                      <%= accountship.user.name %>
+                    <% end %>
+                  <% end %>
+                </label>
+              </td>
+            </tr>
+          <% end %>
+          
           
         </tbody>
       </table>
