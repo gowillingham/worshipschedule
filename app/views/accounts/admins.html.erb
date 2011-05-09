@@ -33,6 +33,7 @@
               </td>
             </tr>
           <% end %>
+          
           <% @accountships.each do |accountship| %>
             <tr>
               <td>
@@ -40,14 +41,13 @@
                   <% unless (accountship.user == current_user) || (accountship.user == current_account.owner) %>
                     <% unless accountship.admin? %>
                       <%= check_box_tag "accountship_ids[]", accountship.id, accountship.admin? %>
-                      <%= accountship.user.name %>
+                      <%= accountship.user.name_or_email %>
                     <% end %>
                   <% end %>
                 </label>
               </td>
             </tr>
           <% end %>
-          
           
         </tbody>
       </table>
