@@ -4,8 +4,17 @@ describe TeamsController do
 
   describe "GET 'show'" do
     
+    before(:each) do
+      @signed_in_user = Factory(:user, :email => Factory.next(:email))
+      @account = Factory(:account)
+      @signed_in_user.accounts << @account
+      
+      signin_user @signed_in_user
+      controller.set_session_account(@account)
+    end
+    
     it "should be successful" do
-      get 'show'
+      get 'show', :id => @account.teams[0]
       response.should be_success
     end
     

@@ -4,7 +4,7 @@
   </div>
   <div class="dashboard">
   
-    <h1>Your team: <a href="/">Worship team</a></h1>
+    <h1>Your team: <%= link_to current_account.teams[0].name, team_path(1) %></h1>
     <table>
       <thead>
         <tr>
@@ -37,7 +37,7 @@
         <tr>
       </tbody>
     </table>
-    <h1>Your team: <a href="/">Tech team</a></h1>
+    <h1>Your team: <%= link_to current_account.teams[1].name, team_path(2) %></h1>
     <table>
       <thead>
         <tr>

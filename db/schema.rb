@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110504120827) do
+ActiveRecord::Schema.define(:version => 20110510140057) do
 
   create_table "accounts", :force => true do |t|
     t.string   "name"
@@ -30,6 +30,16 @@ ActiveRecord::Schema.define(:version => 20110504120827) do
   add_index "accountships", ["account_id"], :name => "index_accountships_on_account_id"
   add_index "accountships", ["user_id", "account_id"], :name => "index_accountships_on_user_id_and_account_id", :unique => true
   add_index "accountships", ["user_id"], :name => "index_accountships_on_user_id"
+
+  create_table "teams", :force => true do |t|
+    t.string   "name"
+    t.string   "banner_text"
+    t.integer  "account_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "teams", ["name"], :name => "index_teams_on_name"
 
   create_table "users", :force => true do |t|
     t.string   "first_name"

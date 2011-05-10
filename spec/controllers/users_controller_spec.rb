@@ -21,6 +21,15 @@ describe UsersController do
     before(:each) do
       @user = Factory(:user, :email => Factory.next(:email))
       @user.accounts << @account
+      
+      @team = Team.create(
+        :name => 'Worship team',
+        :account_id => @account.id
+      )
+      @team_two = Team.create(
+        :name => 'Tech team',
+        :account_id => @account.id
+      )
     end
     
     it "should be successful" do

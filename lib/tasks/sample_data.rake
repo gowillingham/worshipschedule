@@ -22,6 +22,19 @@ namespace:db do
     account.owner = admin
     account.save
     
+    team_one = Team.create!(
+      :name => 'Worship team',
+      :account_id => account.id
+    )
+    team_two = Team.create!(
+      :name => 'Technical arts',
+      :account_id => account.id
+    )
+    team_three = Team.create!(
+      :name => "Children's ministries",
+      :account_id => account.id
+    )    
+    
     5.times do |n|
       first_name = Faker::Name.first_name
       last_name = Faker::Name.last_name

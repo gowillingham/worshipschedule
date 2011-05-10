@@ -12,11 +12,7 @@
 <body id="page_<%= @context %>">
   <div class="container">
     <div class="span-24 last">
-      <div id="header">
-        <%= render :partial => 'shared/status' %>
-        <h1><%= header_text %></h1>
-        <%= render 'shared/tabstrip' %>
-      </div>
+      <%= render 'shared/header' %>
     </div>
     <div class="span-24 last">
       <div id="main">

@@ -3,22 +3,27 @@
   <% if @context == 'accounts' %>
   
     <%= render :partial => 'shared/status' %>
-    <h1><%= current_account.name %></h1>
+    <h1>
+      <% unless current_account.nil? %>
+        <%= current_account.name %></h1>
+      <% else %>
+        <%= APP_NAME %>
+      <% end %>
     
   <% elsif @context == 'teams' %>
   
     <div class="include_backlink">
       <ul><li><%= link_to "&laquo; Back to teams".html_safe, current_user %></li></ul>
-      <%= render :partial => 'shared/status' %>
+      <%= render :partial => 'shared/status', :locals => { :team => @team } %>
       <h1>
-        <%= "team name" %>
+        <%= @team.name%>
         <span><%= current_account.name %></span>
       </h1>
     </div>
     
   <% else %>
   
-    <%= render :partial => 'shared/status' %>
+    <%= render :partial => 'shared/status', :locals => { :team => @team } %>
     <h1><%= current_account.name %></h1>
     
   <% end %>

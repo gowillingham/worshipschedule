@@ -10,6 +10,11 @@ describe Account do
     Account.create! @attr
   end
   
+  describe "teams" do
+    
+    it "should have a teams method"
+  end
+  
   describe "owner" do
     it "should have an owner method" do
       owner = Factory(:user)
