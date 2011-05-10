@@ -1,5 +1,7 @@
 Worshipschedule::Application.routes.draw do
 
+  resources :teams, :only => [:show]
+
   resources :accounts do
     member do
       get :admins

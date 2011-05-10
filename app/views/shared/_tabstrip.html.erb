@@ -3,20 +3,39 @@
     <li><%= link_to 'Churches', sessions_accounts_path, :class => 'accounts' %></li>
     <li><%= link_to 'Sign out', signout_path, :method => :delete %></li>
   </ul>
+  <% if admin? %>
+    <ul class="tabs admin">
+      <li><%= link_to 'All people', users_path, :class => 'users' %></li>
+      <li><a href="#">Email</a></li>
+      <li><a href="#">Settings</a></li>
+    </ul>
+  <% end %>
+  
+<% elsif @context == 'teams' %>
+  <ul class="tabs">
+    <li><%= link_to "Overview", "/", :class => 'teams' %></li>
+    <li><%= link_to "Skills", "/" %></li>
+    <li><%= link_to "Events", "/" %></li>
+    <li><%= link_to "Files", "/" %></li>
+  </ul>
+  <% if admin? %>
+    <ul class="tabs admin">
+      <li><%= link_to "People and permissions", "/" %></li>
+      <li><%= link_to "Email", "/" %></li>
+    </ul>
+  <% end %>
+  
 <% else %>
   <ul class="tabs">
     <li><%= link_to 'Dashboard', current_user, :class => 'dashboard' %></li>
     <li><%= link_to 'Churches', sessions_accounts_path, :class => 'accounts' %></li>
-    <li><a href="#">Your teams</a></li>
     <li><a href="#">Your events</a></li>
   </ul>
   <% if admin? %>
     <ul class="tabs admin">
       <li><%= link_to 'All people', users_path, :class => 'users' %></li>
-      <li><a href="#">Teams</a></li>
-      <li><a href="#">Events</a></li>
-      <li><a href="#">Files</a></li>
       <li><a href="#">Email</a></li>
+      <li><a href="#">Settings</a></li>
     </ul>
   <% end %>
 <% end %>

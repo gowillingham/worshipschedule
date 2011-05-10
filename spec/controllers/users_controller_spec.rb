@@ -32,6 +32,8 @@ describe UsersController do
       get :show, :id => @user
       assigns(:user).should == @user
     end
+    
+    it "should have a new team link in the content header"
   end
 
   describe "GET 'new'" do

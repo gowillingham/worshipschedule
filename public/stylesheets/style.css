@@ -6,7 +6,11 @@ body                    {font-family:"Lucida Grande",verdana,arial,helvetica,san
 
 #header                                 {padding:0.5em 1em 0 1em;background-color:#c5e2e9;overflow:hidden;}
 #header .status                         {float:right;font-size:.9em;}
-#header h1                              {font-size:2em;margin:0.5em 0 1em 0;}
+#header h1                              {font-size:2em;margin:.5em 0 1em 0;}
+#header h1 span                         {font-size:.7em;color:#485c8a;font-weight:normal;}
+#header .include_backlink h1            {clear:both;margin:.5em 0 .5em 0;padding-top:.25em;}
+#header .include_backlink ul            {float:left;position:relative;top:-.1em;margin:0;padding:0;list-style-type:none;}
+#header .include_backlink li            {margin:0;padding:0;display:inline;}
 
 #main                                   {padding:1.0em;}
 #main .content                          {background-color:#fff;overflow:hidden;}
@@ -191,4 +195,5 @@ ul.admin                    {float:right;}
 /* setting selected tabs */
 body#page_dashboard .tabs li a.dashboard,
 body#page_users .tabs li a.users,
+body#page_teams .tabs li a.teams,
 body#page_accounts .tabs li a.accounts           {background-color:#e5e5e5;font-weight:bold;color:#000;}
