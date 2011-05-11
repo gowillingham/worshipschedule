@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110510140057) do
+ActiveRecord::Schema.define(:version => 20110511151437) do
 
   create_table "accounts", :force => true do |t|
     t.string   "name"
@@ -37,6 +37,7 @@ ActiveRecord::Schema.define(:version => 20110510140057) do
     t.integer  "account_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "display_banner", :default => false
   end
 
   add_index "teams", ["name"], :name => "index_teams_on_name"

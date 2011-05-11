@@ -1,0 +1,35 @@
+<div class="content shadow">
+  <div class="header">
+    <h2>Team settings</h2>
+  </div>
+  <div class="form">
+    <%= form_for @team, :url => { :action => 'update' }  do |f| %>
+      <%= render 'shared/errors', :object => @team %>
+      
+      <h3>Team name</h3>
+      <p class="block_intro">The team name appears at the top of every page. </p>
+      <div class="block">
+        <%= f.text_field :name %>
+      </div>
+      
+      <h3>Overview page announcement</h3>
+      <p class="block_intro">
+        Create an announcement that appears at the top of this teams's Overview page.
+        You can use this to describe the project, to make a special announcement, etc.
+        Just enter the text below and check the "Yes, display this announcement" checkbox.
+      </p>
+      <div class="block">
+        <%= f.text_area :banner_text, :cols => 50, :rows => 10 %>
+        <%= f.check_box :display_banner %>
+        <label for="team_display_banner">
+          Yes, display this announcement on the overview page
+        </label>
+      </div>
+      
+      <div class="footer">
+        <%= f.submit "Save changes" %>
+        or <%= link_to "Cancel", @team, :class => 'cancel' %>
+      </div>
+    <% end %>
+  </div>
+</div>

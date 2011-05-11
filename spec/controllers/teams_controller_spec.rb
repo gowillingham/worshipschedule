@@ -3,20 +3,64 @@ require 'spec_helper'
 describe TeamsController do
   render_views
 
-  describe "GET 'show'" do
+  before(:each) do
+    @signed_in_user = Factory(:user, :email => Factory.next(:email))
+    @account = Factory(:account)
+    @signed_in_user.accounts << @account
+    
+    signin_user @signed_in_user
+    controller.set_session_account(@account)
+  end
+  
+  describe "GET 'edit'" do
     
     before(:each) do
-      @signed_in_user = Factory(:user, :email => Factory.next(:email))
-      @account = Factory(:account)
-      @signed_in_user.accounts << @account
-      
-      signin_user @signed_in_user
-      controller.set_session_account(@account)
+      @team = @account.teams[0]
     end
+    
+    it "should only allow authenticated access" do
+      controller.sign_out
+      get :edit, :id => @team
+      response.should redirect_to(signin_path)
+    end
+        
+    describe "for admin users" do
+      
+      before(:each) do
+        accountship = @signed_in_user.accountships.where('account_id = ?', @account.id).first
+        accountship.admin = true
+        accountship.save
+      end
+      
+      it "should allow access" do
+        get :edit, :id => @team
+        response.should render_template('edit')
+      end
+      
+      it "should show a delete link in the sidebar"
+    end
+    
+    describe "for non-admin users" do
+      
+      it "should deny access" do
+        get :edit, :id => @account.teams[0]
+        response.should redirect_to(@signed_in_user)
+      end
+    end
+    
+  end
+    
+  describe "GET 'show'" do
     
     it "should be successful" do
       get :show, :id => @account.teams[0]
       response.should be_success
+    end
+    
+    it "should only allow authenticated access" do
+      controller.sign_out
+      get :show, :id => @account.teams[0]
+      response.should redirect_to(signin_path)
     end
     
     it "should have a back to dashboard link" do
@@ -29,6 +73,8 @@ describe TeamsController do
       response.should have_selector('h1', :content => @account.teams[0].name)
       response.should have_selector('span', :content => @account.name)
     end
+    
+    it "should display team.banner_text"
     
     describe "for admin users" do
       
@@ -57,6 +103,8 @@ describe TeamsController do
     end
     
     describe "for non-admin users" do
+      
+      it "should not display the team settings link"
       
       it "should show the correct tabs" do
         get :show, :id => @account.teams[0]

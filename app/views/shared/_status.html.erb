@@ -1,6 +1,6 @@
 <div class="status">
-  <%if @context == 'teams' %>
-    <%= link_to "Team settings", "#" %>
+  <%if (@context == 'teams') || (@context == 'team_settings') %>
+    <%= link_to "Team settings", edit_team_path(@team), :class => 'settings' %>
   <% else %>
     <%= current_user.name_or_email %>
   <% end %>
