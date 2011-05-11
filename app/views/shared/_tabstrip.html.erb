@@ -7,7 +7,9 @@
 <% elsif @context == 'teams' %>
   <ul class="tabs">
     <li><%= link_to "Overview", "/", :class => 'teams' %></li>
-    <li><%= link_to "Skills", "/" %></li>
+    <% if admin? %>
+      <li><%= link_to "Skills", "/" %></li>
+    <% end %>
     <li><%= link_to "Events", "/" %></li>
     <li><%= link_to "Files", "/" %></li>
   </ul>

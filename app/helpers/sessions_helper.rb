@@ -15,6 +15,7 @@ module SessionsHelper
       set_session_account account
       redirect_to user
     else
+      @context = 'accounts'
       redirect_to sessions_accounts_path
     end
   end
@@ -42,7 +43,18 @@ module SessionsHelper
   end
   
   def admin?
-    current_user.accountships.find_by_account_id(current_account.id).admin?
+    unless current_account.nil?
+      
+      accountship = current_user.accountships.where('account_id = ?', current_account.id).first
+      unless accountship.nil?
+        accountship.admin?
+      else
+        false
+      end
+      
+    else
+      false
+    end
   end
   
   def owner?

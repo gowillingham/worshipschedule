@@ -1,5 +1,9 @@
 <div class="status">
-  <%= current_user.name_or_email %>
+  <%if @context == 'teams' %>
+    <%= link_to "Team settings", "#" %>
+  <% else %>
+    <%= current_user.name_or_email %>
+  <% end %>
   | <%= link_to 'my info', edit_user_path(current_user) %>
   | <%= link_to 'sign out', signout_path, :method => :delete %>
   | <a href="#">Help</a>

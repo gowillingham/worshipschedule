@@ -12,7 +12,10 @@ describe Account do
   
   describe "teams" do
     
-    it "should have a teams method"
+    it "should have a teams method" do
+      account = Account.create @attr
+      account.should respond_to(:teams)
+    end
   end
   
   describe "owner" do
