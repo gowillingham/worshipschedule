@@ -10,7 +10,7 @@
         <%= APP_NAME %>
       <% end %>
     
-  <% elsif @context == 'teams' %>
+  <% elsif (@context == 'teams') || (@context == 'team_settings') %>
   
     <div class="include_backlink">
       <ul><li><%= link_to "&laquo; Back to teams".html_safe, current_user %></li></ul>

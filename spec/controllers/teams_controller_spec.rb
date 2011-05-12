@@ -12,6 +12,70 @@ describe TeamsController do
     controller.set_session_account(@account)
   end
   
+  describe "PUT 'update'" do
+    
+    before(:each) do
+      @team = @account.teams[0]
+      @attr = {
+        :name => 'New name',
+        :banner_text => 'banner text',
+        :display_banner => false
+      }
+    end
+    
+    it "should only allow authenticated access" do
+      controller.sign_out
+      put :update, :id => @team, :team => @attr
+      response.should redirect_to(signin_path)
+    end
+    
+    it "should only allow admin access" do
+      put :update, :id => @team, :team => @attr
+      response.should redirect_to(user_path(@signed_in_user))
+    end
+    
+    describe "for admin users" do
+      
+      before(:each) do
+        accountship = @signed_in_user.accountships.where('account_id = ?', @account.id).first
+        accountship.admin = true
+        accountship.save
+      end
+      
+      it "should allow access" do
+        put :update, :id => @team, :team => @attr
+        response.should be_success
+      end
+      
+      it "should require a name" do
+        put :update, :id => @team, :team => @attr.merge(:name => '')
+        response.should render_template('edit')
+        response.should have_selector("div#error_explanation")
+      end
+      
+      it "should update the team given valid attributes" do
+        put :update, :id => @team, :team => @attr
+        @attr[:name].should eq(Team.find(@team.id).name)
+        @attr[:banner_text].should eq(Team.find(@team.id).banner_text)
+        @attr[:display_banner].should eq(Team.find(@team.id).display_banner)
+      end
+      
+      it "should not update the team given invalid attributes" do
+        put :update, :id => @team, :team => @attr.merge(:name => '', :banner_text => 'different banner text')
+        @team.name.should eq(Team.find(@team.id).name)
+        @team.banner_text.should eq(Team.find(@team.id).banner_text)
+      end
+      
+      it "should render edit with flash message on success" do
+        put :update, :id => @team, :team => @attr
+        response.should render_template('edit')
+        flash[:success].should =~ /settings have been updated/i
+      end
+      
+      it "should not allow update to team that doesn't belong to their account"
+    end
+  end
+  
   describe "GET 'edit'" do
     
     before(:each) do
@@ -24,6 +88,12 @@ describe TeamsController do
       response.should redirect_to(signin_path)
     end
         
+    it "should have the team name and account name in the header" do
+      get :edit, :id => @team
+      response.should have_selector('h1', :content => @account.teams[0].name)
+      response.should have_selector('span', :content => @account.name)
+    end
+    
     describe "for admin users" do
       
       before(:each) do
@@ -37,7 +107,11 @@ describe TeamsController do
         response.should render_template('edit')
       end
       
-      it "should show a delete link in the sidebar"
+      it "should show a delete link in the sidebar" do
+        get :edit, :id => @team
+        response.should have_selector('a', :href => team_path(@team))
+        response.should have_selector('a', :content => "Yes, I understand - delete this team")
+      end
     end
     
     describe "for non-admin users" do

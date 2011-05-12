@@ -1,0 +1,10 @@
+<div id="sidebar">
+  <h1>Delete this team?</h1>
+  <p>
+    Deleting a team <strong>immediately and permanently deletes</strong> all the data associated with this team
+    (events, event teams, schedules, files, etc).
+    <strong>There is no Undo</strong> so make sure you're absolutely sure you want to delete this team.
+    <br /><br />
+    <%= link_to "Yes, I understand - delete this team".html_safe, team_path(@team), :method => :delete, :class => 'cancel', :confirm => "Are you sure you want to delete this team?\nNote: There is no undo.\n" %>
+  </p>
+</div>

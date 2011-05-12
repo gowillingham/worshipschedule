@@ -3,7 +3,7 @@ class Account < ActiveRecord::Base
 
   belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_id'
   
-  has_many :teams
+  has_many :teams, :dependent => :destroy
   has_many :accountships
   has_many :users, :through => :accountships
   

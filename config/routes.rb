@@ -1,6 +1,6 @@
 Worshipschedule::Application.routes.draw do
 
-  resources :teams, :only => [:show, :edit, :update]
+  resources :teams, :only => [:show, :edit, :update, :delete]
 
   resources :accounts do
     member do

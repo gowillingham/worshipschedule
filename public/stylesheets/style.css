@@ -127,7 +127,7 @@ div.big_button a:hover                  {background-color:transparent;color:#000
 
 #sidebar                            {margin:1em 1em 1em 0}
 #sidebar h1                         {background-color:#edf3fe;color:#444;padding:0.75em;font-weight:bold;font-size:1em;}
-#sidebar p                          {font-size:1.0em;line-height:01.3em;margin:0.5em 0.5em 2.0em;}
+#sidebar p                          {font-size:1.0em;line-height:01.3em;margin:1em 0.5em 2.0em;}
 
 #admin_info            {background-color:#ffffcc;padding:.5em .75em;}
 #admin_info h1         {font-size:1.1em;background-color:transparent;border:none;margin:0;padding:0.75em 0.25em;}
