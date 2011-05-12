@@ -99,6 +99,7 @@ class UsersController < ApplicationController
   end
 
   def show
+    @teams = current_account.teams
     @user = User.find(params[:id])
     unless current_account.users.exists? @user
       flash[:error] = "You don't have permission to access that person. "

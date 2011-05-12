@@ -2,5 +2,11 @@
   <div class="header">
     <h2>Team overview and activity</h2>
   </div>
-  <p>content here ..</p>
+  <div class="dashboard">
+    <% unless @team.banner_text.blank? %>
+      <% if @team.display_banner? %>
+        <p class="banner_text"><%= @team.banner_text %></p>
+      <% end %>
+    <% end %>
+  </div>
 </div>

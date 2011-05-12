@@ -1,0 +1,15 @@
+<div class="content shadow">
+  <div class="header">
+    <h2>New team</h2>
+  </div>
+  <div class="form">
+    <%= form_for @team, :url => { :action => 'create' }  do |f| %>
+      <%= render 'shared/errors', :object => @team %>
+      <%= render 'fields', :f => f %>      
+      <div class="footer">
+        <%= f.submit "Save changes" %>
+        or <%= link_to "Cancel", @team, :class => 'cancel' %>
+      </div>
+    <% end %>
+  </div>
+</div>

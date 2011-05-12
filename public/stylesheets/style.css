@@ -18,6 +18,7 @@ body                    {font-family:"Lucida Grande",verdana,arial,helvetica,san
 #main .content .header h1               {font-size:1.3em;font-weight:bold;margin:1.5em 0;padding:0;}
 #main .content .header h2               {font-size:1.1em;font-weight:bold;margin:.75em 0;padding:0;}
 #main .content .header .big_button      {float:right;}
+#main .content .header ul               {float:right;display:inline;font-weight:normal;list-style:none;margin:0.75em 0;padding:0;}
 
 #main .content .form                          {padding:.4em 4em 3em 1.5em;}
 #main .content .form div.fieldset_desc        {color:#777;line-height:1.3em;}
@@ -88,6 +89,7 @@ body                    {font-family:"Lucida Grande",verdana,arial,helvetica,san
 
 #main .dashboard                        {padding:.5em 1.75em;}
 #main .dashboard h1                     {font-size:1.2em;font-weight:bold;margin:1em 0;padding:0;}
+#main .dashboard p.banner_text          {font-size:1.2em;line-height:1.3em;margin-top:2em;}
 #main .dashboard table                  {margin:0 0 1em;}
 #main .dashboard table td               {border-bottom:solid 1px #efefef;padding:.3em .25em;}
 #main .dashboard table th               {font-size:1.1em;font-weight:bold;padding:.25em;}
@@ -175,9 +177,9 @@ a.cancel:hover            {color:#fff;background-color:red;}
 .field_with_errors        {display:inline;}
 .field_with_errors label  {color:red;font-weight:bold !important;}
 .field_with_errors input  {border-color:red;}
-#error_explanation        {margin:1em;}
-#error_explanation h3     {font-size:1.0em;font-weight:bold;}
-#error_explanation ol     {margin-bottom:0;}
+#main #error_explanation        {margin:1em;}
+#main #error_explanation h3     {font-size:1.0em;font-weight:bold;margin:0 0 .5em;}
+#main #error_explanation ol     {margin-bottom:0;}
 
 
 .round        {-moz-border-radius:10px;-webkit-border-radius:10px;border-radius:10px;}

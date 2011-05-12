@@ -12,6 +12,66 @@ describe TeamsController do
     controller.set_session_account(@account)
   end
   
+  describe "POST 'create'" do
+    
+    before(:each) do
+      @attr = {
+        :name => 'New name',
+        :banner_text => 'banner text',
+        :display_banner => false
+      }
+    end
+    
+    it "should redirect non-admin users" do
+      post :create, :team => @attr
+      response.should redirect_to(@signed_in_user)
+    end
+    
+    describe "for admin" do
+      
+      before(:each) do
+        accountship = @signed_in_user.accountships.where('account_id = ?', @account.id).first
+        accountship.admin = true
+        accountship.save
+      end
+      
+      it "should create a team given valid attributes" do
+        lambda do
+          post :create, :team => @attr
+        end.should change(Team, :count).by(1)
+      end
+      
+      it "should not create team given invalid attributes" do
+        lambda do
+          post :create, :team => @attr.merge(:name => '')
+        end.should change(Team, :count).by(0)
+      end
+      
+      it "should redirect to teams#show with flash for the new team" do
+        post :create, :team => @attr
+        response.should redirect_to(team_path(assigns(:team)))
+        flash[:success] =~ /successfully saved/i
+      end
+    end
+  end
+  
+  describe "GET 'new'" do
+
+    it "should redirect non-admin users" do
+      get :new
+      response.should redirect_to(@signed_in_user)
+    end
+    
+    it "should allow admin users" do
+      accountship = @signed_in_user.accountships.where('account_id = ?', @account.id).first
+      accountship.admin = true
+      accountship.save
+      
+      get :new
+      response.should render_template('new')
+    end
+  end
+  
   describe "PUT 'update'" do
     
     before(:each) do
@@ -71,8 +131,6 @@ describe TeamsController do
         response.should render_template('edit')
         flash[:success].should =~ /settings have been updated/i
       end
-      
-      it "should not allow update to team that doesn't belong to their account"
     end
   end
   
@@ -88,12 +146,6 @@ describe TeamsController do
       response.should redirect_to(signin_path)
     end
         
-    it "should have the team name and account name in the header" do
-      get :edit, :id => @team
-      response.should have_selector('h1', :content => @account.teams[0].name)
-      response.should have_selector('span', :content => @account.name)
-    end
-    
     describe "for admin users" do
       
       before(:each) do
@@ -105,6 +157,12 @@ describe TeamsController do
       it "should allow access" do
         get :edit, :id => @team
         response.should render_template('edit')
+      end
+      
+      it "should have the team name and account name in the header" do
+        get :edit, :id => @team
+        response.should have_selector('h1', :content => @account.teams[0].name)
+        response.should have_selector('span', :content => @account.name)
       end
       
       it "should show a delete link in the sidebar" do
@@ -148,7 +206,10 @@ describe TeamsController do
       response.should have_selector('span', :content => @account.name)
     end
     
-    it "should display team.banner_text"
+    it "should display team.banner_text" do
+      get :show, :id => @account.teams[0]
+
+    end
     
     describe "for admin users" do
       
@@ -178,7 +239,10 @@ describe TeamsController do
     
     describe "for non-admin users" do
       
-      it "should not display the team settings link"
+      it "should not display the team settings link" do
+        get :show, :id => @account.teams[0]
+        response.should_not have_selector('a', :content => 'Team settings')
+      end
       
       it "should show the correct tabs" do
         get :show, :id => @account.teams[0]

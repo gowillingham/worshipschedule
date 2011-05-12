@@ -42,7 +42,20 @@ describe UsersController do
       assigns(:user).should == @user
     end
     
-    it "should have a new team link in the content header"
+    it "should show a new team link to admin user" do
+      get :show, :id => @user
+      response.should have_selector('a', :content => 'New team')
+      response.should have_selector('a', :href => new_team_path)
+    end
+    
+    it "should not show a new team link to non-admin user" do
+      @accountship.admin = false
+      @accountship.save
+      
+      get :show, :id => @user
+      response.should_not have_selector('a', :content => 'New team')
+      response.should_not have_selector('a', :href => new_team_path)
+    end
   end
 
   describe "GET 'new'" do
@@ -73,7 +86,7 @@ describe UsersController do
       it "should not create a user" do
         lambda do
           post :create, :user => @attr
-        end.should_not change(User, :count)
+        end.should change(User, :count).by(0)
       end
       
       it "should render the new page" do

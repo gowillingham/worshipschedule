@@ -7,4 +7,8 @@ module UsersHelper
       :gravatar => options
     )
   end
+  
+  def link_for_new_team
+    "<ul><li>#{link_to "New team", new_team_path, :class => 'cancel'}</li></ul>".html_safe
+  end
 end
