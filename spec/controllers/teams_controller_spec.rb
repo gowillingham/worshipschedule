@@ -12,6 +12,40 @@ describe TeamsController do
     controller.set_session_account(@account)
   end
   
+  describe "DELETE 'destroy;" do
+    
+    before(:each) do
+      @team = @account.teams[0]
+    end
+    
+    it "should redirect for non-admin users" do
+      delete :destroy, :id => @team
+      response.should redirect_to(@signed_in_user)
+    end
+    
+    describe "for admin user" do
+      
+      before(:each) do
+        accountship = @signed_in_user.accountships.where('account_id = ?', @account.id).first
+        accountship.admin = true
+        accountship.save
+      end
+      
+      it "should remove the team" do
+        lambda do
+          delete :destroy, :id => @team
+        end.should change(Team, :count).by(-1)
+      end
+      
+      it "should redirect to users#show with flash message" do
+        delete :destroy, :id => @team
+        
+        response.should redirect_to(@signed_in_user)
+        flash[:success] =~ /removed/i
+      end
+    end
+  end
+  
   describe "POST 'create'" do
     
     before(:each) do

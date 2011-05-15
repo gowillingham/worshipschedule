@@ -4,7 +4,7 @@
     <li><%= link_to 'Sign out', signout_path, :method => :delete %></li>
   </ul>
   
-<% elsif (@context == 'teams') || (@context == 'team_settings') %>
+<% elsif controller.controller_name == 'teams' %>
   <ul class="tabs">
     <li><%= link_to "Overview", @team, :class => 'teams' %></li>
     <% if admin? %>

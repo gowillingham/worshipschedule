@@ -1,6 +1,13 @@
 class TeamsController < ApplicationController
   before_filter :require_account_admin, :except => 'show'
   
+  def destroy
+    @team = Team.find(params[:id])
+    @team.destroy
+    flash[:success] = 'The team was removed from your account'
+    redirect_to current_user
+  end
+  
   def show
     @team = Team.find(params[:id])
     @sidebar_partial = 'users/sidebar/placeholder'

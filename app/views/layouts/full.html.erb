@@ -9,7 +9,7 @@
   <%= stylesheet_link_tag 'style',  :media => 'screen' %>
   <!--[if IE]><link rel="stylesheet" href="blueprint/ie.css" type="text/css" media="screen, projection" /><![endif]-->  
 </head>
-<body id="page_<%= @context %>">
+<body class="<%= "#{controller.controller_name} #{controller.action_name}" %>">
   <div class="container">
     <div class="span-24 last">
       <%= render 'shared/header' %>

@@ -1,6 +1,6 @@
 <div id="header">
   
-  <% if @context == 'accounts' %>
+  <% if controller.controller_name == 'accounts' %>
   
     <%= render :partial => 'shared/status' %>
     <h1>
@@ -10,7 +10,7 @@
         <%= APP_NAME %>
       <% end %>
     
-  <% elsif (@context == 'teams') || (@context == 'team_settings') %>
+  <% elsif controller.controller_name == 'teams' %>
   
     <div class="include_backlink">
       <ul><li><%= link_to "&laquo; Back to teams".html_safe, current_user %></li></ul>

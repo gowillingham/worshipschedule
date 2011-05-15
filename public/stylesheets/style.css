@@ -201,11 +201,11 @@ ul.admin                    {float:right;}
 
 
 /* setting selected tabs */
-body#page_dashboard .tabs li a.dashboard,
-body#page_users .tabs li a.users,
-body#page_teams .tabs li a.teams,
-body#page_accounts .tabs li a.accounts           {background-color:#e5e5e5;font-weight:bold;color:#000;}
+body.users.show .tabs li a.dashboard,
+body.users.index .tabs li a.users,
+body.teams.show .tabs li a.teams,
+body.sessions.accounts .tabs li a.accounts           {background-color:#e5e5e5;font-weight:bold;color:#000;}
 
 /* setting selected team settings link */
-body#page_team_settings .status a.settings            {color:black;text-decoration:none;font-weight:bold;}
-body#page_team_settings .status a.settings:hover      {background-color:transparent;}
+body.teams.edit .status a.settings            {color:black;text-decoration:none;font-weight:bold;}
+body.teams.edit .status a.settings:hover      {background-color:transparent;}
