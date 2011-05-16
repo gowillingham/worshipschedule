@@ -1,0 +1,18 @@
+<div class="content shadow">
+  <div class="header">
+    <h2>Your account details</h2>
+  </div>
+  <div class="form">
+    <%= form_for @account, :url => { :action => 'update' } do |f| %>
+      <%= render 'shared/errors', :object => @account %>
+            
+      <h3>Want to make someone else the account owner? </h3>
+      <p class="block_intro">
+        The account owner is the only person that can access this account page, upgrade, downgrade,
+        change billing information, access invoices, and cancel the account.
+        The account owner also has permanent access to all teams.
+        Once you make this change you'll no longer be the account owner.
+      </p>
+    <% end %>
+  </div>
+</div>

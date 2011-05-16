@@ -15,7 +15,6 @@ module SessionsHelper
       set_session_account account
       redirect_to user
     else
-      @context = 'accounts'
       redirect_to sessions_accounts_path
     end
   end

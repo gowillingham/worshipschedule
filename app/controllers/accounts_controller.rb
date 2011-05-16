@@ -1,7 +1,12 @@
 class AccountsController < ApplicationController
   skip_before_filter :authenticate, :only => [:new, :create]
   skip_before_filter :check_account, :except => [:show]
-  before_filter :require_account_admin, :only => [:admins, :update_admins]
+  before_filter :require_account_admin, :only => [:admins, :update_admins, :edit]
+  
+  def edit
+    @account = current_account
+    @sidebar_partial = 'users/sidebar/placeholder'
+  end
   
   def new
     @title = "New account"

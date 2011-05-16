@@ -1,6 +1,6 @@
 <div class="status">
   <% if admin? %>
-    <% if controller.controller_name == 'teams' %>
+    <% if ['teams'].include?(controller.controller_name) && !['create', 'new'].include?(controller.action_name) %>
       <%= link_to "Team settings", edit_team_path(@team), :class => 'settings' %>
     <% else %>
       <%= current_user.name_or_email %>
@@ -8,7 +8,7 @@
   <% else %>
     <%= current_user.name_or_email %>
   <% end %>
-  | <%= link_to 'my info', edit_user_path(current_user) %>
-  | <%= link_to 'sign out', signout_path, :method => :delete %>
+  | <%= link_to 'My info', edit_user_path(current_user) %>
+  | <%= link_to 'Sign out', signout_path, :method => :delete %>
   | <a href="#">Help</a>
 </div>

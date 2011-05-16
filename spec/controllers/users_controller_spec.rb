@@ -15,6 +15,47 @@ describe UsersController do
     signin_user @signed_in_user
     controller.set_session_account(@account)
   end
+  
+  describe "when displaying tabs" do
+    
+    it "should show the correct tabs to regular users" do
+      @accountship.admin = false
+      @accountship.save
+      
+      get :show, :id => @signed_in_user
+      
+      response.should have_selector('ul.tabs li a', :content => 'Dashboard')
+      response.should have_selector('ul.tabs li a', :content => 'Churches')
+      response.should have_selector('ul.tabs li a', :content => 'Events')
+      response.should_not have_selector('ul.tabs li a', :content => 'All people')
+      response.should_not have_selector('ul.tabs li a', :content => 'Email')
+      response.should_not have_selector('ul.tabs li a', :content => 'Account')
+    end
+    
+    it "should show the correct tabs to admin users" do
+      new_owner = Factory(:user, :email => Factory.next(:email))
+      @account.owner = new_owner
+      @account.save
+      
+      get :show, :id => @signed_in_user
+      
+      response.should have_selector('ul.tabs li a', :content => 'Dashboard')
+      response.should have_selector('ul.tabs li a', :content => 'Churches')
+      response.should have_selector('ul.tabs li a', :content => 'Events')
+      response.should have_selector('ul.tabs li a', :content => 'All people')
+      response.should have_selector('ul.tabs li a', :content => 'Email')
+      response.should_not have_selector('ul.tabs li a', :content => 'Account')
+    end
+    
+    it "should show the correct toabs to the account owner" do
+      @account.owner = @signed_in_user
+      @account.save
+      
+      get :show, :id => @signed_in_user
+      
+      response.should have_selector('ul.tabs li a', :content => 'Account')
+    end
+  end
 
   describe "GET 'show'" do
     

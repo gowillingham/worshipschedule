@@ -1,6 +1,6 @@
 <div id="header">
   
-  <% if controller.controller_name == 'accounts' %>
+  <% if (controller.controller_name == 'accounts') || (controller.controller_name == 'sessions')  %>
   
     <%= render :partial => 'shared/status' %>
     <h1>

@@ -32,7 +32,6 @@ class SessionsController < ApplicationController
   def accounts
     @accounts = current_user.accounts
     @title = "Churches for #{current_user.name_or_email}"
-    @context = "accounts"
     @sidebar_partial = 'users/sidebar/placeholder'
   end
   

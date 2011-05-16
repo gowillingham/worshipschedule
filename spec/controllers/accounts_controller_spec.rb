@@ -7,6 +7,12 @@ describe AccountsController do
     @user = Factory(:user)
   end
   
+  describe "GET 'edit'" do
+    
+    it "should not allow unauthenticated access"
+    it "should only allow access to owners"
+  end
+  
   describe "when not authenticated" do
     
     describe "GET 'new'" do

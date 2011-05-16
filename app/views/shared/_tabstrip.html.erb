@@ -1,4 +1,4 @@
-<% if @context == 'accounts' %>
+<% if controller.controller_name == 'accounts' %>
   <ul class="tabs">
     <li><%= link_to 'Churches', sessions_accounts_path, :class => 'accounts' %></li>
     <li><%= link_to 'Sign out', signout_path, :method => :delete %></li>
@@ -24,13 +24,15 @@
   <ul class="tabs">
     <li><%= link_to 'Dashboard', current_user, :class => 'dashboard' %></li>
     <li><%= link_to 'Churches', sessions_accounts_path, :class => 'accounts' %></li>
-    <li><a href="#">Your events</a></li>
+    <li><a href="#">Events</a></li>
   </ul>
   <% if admin? %>
     <ul class="tabs admin">
       <li><%= link_to 'All people', users_path, :class => 'users' %></li>
       <li><a href="#">Email</a></li>
-      <li><a href="#">Settings</a></li>
+      <% if current_account.owner == current_user %>
+        <li><a href="#">Account</a></li>
+      <% end %>
     </ul>
   <% end %>
 <% end %>
