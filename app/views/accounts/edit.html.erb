@@ -7,12 +7,26 @@
       <%= render 'shared/errors', :object => @account %>
             
       <h3>Want to make someone else the account owner? </h3>
-      <p class="block_intro">
-        The account owner is the only person that can access this account page, upgrade, downgrade,
-        change billing information, access invoices, and cancel the account.
-        The account owner also has permanent access to all teams.
-        Once you make this change you'll no longer be the account owner.
-      </p>
+      <div class="block">
+        <p>
+          The account owner is the <strong>only</strong> person that can access this account page, upgrade, downgrade,
+          change billing information, and cancel the account.
+          The account owner also has permanent access to all teams.
+          Once you make this change you'll no longer be the account owner.
+        </p>
+        <%= f.select :owner_id, current_account.users.order('CASE WHEN (LENGTH(last_name) = 0) THEN LOWER(email) ELSE LOWER(last_name) END').map { |user| [user.name_or_email, user.id] } %>
+        <%= f.submit 'Make this person the account owner', :confirm => "Are you sure you want to transfer ownership of this account?\nNote: you will no longer be able to access this page!\n"  %>
+      </div>
     <% end %>
+    
+    <%= form_for @account, :url => { :action=> 'update' } do |f| %>      
+      <h3>Want to change your account name? </h3>
+      <div class="block">
+        <p>Your <%= APP_NAME %> account name appears at the top of every page. </p>
+        <%= f.text_field :name %>
+        <%= f.submit 'Change the name' %>
+      </div>
+    <% end %>
+    
   </div>
 </div>

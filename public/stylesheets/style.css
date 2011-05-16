@@ -35,6 +35,7 @@ body                    {font-family:"Lucida Grande",verdana,arial,helvetica,san
 #main .content .form .block                   {margin:0 0 2.5em 0;background-color:#f0f0f0;padding:.4em;}
 #main .content .form .block textarea          {width:40em;height:7em;}
 #main .content .form .block label             {font-weight:normal;color:#666;}
+#main .content .form .block p                 {color:#666;font-size:1em;line-height:1.3em;margin-bottom:1.5em;}
 
 #main .content .form fieldset textarea        {width:40em;height:10em;}
 #main .content .form fieldset                 {border:none;background-color:#e9e9e9;padding:1em .25em;margin:.3em 0 1em 0;}
@@ -204,6 +205,7 @@ ul.admin                    {float:right;}
 body.users.show .tabs li a.dashboard,
 body.users.index .tabs li a.users,
 body.teams.show .tabs li a.teams,
+body.accounts.edit .tabs li a.account,
 body.sessions.accounts .tabs li a.accounts           {background-color:#e5e5e5;font-weight:bold;color:#000;}
 
 /* setting selected team settings link */

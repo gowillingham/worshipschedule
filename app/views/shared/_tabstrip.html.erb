@@ -1,10 +1,10 @@
-<% if controller.controller_name == 'accounts' %>
+<% if ['accounts'].include?(controller.controller_name) && ['index'].include?(controller.action_name) %>
   <ul class="tabs">
     <li><%= link_to 'Churches', sessions_accounts_path, :class => 'accounts' %></li>
     <li><%= link_to 'Sign out', signout_path, :method => :delete %></li>
   </ul>
   
-<% elsif controller.controller_name == 'teams' %>
+<% elsif ['teams'].include?(controller.controller_name) %>
   <ul class="tabs">
     <li><%= link_to "Overview", @team, :class => 'teams' %></li>
     <% if admin? %>
@@ -31,7 +31,7 @@
       <li><%= link_to 'All people', users_path, :class => 'users' %></li>
       <li><a href="#">Email</a></li>
       <% if current_account.owner == current_user %>
-        <li><a href="#">Account</a></li>
+        <li><%= link_to 'Account', edit_account_path(current_account), :class => 'account' %></li>
       <% end %>
     </ul>
   <% end %>

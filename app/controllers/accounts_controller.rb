@@ -5,7 +5,7 @@ class AccountsController < ApplicationController
   
   def edit
     @account = current_account
-    @sidebar_partial = 'users/sidebar/placeholder'
+    @sidebar_partial = 'accounts/sidebar/edit'
   end
   
   def new
