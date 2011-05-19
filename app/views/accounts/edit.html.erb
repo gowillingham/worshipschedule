@@ -3,7 +3,7 @@
     <h2>Your account details</h2>
   </div>
   <div class="form">
-    <%= form_for @account, :url => { :action => 'update' } do |f| %>
+    <%= form_for @account, :url => { :action => 'owner' } do |f| %>
       <%= render 'shared/errors', :object => @account %>
             
       <h3>Want to make someone else the account owner? </h3>

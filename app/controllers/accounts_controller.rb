@@ -2,10 +2,47 @@ class AccountsController < ApplicationController
   skip_before_filter :authenticate, :only => [:new, :create]
   skip_before_filter :check_account, :except => [:show]
   before_filter :require_account_admin, :only => [:admins, :update_admins, :edit]
+  before_filter :require_account_owner, :only => [:edit, :update, :owner, :destroy]
+  
+  def destroy
+    current_account.destroy
+    sign_out
+    redirect_to root_url, :notice => "We're sorry to see you go! Your account has been deleted and your associated data destroyed. "
+  end
+  
+  def owner
+    @account = Account.find(current_account.id)
+    @new_owner = User.find(params[:account][:owner_id])
+    
+    if @account.users.exists?(@new_owner)
+      if @account.update_attributes(params[:account])
+        redirect_to current_user, :flash => { :success => 'The new owner was assigned to your account' }
+      else
+        @title = 'Settings'
+        @sidebar_partial = 'accounts/sidebar/edit'
+        render 'edit'
+      end
+    else
+      redirect_to edit_account_url(@account), :error => 'You must assign a person from your own account as owner'
+    end
+  end
+  
+  def update
+    @account = Account.find(current_account.id)
+    if @account.update_attributes(params[:account])
+      redirect_to edit_account_path(@account), :flash => { :success => 'The settings have been updated' }
+    else
+      @title = 'Settings'
+      @sidebar_partial = 'accounts/sidebar/edit'
+      render 'edit'
+    end
+  end
   
   def edit
     @account = current_account
+    @title = 'Settings'
     @sidebar_partial = 'accounts/sidebar/edit'
+    render 'edit'
   end
   
   def new

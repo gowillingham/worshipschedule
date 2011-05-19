@@ -6,6 +6,7 @@ Worshipschedule::Application.routes.draw do
     member do
       get :admins
       put :admins, :to => 'accounts#update_admins'
+      put :owner
     end
   end
   

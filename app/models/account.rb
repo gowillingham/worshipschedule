@@ -1,11 +1,13 @@
 class Account < ActiveRecord::Base
-  attr_accessible :name
+  attr_accessible :name, :owner_id
 
   belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_id'
   
   has_many :teams, :dependent => :destroy
   has_many :accountships
   has_many :users, :through => :accountships
+  
+  validates_presence_of :name
   
   def assign_administrators(ids, current_user)
     owner = self.owner

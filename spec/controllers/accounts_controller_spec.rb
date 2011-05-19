@@ -5,12 +5,187 @@ describe AccountsController do
   
   before(:each) do
     @user = Factory(:user)
+
+    @signed_in_user = Factory(:user, :email => Factory.next(:email))
+    @account = Factory(:account)
+    
+    @signed_in_user.accounts << @account
+    
+    signin_user @signed_in_user
+    controller.set_session_account(@account)
+  end
+  
+  describe "DELETE 'destroy'" do
+    
+    it "should not allow unauthenticated access" do
+      controller.sign_out
+      post :destroy, :id => @account
+      
+      response.should redirect_to(signin_path)
+    end
+    
+    it "should not allow access to non-owner" do
+      post :destroy, :id => @account
+      
+      response.should redirect_to(@signed_in_user)
+      flash[:error] =~ /only the account owner/i
+    end
+    
+    it "should delete dependent objects"
+    
+    describe "for account owner" do
+      
+      before(:each) do
+        @account.owner = @signed_in_user
+        @account.save
+      end
+      
+      it "should remove the account" do
+        lambda do
+          post :destroy, :id => @account
+        end.should change(Account, :count).by(-1)
+      end
+      
+      it "should sign out and redirect to '/'" do
+        post :destroy, :id => @account
+        
+        response.should redirect_to(root_path)
+        controller.should_not be_signed_in
+        flash[:notice] =~ /sorry to see you go/i
+      end
+    end
+  end
+  
+  describe "PUT 'update'" do
+    
+    before(:each) do
+      @accountship = @signed_in_user.accountships.find_by_account_id(@account.id)
+      @accountship.admin = true
+      @accountship.save
+    end
+    
+    it "should not allow unauthenticated access" do
+      controller.sign_out
+      put :update, :id => @account
+      
+      response.should redirect_to(signin_path)
+    end
+    
+    it "should not allow access to non-owner" do
+      put :update, :id => @account
+      
+      response.should redirect_to(@signed_in_user)
+      flash[:error] =~ /only the account owner/i
+    end
+    
+    describe "for account owner" do
+      
+      before(:each) do
+        @account.owner = @signed_in_user
+        @account.save
+      end
+      
+      it "should change the name given valid attributes" do
+        put :update, :id => @account, :account => { :name => 'The new name' }
+        
+        Account.find(@account.id).name.should eq('The new name')
+      end
+      
+      it "should not change the name given invalid attributes" do
+        put :update, :id => @account, :account => { :name => '' }
+        
+        Account.find(@account.id).name.should eq(@account.name)
+        response.should render_template('edit')
+      end
+      
+      it "should redirect to accounts#edit on success" do
+        put :update, :id => @account, :account => { :name => 'The new name' }
+        
+        response.should redirect_to(edit_account_path(@account))
+        flash[:success] =~ /settings were changed/i
+      end
+    end
+  end
+  
+  describe "PUT 'owner'" do
+    
+    it "should not allow unauthenticated access" do
+      controller.sign_out
+      put :owner, :id => @account
+      
+      response.should redirect_to(signin_path)
+    end
+    
+    it "should not allow access to non-owner" do
+      put :owner, :id => @account
+      
+      response.should redirect_to(@signed_in_user)
+      flash[:error] =~ /only the account owner/i
+    end
+    
+    describe "for account owner" do
+ 
+      before(:each) do
+        @account.owner = @signed_in_user
+        @account.save
+      end
+      
+      it "should not change the owner to a non-account user" do
+        orphan_user = Factory(:user, :email => Factory.next(:email))
+        put :owner, :id => @account, :account => { :owner_id => orphan_user.id }
+        
+        Account.find(@account.id).owner.should_not eq(orphan_user)
+        flash[:error] =~ /must assign a person from your account/i
+      end
+      
+      it "should set a new owner given valid attributes" do
+        new_owner = Factory(:user, :email => Factory.next(:email))
+        @account.users << new_owner
+        put :owner, :id => @account, :account => { :owner_id => new_owner.id }
+        
+        Account.find(@account.id).owner.should eq(new_owner)
+      end
+      
+      it "should redirect to user#show on success" do
+        new_owner = Factory(:user, :email => Factory.next(:email))
+        @account.users << new_owner
+        put :owner, :id => @account, :account => { :owner_id => new_owner.id }
+        
+        response.should redirect_to(@signed_in_user)
+        flash[:success] =~ /new owner was assigned/i
+      end
+    end
   end
   
   describe "GET 'edit'" do
     
-    it "should not allow unauthenticated access"
-    it "should only allow access to owners"
+    before(:each) do
+      
+      @account.owner = @signed_in_user
+      @account.save
+    end
+    
+    it "should not allow unauthenticated access" do
+      controller.sign_out
+      get :edit, :id => @account
+      
+      response.should redirect_to(signin_path)
+    end
+    
+    it "should only allow access to account owner" do
+      different_owner = Factory(:user, :email => Factory.next(:email))
+      @account.owner = different_owner
+      @account.save
+      get :edit, :id => @account
+      
+      response.should redirect_to(@signed_in_user)
+      flash[:error] =~ /only the account owner/i
+    end
+    
+    it "should display a delete link" do
+      get :edit, :id => @account
+      response.should have_selector("a", :content => "I understand - please cancel my account")
+    end
   end
   
   describe "when not authenticated" do
@@ -131,14 +306,6 @@ describe AccountsController do
   describe "when authenticated" do
 
     before(:each) do
-      @signed_in_user = Factory(:user, :email => Factory.next(:email))
-      @account = Factory(:account)
-      
-      @signed_in_user.accounts << @account
-      
-      signin_user @signed_in_user
-      controller.set_session_account(@account)
-
       @admin = Factory(:user, :email => Factory.next(:email))
       @not_admin = Factory(:user, :email => Factory.next(:email))
       @owner = Factory(:user, :email => Factory.next(:email))
@@ -153,9 +320,6 @@ describe AccountsController do
       
       @account.owner = @owner
       @account.save
-      
-      #signin_user @admin
-      controller.set_session_account(@account)
     end
     
     describe "PUT 'update_admins" do
