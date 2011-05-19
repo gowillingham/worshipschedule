@@ -1,6 +1,8 @@
 Worshipschedule::Application.routes.draw do
 
-  resources :teams
+  resources :teams do
+    resources :memberships
+  end
 
   resources :accounts do
     member do

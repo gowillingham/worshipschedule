@@ -8,6 +8,8 @@ class User < ActiveRecord::Base
   
   has_many :accountships
   has_many :accounts, :through => :accountships
+  has_many :memberships
+  has_many :teams, :through => :memberships
   
   validates :first_name, :length => { :maximum => 50 }
   validates :last_name, :length => { :maximum => 50 }

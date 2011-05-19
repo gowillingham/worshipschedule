@@ -151,4 +151,19 @@ describe User do
       @user.should respond_to(:accounts)
     end
   end
+  
+  describe "memberships" do
+    
+    before(:each) do
+      @user = User.create!(@attr)
+    end
+    
+    it "should have a memberships method" do
+      @user.should respond_to(:memberships)
+    end
+    
+    it "should have a teams method" do
+      @user.should respond_to(:teams)
+    end
+  end
 end
