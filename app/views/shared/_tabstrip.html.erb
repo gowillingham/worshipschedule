@@ -16,10 +16,7 @@
   <% if admin? %>
     <ul class="tabs admin">
       <li><%= link_to "People and permissions", "/" %></li>
-      <% if current_account.owner == current_user %>
-        <li><%= link_to 'Account', edit_account_path(current_account), :class => 'account' %></li>
-      <% end %>
-        <li><%= link_to "Email", "/" %></li>
+      <li><%= link_to "Email", "/" %></li>
     </ul>
   <% end %>
   
