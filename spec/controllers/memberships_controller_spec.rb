@@ -79,6 +79,8 @@ describe MembershipsController do
       response.should have_selector("a", :content => @signed_in_user.email)
     end
     
+    it "should display account admin badge"
+    it "should display team admin badge"
     it "should display blank slate for no team members"
   end
 end

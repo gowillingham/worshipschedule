@@ -115,14 +115,15 @@ body                    {font-family:"Lucida Grande",verdana,arial,helvetica,san
 #main th                            {padding:.25em .75em;font-size:1.4em;background:#e9e9e9;font-weight:normal;}                                              
 #main th .link                      {font-size:0.8em;float:right;margin-top:.2em;}        
 
-#main table.persons td                          {width:25%;border:none;padding:2em 0.4em 0;}
-#main table.persons ul                          {list-style-type:none;}
-#main table.persons ul h4                       {margin:0;padding:0;font-weight:bold;}
-#main table.persons td .thumbnail               {float:left;margin-right:.75em;}
-#main table.persons td .thumbnail .gravatar     {margin:0;border:solid 1px #ddd;}
-#main table.persons td .thumbnail div           {color:white;font-weight:bold;padding:0.1em;font-size:0.9em;text-align:center}
-#main table.persons td .thumbnail div.admin     {background-color:#008000;}
-#main table.persons td .thumbnail div.owner     {background-color:#FC4B00}
+#main table.persons td                            {width:25%;border:none;padding:2em 0.4em 0;}
+#main table.persons ul                            {list-style-type:none;}
+#main table.persons ul h4                         {margin:0;padding:0;font-weight:bold;}
+#main table.persons td .thumbnail                 {float:left;margin-right:.75em;}
+#main table.persons td .thumbnail .gravatar       {margin:0;border:solid 1px #ddd;}
+#main table.persons td .thumbnail div             {color:white;font-weight:bold;padding:0.1em;font-size:0.9em;text-align:center}
+#main table.persons td .thumbnail div.admin       {background-color:#008000;}
+#main table.persons td .thumbnail div.owner       {background-color:#FC4B00}
+#main table.persons td .thumbnail div.team_admin  {background-color:#cc9900}
 
 div.big_button                          {margin:1.5em 0 0 0;padding:.1em;}
 div.big_button                          {border:solid 2px #bbb;background:#eee url("../images/icons/add.png") no-repeat 0.25em 50%;-moz-border-radius:1.3em;-webkit-border-radius:1.3em;border-radius:1.3em;}
