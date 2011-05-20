@@ -16,6 +16,7 @@ body                    {font-family:"Lucida Grande",verdana,arial,helvetica,san
 #main .content                          {background-color:#fff;overflow:hidden;}
 #main .content .header                  {background-color:#edf3fe;overflow:hidden;padding:0 1.5em;font-weight:bold;}
 #main .content .header h1               {font-size:1.3em;font-weight:bold;margin:1.5em 0;padding:0;}
+#main .content .header h1 a             {font-size:.8em;font-weight:normal;margin-left:1em;}
 #main .content .header h2               {font-size:1.1em;font-weight:bold;margin:.75em 0;padding:0;}
 #main .content .header .big_button      {float:right;}
 #main .content .header ul               {float:right;display:inline;font-weight:normal;list-style:none;margin:0.75em 0;padding:0;}
@@ -206,6 +207,7 @@ body.users.show .tabs li a.dashboard,
 body.users.index .tabs li a.users,
 body.teams.show .tabs li a.teams,
 body.accounts.edit .tabs li a.account,
+body.memberships.index .tabs li a.users,
 body.sessions.accounts .tabs li a.accounts           {background-color:#e5e5e5;font-weight:bold;color:#000;}
 
 /* setting selected team settings link */

@@ -240,11 +240,8 @@ describe TeamsController do
       response.should have_selector('span', :content => @account.name)
     end
     
-    it "should display team.banner_text" do
-      get :show, :id => @account.teams[0]
+    it "should show a listing of team members in the sidebar"
 
-    end
-    
     describe "for admin users" do
       
       before(:each) do

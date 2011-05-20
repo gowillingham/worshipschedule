@@ -1,7 +1,7 @@
 <div class="content shadow">
   <div class="header">
     <h1>
-      People on this project
+      People on this team
       <%= link_to 'Add people, remove people, change permissions', '#' %>
     </h1>
   </div>
@@ -22,7 +22,7 @@
         <tr>
           <% row.each do |user| %>
             <td>
-              <%= render 'person', :user => user %>
+              <%= render 'users/person', :user => user %>
             </td>
           <% end %>
         </tr>

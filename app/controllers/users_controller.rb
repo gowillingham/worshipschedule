@@ -85,7 +85,7 @@ class UsersController < ApplicationController
   end
   
   def index
-    @users = current_account.users.all(:order => 'CASE WHEN (LENGTH(last_name) = 0) THEN LOWER(email) ELSE LOWER(last_name) END')
+    @users = current_account.users.all
 
     @title = 'All people'
     render :layout => 'full'

@@ -97,6 +97,8 @@ describe UsersController do
       response.should_not have_selector('a', :content => 'New team')
       response.should_not have_selector('a', :href => new_team_path)
     end
+    
+    it "should display the member's permissions in the sidebar"
   end
 
   describe "GET 'new'" do
