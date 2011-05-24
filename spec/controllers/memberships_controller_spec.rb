@@ -79,8 +79,26 @@ describe MembershipsController do
       response.should have_selector("a", :content => @signed_in_user.email)
     end
     
-    it "should display account admin badge"
-    it "should display team admin badge"
-    it "should display blank slate for no team members"
+    it "should display account admin badge" do
+      get :index, :team_id => @team
+      response.should have_selector("div", :class => 'admin')
+    end
+    
+    it "should display team admin badge" do
+      @accountship.admin = false
+      @accountship.save
+      @membership.admin = true
+      @membership.save
+      
+      get :index, :team_id => @team
+      response.should have_selector("div", :class => 'team_admin')
+    end
+    
+    it "should display blank slate for no team members" do
+      @team.memberships.clear
+      
+      get :index, :team_id => @team
+      response.should have_selector("h2", :content => "Let's add the first member to this team.")
+    end
   end
 end

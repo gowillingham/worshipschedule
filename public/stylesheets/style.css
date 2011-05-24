@@ -4,6 +4,13 @@ body                    {font-family:"Lucida Grande",verdana,arial,helvetica,san
 .container a            {padding:0.1em;}
 .container a:hover      {background-color:#253966;color:#d6ffcf;}
 
+#main .blank_slate              {margin:2em auto 20em;width:70%;}
+#main .blank_slate img          {padding:0;float:left;}
+#main .blank_slate h2           {margin:.5em 0;font-size:1.5em;font-weight:bold;}
+#main .blank_slate p            {font-size:1.2em;line-height:1.3em;margin-bottom:2em;}
+#main .blank_slate .message     {padding:.5em 0 0 17em;}
+#main .blank_slate .big_button  {float:left;margin:0;}
+
 #header                                 {padding:0.5em 1em 0 1em;background-color:#c5e2e9;overflow:hidden;}
 #header .status                         {float:right;font-size:.9em;}
 #header h1                              {font-size:2em;margin:.5em 0 1em 0;}

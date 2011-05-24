@@ -1,6 +1,10 @@
 class MembershipsController < ApplicationController
   before_filter(:except => 'show') { require_account_or_team_admin(params[:team_id]) }
   
+  def edit
+    
+  end
+  
   def index
     @team = Team.find(params[:team_id])
     @users = @team.users.all
