@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110519145613) do
+ActiveRecord::Schema.define(:version => 20110525164437) do
 
   create_table "accounts", :force => true do |t|
     t.string   "name"
@@ -37,8 +37,10 @@ ActiveRecord::Schema.define(:version => 20110519145613) do
     t.boolean  "admin",      :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "active",     :default => true
   end
 
+  add_index "memberships", ["active"], :name => "index_memberships_on_active"
   add_index "memberships", ["team_id", "user_id"], :name => "index_memberships_on_team_id_and_user_id", :unique => true
 
   create_table "teams", :force => true do |t|

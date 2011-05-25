@@ -30,6 +30,20 @@ describe MembershipsController do
     @team.users << @third_user
   end
   
+  describe "POST 'create'" do
+    
+    it "should not allow unauthenticated access"
+    it "should allow account admin"
+    it "should allow team admin"
+    it "should not allow non-admin"
+    
+    describe "for admin" do
+      
+      it "it should create a membership given valid attributes"
+      it "it should not create a membership for a non-account user"
+    end
+  end
+  
   describe "GET 'index'" do
     
     it "should redirect for non-authenticated users" do

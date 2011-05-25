@@ -31,7 +31,7 @@
             <tr>
               <td>
                 <label>
-                  <%= check_box_tag "user_id[]", member.id, member.teams.exists?(@team) %>
+                  <%= check_box_tag "user_id[]", member.id, team_member?(member, @team) %>
                   <%= member.name_or_email %>
                 </label>
               </td>

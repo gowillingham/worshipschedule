@@ -1,6 +1,6 @@
 class TeamsController < ApplicationController
   before_filter :require_account_admin, :only => [:destroy, :create, :new]
-  before_filter(:only => [:assign, :edit, :update]) { require_team_or_account_admin(params[:id]) }
+  before_filter(:only => [:assign, :edit, :update]) { require_account_or_team_admin(params[:id]) }
   
   def assign
     @team = Team.find(params[:id])
