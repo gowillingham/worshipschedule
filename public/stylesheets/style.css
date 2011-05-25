@@ -61,14 +61,27 @@ body                    {font-family:"Lucida Grande",verdana,arial,helvetica,san
 #main .content .form .footer h2         {margin:1em 0 .5em;}
 #main .content .form p                  {margin:0 0 1em 0;}
 
-#main .content .admins .action          {width:30%;float:left;line-height:1.2em;text-align:center;padding:0;margin:3em 1em 1em 0;}
-#main .content .admins .action input    {margin-bottom:1em;font-weight:bold;}
-#main .content .admins .action a        {font-weight:bold;display:block;margin-bottom:.25em;font-size:1.2em;text-decoration:none;}
-#main .content .admins .action a:hover  {color:red;background-color:transparent;}
-#main .content .admins .action span     {color:#666;}
-#main .content .admins table            {width:65%;margin:1em 0;padding:0 0 0 1.5em;border-left:solid 1px #ddd;font-size:1.2em;}
-#main .content .admins table td         {padding:0;}
-#main .content .admins table .note      {padding:.5em 0;white-space:normal;font-size:1em;line-height:1.2em;}
+#main .content .assign .action                    {width:30%;float:left;line-height:1.2em;text-align:center;padding:0;margin:3em 1em 1em 0;}
+#main .content .assign .action input              {margin-bottom:1em;font-weight:bold;}
+#main .content .assign .action a                  {font-weight:bold;display:block;margin-bottom:.25em;font-size:1.2em;text-decoration:none;}
+#main .content .assign .action a:hover            {color:red;background-color:transparent;}
+#main .content .assign .action span               {color:#666;}
+#main .content .assign .action p                  {margin:3em 0;color:#666;font-size:.9em;line-height:1.2em;text-align:left;}
+#main .content .assign .action p span             {color:#444;text-transform:uppercase;font-size:.9em;display:block;font-weight:bold;}
+#main .content .assign .action a.back_link        {text-align:left;font-weight:normal;}
+#main .content .assign .action a.back_link:hover  {background-color:#253966;color:#d6ffcf;}
+#main .content .assign table                      {width:65%;margin:1em 0;padding:0 0 0 1.5em;border-left:solid 1px #ddd;font-size:1.2em;}
+#main .content .assign table .note                {padding:.5em 0;white-space:normal;font-size:1em;line-height:1.2em;}
+#main .content .assign table th                   {font-weight:bold;}
+
+#main .content .assign.team_members .action   {width:20%;}
+#main .content .assign.team_members table     {width:80%;}
+#main .content .assign.team_members table td  {border-bottom:solid 1px #eee;padding:.1em;}
+
+#main .content .assign table .add_link              {font-size:.8em;color:#888;}
+#main .content .assign table td.bulk_links          {font-size:.8em;color:#888;font-size:.75em;padding:.3em .1em;}
+#main .content .assign table td.bulk_links a        {color:#888;}
+#main .content .assign table td.bulk_links a:hover  {color:#fff;}
 
 #main .content .form fieldset.profile td            {font-size:1.2em;line-height:1.2em;padding:1.0em 1em 0em 0;}
 #main .content .form fieldset.profile tr.hint td    {padding:.1em;}
@@ -216,6 +229,7 @@ body.users.index .tabs li a.users,
 body.teams.show .tabs li a.teams,
 body.accounts.edit .tabs li a.account,
 body.memberships.index .tabs li a.users,
+body.teams.assign .tabs li a.users,
 body.sessions.accounts .tabs li a.accounts           {background-color:#e5e5e5;font-weight:bold;color:#000;}
 
 /* setting selected team settings link */

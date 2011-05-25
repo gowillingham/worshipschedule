@@ -2,7 +2,7 @@
   <div class="header">
     <h2>Set administrators</h2>
   </div>
-  <div class="form admins">
+  <div class="form assign">
     <%= form_for current_account, { :url => admins_account_path(current_account), :method => 'put' } do %>
       <div class="action">
         <%= submit_tag "Save these changes" %>

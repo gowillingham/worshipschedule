@@ -1,5 +1,15 @@
 class TeamsController < ApplicationController
-  before_filter :require_account_admin, :except => 'show'
+  before_filter :require_account_admin, :only => [:destroy, :create, :new]
+  before_filter(:only => [:assign, :edit, :update]) { require_team_or_account_admin(params[:id]) }
+  
+  def assign
+    @team = Team.find(params[:id])
+    @members = current_account.users.all
+
+    @title = 'People for this team'
+    @sidebar_partial = 'users/sidebar/placeholder'
+    render :layout => 'full'
+  end
   
   def destroy
     @team = Team.find(params[:id])

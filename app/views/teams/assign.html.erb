@@ -1,0 +1,50 @@
+<div class="content shadow">
+  <div class="header">
+    <h1>Add people, remove people, and change permissions</h1>
+  </div>
+  <div class="form assign team_members">
+    <%= form_for @team do |f| %>
+      <div class="action">
+        <%= link_to "&larr;  Go back".html_safe, team_memberships_path(@team), :class => 'back_link' %>
+        <p>
+          <span>Giving/removing access</span>
+          Check the box in front of someone's name to give them access to this team.
+          Uncheck to remove access.
+          People without access won't see the team
+        </p>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th><%= current_account.name %></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="bulk_links">
+              Give access to:
+              <%= link_to 'Everyone', '#' %>
+              | <%= link_to 'No one', '#' %>
+            </td>
+          </tr>          
+          <% @members.each do |member| %>
+            <tr>
+              <td>
+                <label>
+                  <%= check_box_tag "user_id[]", member.id, member.teams.exists?(@team) %>
+                  <%= member.name_or_email %>
+                </label>
+              </td>
+            </tr>
+          <% end %>
+          <tr>
+            <td>
+              <%= link_to "Add a new person", new_user_path, :class => "cancel" %>
+              <span class="add_link">to <%= current_account.name %></span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    <% end %>
+  </div>
+</div>

@@ -19,6 +19,16 @@ module SessionsHelper
     end
   end
   
+  def require_team_or_account_admin(team_id)
+    membership = current_user.memberships.where(:team_id => team_id).first
+    team_admin = membership.admin? unless membership.nil?
+    
+    unless owner? || admin? || team_admin
+      flash[:error] = "You don't have permission to access that page"
+      redirect_to current_user
+    end 
+  end
+  
   def require_account_owner
     unless owner?
       flash[:error] = "Only the account owner can access that page"
