@@ -3,7 +3,7 @@
     <div class="header">
       <h1>
         People on this team
-        <%= link_to 'Add people, remove people, change permissions', team_assign_path(@team) %>
+        <%= link_to 'Add people, remove people, change permissions', assign_team_path(@team) %>
       </h1>
     </div>
     
@@ -41,7 +41,7 @@
         Your team members are people that you've already added to your <%= APP_NAME %> account for <%= current_account.name %>.
         You can assign as many people to your teams as you need. 
       </p>
-      <%= render :partial => 'shared/button_link', :locals => { :url => team_assign_path(@team), :text => 'Add the first member' } %>
+      <%= render :partial => 'shared/button_link', :locals => { :url => assign_team_path(@team), :text => 'Add the first member' } %>
     </div>
   </div>
 <% end %>
