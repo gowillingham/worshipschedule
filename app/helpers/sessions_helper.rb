@@ -26,6 +26,15 @@ module SessionsHelper
     end
   end
   
+  def team_admin?(team, user)
+    membership = Membership.where('user_id = ? AND team_id = ?', user.id, team.id).first
+    if membership.nil?
+      false
+    else
+      membership.admin?
+    end
+  end
+  
   def require_account_owner
     unless owner?
       flash[:error] = "Only the account owner can access that page"

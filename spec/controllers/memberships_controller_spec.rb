@@ -5,7 +5,7 @@ describe MembershipsController do
   
   before(:each) do
     @account = Factory(:account)
-    @team = Factory(:team, :account_id => @account.id)
+    @team = @account.teams[0]
     @signed_in_user = Factory(:user)
     @accountship = Accountship.create(
       :user_id => @signed_in_user.id,
@@ -22,6 +22,7 @@ describe MembershipsController do
     
     @second_user = Factory(:user, :email => Factory.next(:email))
     @third_user = Factory(:user, :email => Factory.next(:email))
+    @new_user = Factory(:user, :email => Factory.next(:email))
     
     @account.users << @second_user
     @account.users << @third_user
@@ -32,15 +33,59 @@ describe MembershipsController do
   
   describe "POST 'create'" do
     
-    it "should not allow unauthenticated access"
-    it "should allow account admin"
-    it "should allow team admin"
-    it "should not allow non-admin"
+    it "should not allow unauthenticated access" do
+      controller.sign_out
+      post :create, :team_id => @team.id, :user_id => @new_user.id
+      
+      response.should redirect_to(signin_path)
+    end
     
     describe "for admin" do
       
-      it "it should create a membership given valid attributes"
-      it "it should not create a membership for a non-account user"
+      before(:each) do
+        @membership = @signed_in_user.memberships.where(:team_id => @team.id).first
+        @membership.update_attributes(:admin => true)
+      end
+      
+      before(:each) do
+        @account.users << @new_user
+      end
+      
+      it "should allow account admin" do
+        @membership.update_attributes(:admin => false)
+        
+        post :create, :team_id => @team.id, :user_id => @new_user.id
+        response.should be_success
+      end
+      
+      it "should allow team admin" do
+        @accountship.update_attributes(:admin => false)
+        
+        post :create, :team_id => @team.id, :user_id => @new_user.id
+        response.should be_success
+      end
+      
+      it "should not allow non-admin" do
+        @membership.update_attributes(:admin => false)
+        @accountship.update_attributes(:admin => false)
+        
+        post :create, :team_id => @team.id, :user_id => @new_user.id
+        response.should redirect_to(@signed_in_user)
+      end
+      
+      it "it should create a membership given valid attributes" do
+        lambda do
+          post :create, :team_id => @team.id, :user_id => @new_user.id
+        end.should change(Membership, :count).by(1)        
+      end
+      
+      it "it should not create a membership for a non-account user" do
+        @new_user.accounts.clear
+        
+        lambda do
+          post :create, :team_id => @team.id, :user_id => @new_user.id
+        end.should change(Membership, :count).by(0)
+      end
     end
   end
   
