@@ -73,10 +73,21 @@ describe MembershipsController do
         response.should redirect_to(@signed_in_user)
       end
       
-      it "it should create a membership given valid attributes" do
+      it "it should create a membership if one doesn't already exist" do
         lambda do
           post :create, :team_id => @team.id, :user_id => @new_user.id
         end.should change(Membership, :count).by(1)        
+      end
+      
+      it "should toggle the active flag if the membership exists" do
+        @team.users << @new_user
+        
+        membership = Membership.where(:team_id => @team.id, :user_id => @new_user.id).first
+        membership.active.should be_true
+        
+        post :create, :team_id => @team.id, :user_id => @new_user.id
+        membership = Membership.where(:team_id => @team.id, :user_id => @new_user.id).first
+        membership.active.should_not be_true
       end
       
       it "it should not create a membership for a non-account user" do

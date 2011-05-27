@@ -75,7 +75,7 @@ body                    {font-family:"Lucida Grande",verdana,arial,helvetica,san
 #main .content .assign table th                   {font-weight:bold;}
 
 #main .content .assign.team_members .action   {width:20%;}
-#main .content .assign.team_members table     {width:80%;}
+#main .content .assign.team_members table     {width:78%;}
 #main .content .assign.team_members table td  {border-bottom:solid 1px #eee;padding:.1em;}
 
 #main .content .assign table .add_link              {font-size:.8em;color:#888;}

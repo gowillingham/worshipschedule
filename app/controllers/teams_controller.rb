@@ -4,7 +4,7 @@ class TeamsController < ApplicationController
   
   def assign
     @team = Team.find(params[:id])
-    @members = current_account.users.all
+    @members = current_account.users(:all, :include => :teams)
 
     @title = 'People for this team'
     @sidebar_partial = 'users/sidebar/placeholder'

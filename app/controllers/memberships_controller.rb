@@ -4,12 +4,17 @@ class MembershipsController < ApplicationController
   before_filter { require_team_for_current_account(params[:team_id]) }
   
   def create
-    @membership = Membership.create(:user_id => params[:user_id], :team_id => params[:team_id])
+    
+    @membership = Membership.where(:user_id => params[:user_id], :team_id => params[:team_id]).first
+    if @membership.nil?
+      @membership = Membership.create(:user_id => params[:user_id], :team_id => params[:team_id])
+    else
+      @membership.toggle(:active).save
+    end
     respond_to do |format|
-      format.html {}
+      format.html {render :nothing => true}
       format.json { render :json => @membership }
     end
-    render :nothing => true
   end
 
   def index
