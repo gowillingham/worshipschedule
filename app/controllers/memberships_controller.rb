@@ -19,8 +19,11 @@ class MembershipsController < ApplicationController
 
   def index
     @team = Team.find(params[:team_id])
-    @users = @team.users.joins(:memberships).where('memberships.active = ?', true)
     
+    # this line is returning two of some members ..
+    #@users = @team.users.joins(:memberships).where('memberships.active = ?', true)
+    #@users = Team.find(:all, :include => [:memberships], :conditions => ['memberships.active = ? AND memberships.team_id = ?', true, @team.id])
+    @users = User.joins(:memberships).where('memberships.active = ? AND memberships.team_id = ?', true, @team.id)
     render :layout => 'full'
   end
   
