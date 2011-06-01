@@ -1,8 +1,12 @@
 <% content_for :head do %>
+  <%= javascript_include_tag "jquery/plugins/glow/jquery.glow.js" %>
   <script type="text/javascript">
+    var _glow_color = "#c5e2e9"
+    
     $(document).ready(function(){
       $(":checkbox").click(function(){
-        $(this).parents("form").submit()
+        $(this).parents("form:first").submit()
+        $(this).parents("tr:first").glow(_glow_color, 1000, 100) 
       })
     })
   </script>
@@ -19,7 +23,7 @@
         <span>Giving/removing access</span>
         Check the box in front of someone's name to give them access to this team.
         Uncheck to remove access.
-        People without access won't see the team
+        People without access won't see the team.
       </p>
     </div>
     <table>
@@ -39,7 +43,7 @@
         <% @members.each do |member| %>
           <tr>
             <td>
-              <%= form_tag team_memberships_path(@team), :method => :post do %>
+              <%= form_tag team_memberships_path(@team), :method => :post, :remote => true do %>
                 <label>
                   <%= check_box_tag "active", member.id, team_member?(member, @team), :id => nil, :class => 'checkbox' %>
                   <%= member.name_or_email %>

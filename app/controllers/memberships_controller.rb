@@ -12,17 +12,14 @@ class MembershipsController < ApplicationController
       @membership.toggle(:active).save
     end
     respond_to do |format|
-      format.html {render :nothing => true}
+      format.html { render :nothing => true }
       format.json { render :json => @membership }
     end
   end
 
   def index
     @team = Team.find(params[:team_id])
-    
-    # this line is returning two of some members ..
-    #@users = @team.users.joins(:memberships).where('memberships.active = ?', true)
-    #@users = Team.find(:all, :include => [:memberships], :conditions => ['memberships.active = ? AND memberships.team_id = ?', true, @team.id])
+    @title = 'People on this team'
     @users = User.joins(:memberships).where('memberships.active = ? AND memberships.team_id = ?', true, @team.id)
     render :layout => 'full'
   end
