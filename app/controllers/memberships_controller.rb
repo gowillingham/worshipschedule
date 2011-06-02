@@ -4,12 +4,7 @@ class MembershipsController < ApplicationController
   before_filter { require_team_for_current_account(params[:team_id]) }
   
   def create
-    @membership = Membership.where(:user_id => params[:user_id], :team_id => params[:team_id]).first
-    if @membership.nil?
-      @membership = Membership.create(:user_id => params[:user_id], :team_id => params[:team_id])
-    else
-      @membership.toggle(:active).save
-    end
+    @membership = Membership.toggle_active(params[:team_id], params[:user_id])
     respond_to do |format|
       format.html { render :nothing => true }
       format.json { render :json => @membership }

@@ -8,4 +8,12 @@ class Team < ActiveRecord::Base
   
   validates_presence_of :account_id
   validates_presence_of :name
+  
+  def self.add_all_account_users
+    
+  end
+  
+  def self.remove_all_account_users
+    
+  end
 end
