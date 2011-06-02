@@ -3,6 +3,8 @@ Worshipschedule::Application.routes.draw do
   resources :teams do
     member do
       get :assign
+      put :assign_all, :to => 'teams#assign_all'
+      put :remove_all, :to => 'teams#remove_all'
     end
     resources :memberships
   end

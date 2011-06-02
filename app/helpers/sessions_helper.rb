@@ -35,6 +35,13 @@ module SessionsHelper
     end
   end
   
+  def require_team_for_current_account(team_id)
+    team = Team.find(team_id)
+    unless current_account.teams.exists?(team)
+      redirect_to current_user, :flash => { :error => "You don't have permission to modify that team" }
+    end
+  end
+  
   def require_account_owner
     unless owner?
       flash[:error] = "Only the account owner can access that page"

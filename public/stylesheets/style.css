@@ -231,6 +231,8 @@ ul.tabs li a                {display:block;padding:0.25em 1em;margin:0;color:#ff
 ul.tabs li a:hover          {background-color:#253966;color:#d6ffff;}
 ul.admin                    {float:right;}
 
+.bulk_links.loader                 {background:transparent url("../images/icons/h_loader.gif") no-repeat 20em 50%;}
+
 
 /* setting selected tabs */
 body.users.show .tabs li a.dashboard,

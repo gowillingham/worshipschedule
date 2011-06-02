@@ -12,6 +12,122 @@ describe TeamsController do
     controller.set_session_account(@account)
   end
   
+  describe "PUT 'remove_all'" do
+    
+    before(:each) do
+      @team = @account.teams[0]
+    end
+    
+    it "should not allow unauthenticated user" do
+      controller.sign_out
+      put :remove_all, :id => @team
+      response.should redirect_to(signin_path)
+    end
+    
+    it "should redirect for non-team or account admin" do
+      put :remove_all, :id => @team
+      response.should redirect_to(@signed_in_user)
+    end
+    
+    describe "for admin" do
+      
+      before(:each) do
+        @accountship = @signed_in_user.accountships.where(:account_id => @account.id).first
+        @accountship.admin = true
+        @accountship.save
+      end
+      
+      it "should allow account admin" do
+        put :remove_all, :id => @team
+        response.should redirect_to(assign_team_url(@team))
+      end
+      
+      it "should allow team admin" do
+        @accountship.admin = false
+        @accountship.save
+        membership = @team.memberships.create(:user_id => @signed_in_user.id, :admin => true)
+        
+        put :remove_all, :id => @team
+        response.should redirect_to(assign_team_url(@team))
+      end
+      
+      it "should remove all team members" do
+        member_one = Factory(:user, :email => Factory.next(:email))
+        member_two = Factory(:user, :email => Factory.next(:email))
+        @account.users << member_one
+        @account.users << member_two
+        @team.users << member_one
+        @team.users << member_two
+        
+        put :remove_all, :id => @team
+        
+        Membership.where('memberships.team_id = ? AND memberships.active = ?', @team.id, true).count.should eq(0)
+      end
+    end
+  end
+  
+  describe "PUT 'assign_all'" do
+    
+    before(:each) do
+      @team = @account.teams[0]
+    end
+    
+    it "should not allow unauthenticated user" do
+      controller.sign_out
+      put :assign_all, :id => @team
+      response.should redirect_to(signin_path)
+    end
+    
+    it "should redirect for non-team or account admin" do
+      put :assign_all, :id => @team
+      response.should redirect_to(@signed_in_user)
+    end
+    
+    describe "for admin" do
+      
+      before(:each) do
+        @accountship = @signed_in_user.accountships.where(:account_id => @account.id).first
+        @accountship.admin = true
+        @accountship.save
+      end
+      
+      it "should allow account admin" do
+        put :assign_all, :id => @team
+        response.should redirect_to(assign_team_url(@team))
+      end
+      
+      it "should allow team admin" do
+        @accountship.admin = false
+        @accountship.save
+        membership = @team.memberships.create(:user_id => @signed_in_user.id, :admin => true)
+        
+        put :assign_all, :id => @team
+        response.should redirect_to(assign_team_url(@team))
+      end
+      
+      it "should add all account members to the team" do
+        member_one = Factory(:user, :email => Factory.next(:email))
+        member_two = Factory(:user, :email => Factory.next(:email))
+        @account.users << member_one
+        @account.users << member_two
+        @team.users << member_one
+        @team.users << member_two
+        
+        put :assign_all, :id => @team
+        team = Team.find(@team.id)
+        team.users.exists?(member_one).should be_true
+        team.users.exists?(member_two).should be_true
+        team.users.exists?(@signed_in_user).should be_true
+      end
+      
+      it "should not add non-account members to the team" do
+        orphan = Factory(:user, :email => Factory.next(:email))
+        put :assign_all, :id => @team
+        Team.find(@team.id).users.exists?(orphan).should_not be_true
+      end
+    end
+  end
+  
   describe "GET 'assign'" do
     
     before(:each) do
