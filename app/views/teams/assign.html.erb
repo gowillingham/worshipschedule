@@ -12,7 +12,9 @@
       
       // show loading gif when doing bulk updates ..
       $(".bulk_links a").click(function(){
-        $(".bulk_links").addClass('loader')
+        var answer = confirm($(this).attr('data-message'))
+        if (! answer) { return false }
+        else { $(".bulk_links").addClass('loader') }
       })
     })
   </script>
@@ -42,8 +44,8 @@
         <tr>
           <td class="bulk_links">
             Give access to:
-            <%= link_to 'Everyone', assign_all_team_path(@team), :method => :put, :confirm => "Are you sure you want to give everyone in #{current_account.name} access to this team?" %>
-            | <%= link_to 'No one', remove_all_team_path(@team), :method => :put, :confirm => "Are you sure you want to remove everyone in #{current_account.name} from this team?" %>
+            <%= link_to 'Everyone', assign_all_team_path(@team), :method => :put, 'data-message' => "Are you sure you want to add everyone in #{current_account.name} to this team? " %>
+            | <%= link_to 'No one', remove_all_team_path(@team), :method => :put, 'data-message' => "Are you sure you want to remove everyone in #{current_account.name} from this team? " %>
           </td>
         </tr>          
         <% @members.each do |member| %>

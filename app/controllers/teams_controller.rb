@@ -5,36 +5,20 @@ class TeamsController < ApplicationController
 
   def assign_all
     @team = Team.find(params[:id])
-    @users = current_account.users
-    @users.each do |user|
-      membership = user.memberships.where(:team_id => @team.id).first
-      if membership.nil?
-        membership = Membership.create(:user_id => user.id, :team_id => @team.id)
-      else
-        membership.update_attributes(:active => true)
-      end
-    end
-    
+    Team.add_all_account_users(current_account, @team)
     redirect_to assign_team_url(@team)
   end
   
   def remove_all
     @team = Team.find(params[:id])
     Team.remove_all_account_users(@team)
-    #@users = current_account.users
-    #@users.each do |user|
-    #  membership = user.memberships.where(:team_id => @team.id).first
-    #  unless membership.nil?
-    #    membership.update_attributes(:active => false)
-    #  end
-    #end
     
     redirect_to assign_team_url(@team)
   end
   
   def assign
     @team = Team.find(params[:id])
-    @members = current_account.users(:all, :include => :teams)
+    @members = current_account.users(:all, :include => [:teams, :memberships])
 
     @title = 'People for this team'
     @sidebar_partial = 'users/sidebar/placeholder'
