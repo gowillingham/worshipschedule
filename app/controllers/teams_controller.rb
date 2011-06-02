@@ -20,13 +20,14 @@ class TeamsController < ApplicationController
   
   def remove_all
     @team = Team.find(params[:id])
-    @users = current_account.users
-    @users.each do |user|
-      membership = user.memberships.where(:team_id => @team.id).first
-      unless membership.nil?
-        membership.update_attributes(:active => false)
-      end
-    end
+    Team.remove_all_account_users(@team)
+    #@users = current_account.users
+    #@users.each do |user|
+    #  membership = user.memberships.where(:team_id => @team.id).first
+    #  unless membership.nil?
+    #    membership.update_attributes(:active => false)
+    #  end
+    #end
     
     redirect_to assign_team_url(@team)
   end
