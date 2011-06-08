@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
-  before_filter :require_account_admin, :except => [:show]
+  before_filter :require_account_admin, :except => [:show, :edit]
+  before_filter(:only => [:edit, :update]) { require_user_owned_by_current_user(params[:id]) }
   
   def create
     @user = User.new params[:user]
@@ -126,6 +127,11 @@ class UsersController < ApplicationController
       redirect_to edit_user_path(@user)
     end
   end
+  
+  def memberships_for
+    @user = User.find(params[:id])
+    
+  end
     
   def send_reset
     @user = User.find(params[:id])
@@ -134,4 +140,19 @@ class UsersController < ApplicationController
     flash[:success] = "This person has been emailed instructions to change their password. "
     redirect_to edit_user_url(@user)
   end
+  
+  private
+  
+    def require_user_owned_by_current_user(user_id)
+      unless admin?
+        user = User.find(user_id)
+        
+        user_team_ids = User.find(user_id).memberships.active.collect { |membership| membership.team_id }
+        allowed_team_ids = User.find(current_user.id).memberships.admin.collect { |membership| membership.team_id }
+
+        unless (user_team_ids & allowed_team_ids).any?
+          redirect_to current_user, :flash => { :error => "You don't have permission for that person. "}
+        end
+      end
+    end
 end

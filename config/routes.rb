@@ -17,7 +17,11 @@ Worshipschedule::Application.routes.draw do
     end
   end
   
-  resources :users 
+  resources :users do
+    member do
+      put :memberships_for
+    end
+  end
   
   match "users/:id/send_reset", :to => 'users#send_reset', :as => 'users/send_reset', :only => 'post'
   

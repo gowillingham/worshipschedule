@@ -19,4 +19,8 @@ class Team < ActiveRecord::Base
   def self.remove_all_account_users(team)
     Membership.update_all({ :active => false }, { :team_id => team.id })
   end
+  
+  def self.member(user)
+    self.users.exists?(user)
+  end
 end
