@@ -59,11 +59,59 @@ describe UsersController do
   
   describe "PUT 'memberships_for'" do
     
-    it "should redirect if not logged in"
-    it "should allow account admin"
-    it "should redirect non-admin"
-    it "should fail to add a user from another account"
-    it "should add/remove teams given valid attributes"
+    before(:each) do
+      @user = Factory(:user, :email => Factory.next(:email))
+      @user.accounts << @account
+
+      @team_1 = @account.teams[0]
+      @team_2 = @account.teams[1]
+      @team_3 = Factory(:team, :account => @account)
+      @account.teams << @team_3
+      
+      # belongs to @team_1, @team_2 but not @team_3
+      @team_1.memberships.create(:user_id => @user.id, :active => true)
+      @team_2.memberships.create(:user_id => @user.id, :active => true)
+    end
+    
+    it "should redirect if not logged in" do
+      controller.sign_out
+      put :memberships_for, :id => @user
+      response.should redirect_to(signin_path)
+    end
+
+    it "should redirect non-admin" do
+      @accountship.admin = false
+      @accountship.save
+      put :memberships_for, :id => @user
+      
+      response.should redirect_to(@signed_in_user)
+      flash[:error] =~ /don't have permission/i
+    end
+    
+    it "should fail to add a user from another account" do
+      orphan = Factory(:user, :email => Factory.next(:email))
+      put :memberships_for, :id => orphan
+      
+      response.should redirect_to(@signed_in_user)
+      flash[:error] =~ /don't have permission/i
+    end
+    
+    it "should add/remove teams given valid attributes" do
+      team_id = [@team_1.id.to_s, @team_3.id.to_s]
+      put :memberships_for, :id => @user, :team_id => team_id
+      
+      Membership.active.where(:team_id => @team_1.id, :user_id => @user.id).first.should_not be_nil
+      Membership.active.where(:team_id => @team_2.id, :user_id => @user.id).first.should be_nil
+      Membership.active.where(:team_id => @team_3.id, :user_id => @user.id).first.should_not be_nil
+    end
+    
+    it "should display user_edit and flash message for success" do
+      team_id = [@team_1.id.to_s, @team_3.id.to_s]
+      put :memberships_for, :id => @user, :team_id => team_id
+      
+      response.should redirect_to(edit_user_url(@user))
+      flash[:success] =~ /this person was changed/i
+    end
   end
 
   describe "GET 'show'" do
@@ -574,6 +622,13 @@ describe UsersController do
     
     before(:each) do
       @user = Factory(:user, :email => Factory.next(:email))
+      @account.users << @user
+    end
+    
+    it "should redirect for a user from another accoutn" do
+      orphan = Factory(:user, :email => Factory.next(:email))
+      get :send_reset, :id => orphan
+      response.should redirect_to(user_path(@signed_in_user))
     end
     
     it "should redirect to edit_user_path with a flash message" do

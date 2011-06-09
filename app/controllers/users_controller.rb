@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   before_filter :require_account_admin, :except => [:show, :edit]
+  before_filter(:except => [:new, :create, :index]) { require_user_for_current_account(params[:id]) }
   before_filter(:only => [:edit, :update]) { require_user_owned_by_current_user(params[:id]) }
   
   def create
@@ -130,7 +131,16 @@ class UsersController < ApplicationController
   
   def memberships_for
     @user = User.find(params[:id])
+    teams = current_account.teams
     
+    teams.each do |team|
+      if params[:team_id].include?(team.id.to_s)
+        Membership.set_to_active(team.id, @user.id)
+      else
+        Membership.set_to_inactive(team.id, @user.id)
+      end
+    end
+    redirect_to edit_user_url(@user), :flash => { :success => "Team access for this person was changed" }
   end
     
   def send_reset

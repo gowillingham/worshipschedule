@@ -16,37 +16,43 @@
           <tr><td class="note"><strong>Which people are administrators? </strong></td></tr>
           
           <% @accountships.each do |accountship| %>
-            <tr>
-              <td>
-                <label>
-                  <% unless (accountship.user == current_user) || (accountship.user == current_account.owner) %>
-                    <% if accountship.admin? %>
-                      <%= check_box_tag "accountship_ids[]", accountship.id, accountship.admin? %>
-                      <%= accountship.user.name %>
-                    <% end %>
-                  <% else %>
-                    <%= check_box_tag "place_holder", accountship.id, true, :disabled => 'disabled' %>
-                    <%= accountship.user.name %>
-                    <%= "(Account Holder)" if (accountship.user == current_account.owner) %>
-                  <% end %>
-                </label>
-              </td>
-            </tr>
+            <% unless (accountship.user == current_user) || (accountship.user == current_account.owner) %>
+              <% if accountship.admin? %>
+                <tr>
+                  <td>
+                    <label>
+                <%= check_box_tag "accountship_ids[]", accountship.id, accountship.admin? %>
+                <%= accountship.user.name %>
+                    </label>
+                  </td>
+                </tr>
+              <% end %>
+            <% else %>
+              <tr>
+                <td>
+                  <label>
+              <%= check_box_tag "place_holder", accountship.id, true, :disabled => 'disabled' %>
+              <%= accountship.user.name %>
+              <%= "(Account Holder)" if (accountship.user == current_account.owner) %>
+                  </label>
+                </td>
+              </tr>
+            <% end %>
           <% end %>
           
           <% @accountships.each do |accountship| %>
-            <tr>
-              <td>
-                <label>
-                  <% unless (accountship.user == current_user) || (accountship.user == current_account.owner) %>
-                    <% unless accountship.admin? %>
+            <% unless (accountship.user == current_user) || (accountship.user == current_account.owner) %>
+              <% unless accountship.admin? %>
+                <tr>
+                  <td>
+                    <label>
                       <%= check_box_tag "accountship_ids[]", accountship.id, accountship.admin? %>
                       <%= accountship.user.name_or_email %>
-                    <% end %>
-                  <% end %>
-                </label>
-              </td>
-            </tr>
+                    </label>
+                  </td>
+                </tr>
+              <% end %>
+            <% end %>
           <% end %>
           
         </tbody>

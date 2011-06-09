@@ -12,15 +12,13 @@ class Team < ActiveRecord::Base
   def self.add_all_account_users(account, team)
     team.users = account.users
     Membership.update_all({ :active => true }, { :team_id => team.id })
-    # find existing users and set active to true ..
-    # insert missing users ..
   end
   
   def self.remove_all_account_users(team)
     Membership.update_all({ :active => false }, { :team_id => team.id })
   end
   
-  def self.member(user)
+  def self.member?(user)
     self.users.exists?(user)
   end
 end
