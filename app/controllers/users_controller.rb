@@ -131,10 +131,11 @@ class UsersController < ApplicationController
   
   def memberships_for
     @user = User.find(params[:id])
+    @team_ids = Array.new(params[:team_id] || [])
     teams = current_account.teams
     
     teams.each do |team|
-      if params[:team_id].include?(team.id.to_s)
+      if @team_ids.include?(team.id.to_s)
         Membership.set_to_active(team.id, @user.id)
       else
         Membership.set_to_inactive(team.id, @user.id)
