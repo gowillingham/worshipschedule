@@ -50,7 +50,6 @@ ActiveRecord::Schema.define(:version => 20110511151437) do
     t.datetime "updated_at"
     t.string   "encrypted_password"
     t.string   "salt"
-    t.boolean  "admin",                  :default => false
     t.string   "office_phone"
     t.string   "office_phone_ext"
     t.string   "home_phone"
