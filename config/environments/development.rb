@@ -17,12 +17,19 @@ Worshipschedule::Application.configure do
   # Don't care if the mailer can't send
   config.action_mailer.raise_delivery_errors = false
   
-  # my email settings for papercut.exe
+# # my email settings for papercut.exe
+# config.action_mailer.delivery_method = :smtp
+# config.action_mailer.smtp_settings = {
+#   :address          => "localhost",
+#   :port             => 25,
+#   :enable_starttles => true
+# }
+
+  # my email settings for mailcatcher ..
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
-    :address          => "localhost",
-    :port             => 25,
-    :enable_starttles => true
+    :host         => :localhost,
+    :port         => 1025
   }
 
   ## my email settings for gmail ..
