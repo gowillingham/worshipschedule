@@ -15,6 +15,14 @@ describe Team do
     end 
   end
   
+  it "should have a users method" do
+    @team.should respond_to(:users)
+  end
+  
+  it "should have a memberships method" do
+    @team.should respond_to(:memberships)
+  end
+  
   it "should have an account method" do
     @team.should respond_to(:account)
   end

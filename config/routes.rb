@@ -1,6 +1,13 @@
 Worshipschedule::Application.routes.draw do
 
-  resources :teams
+  resources :teams do
+    member do
+      get :assign
+      put :assign_all, :to => 'teams#assign_all'
+      put :remove_all, :to => 'teams#remove_all'
+    end
+    resources :memberships
+  end
 
   resources :accounts do
     member do
@@ -10,7 +17,11 @@ Worshipschedule::Application.routes.draw do
     end
   end
   
-  resources :users 
+  resources :users do
+    member do
+      put :memberships_for
+    end
+  end
   
   match "users/:id/send_reset", :to => 'users#send_reset', :as => 'users/send_reset', :only => 'post'
   

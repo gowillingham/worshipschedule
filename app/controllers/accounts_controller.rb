@@ -96,6 +96,7 @@ class AccountsController < ApplicationController
   end
 
   def admins
+    @title = "Permissions"
     @accountships = Accountship.joins(:user).where(:account_id => current_account).order('CASE WHEN (LENGTH(last_name) = 0) THEN LOWER(email) ELSE LOWER(last_name) END')
     @sidebar_partial = "/users/sidebar/admins"
   end

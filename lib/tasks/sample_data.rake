@@ -64,5 +64,37 @@ namespace:db do
       )
       user.accounts << account
     end
+    
+    (1..3).each do |n|
+      Membership.create(
+        :team_id => team_one.id,
+        :user_id => n,
+        :admin => false
+      )
+    end
+    
+    (6..20).each do |n|
+      Membership.create(
+        :team_id => team_one.id,
+        :user_id => n,
+        :admin => false
+      )
+    end
+    
+    (21..22).each do |n|
+      Membership.create(
+        :team_id => team_one.id,
+        :user_id => n,
+        :admin => true
+      )
+    end
+    
+    (23..75).each do |n|
+      Membership.create(
+        :team_id => team_two.id,
+        :user_id => n,
+        :admin => false
+      )
+    end
   end
 end

@@ -6,6 +6,10 @@
         <div class="owner">OWNER</div>
       <% elsif accountship.admin? %>
         <div class="admin">ADMIN</div>
+      <% elsif ['memberships'].include?(controller.controller_name) %>
+        <% if user.memberships.where(:team_id => params[:team_id]).first.admin %>
+          <div class="team_admin">ADMIN</div>
+        <% end %>
       <% else %>
         <div>&nbsp;</div>
       <% end %>

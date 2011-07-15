@@ -4,7 +4,7 @@
     <li><%= link_to 'Sign out', signout_path, :method => :delete %></li>
   </ul>
   
-<% elsif ['teams'].include?(controller.controller_name) %>
+<% elsif ['teams', 'memberships'].include?(controller.controller_name) && !(['teams'].include?(controller.controller_name) && ['new', 'create'].include?(controller.action_name)) %>
   <ul class="tabs">
     <li><%= link_to "Overview", @team, :class => 'teams' %></li>
     <% if admin? %>
@@ -15,7 +15,7 @@
   </ul>
   <% if admin? %>
     <ul class="tabs admin">
-      <li><%= link_to "People and permissions", "/" %></li>
+      <li><%= link_to "People and permissions", team_memberships_path(params[:id]), :class => 'users' %></li>
       <li><%= link_to "Email", "/" %></li>
     </ul>
   <% end %>

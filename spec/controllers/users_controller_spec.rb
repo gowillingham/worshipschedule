@@ -47,13 +47,70 @@ describe UsersController do
       response.should_not have_selector('ul.tabs li a', :content => 'Account')
     end
     
-    it "should show the correct toabs to the account owner" do
+    it "should show the correct tabs to the account owner" do
       @account.owner = @signed_in_user
       @account.save
       
       get :show, :id => @signed_in_user
       
       response.should have_selector('ul.tabs li a', :content => 'Account')
+    end
+  end
+  
+  describe "PUT 'memberships_for'" do
+    
+    before(:each) do
+      @user = Factory(:user, :email => Factory.next(:email))
+      @user.accounts << @account
+
+      @team_1 = @account.teams[0]
+      @team_2 = @account.teams[1]
+      @team_3 = Factory(:team, :account => @account)
+      @account.teams << @team_3
+      
+      # belongs to @team_1, @team_2 but not @team_3
+      @team_1.memberships.create(:user_id => @user.id, :active => true)
+      @team_2.memberships.create(:user_id => @user.id, :active => true)
+    end
+    
+    it "should redirect if not logged in" do
+      controller.sign_out
+      put :memberships_for, :id => @user
+      response.should redirect_to(signin_path)
+    end
+
+    it "should redirect non-admin" do
+      @accountship.admin = false
+      @accountship.save
+      put :memberships_for, :id => @user
+      
+      response.should redirect_to(@signed_in_user)
+      flash[:error] =~ /don't have permission/i
+    end
+    
+    it "should fail to add a user from another account" do
+      orphan = Factory(:user, :email => Factory.next(:email))
+      put :memberships_for, :id => orphan
+      
+      response.should redirect_to(@signed_in_user)
+      flash[:error] =~ /don't have permission/i
+    end
+    
+    it "should add/remove teams given valid attributes" do
+      team_id = [@team_1.id.to_s, @team_3.id.to_s]
+      put :memberships_for, :id => @user, :team_id => team_id
+      
+      Membership.active.where(:team_id => @team_1.id, :user_id => @user.id).first.should_not be_nil
+      Membership.active.where(:team_id => @team_2.id, :user_id => @user.id).first.should be_nil
+      Membership.active.where(:team_id => @team_3.id, :user_id => @user.id).first.should_not be_nil
+    end
+    
+    it "should display user_edit and flash message for success" do
+      team_id = [@team_1.id.to_s, @team_3.id.to_s]
+      put :memberships_for, :id => @user, :team_id => team_id
+      
+      response.should redirect_to(edit_user_url(@user))
+      flash[:success] =~ /this person was changed/i
     end
   end
 
@@ -97,6 +154,7 @@ describe UsersController do
       response.should_not have_selector('a', :content => 'New team')
       response.should_not have_selector('a', :href => new_team_path)
     end
+    
   end
 
   describe "GET 'new'" do
@@ -198,29 +256,84 @@ describe UsersController do
     before(:each) do
       @user = Factory(:user, :email => Factory.next(:email))
       @user.accounts << @account
+
+      @team_1 = @account.teams[0]
+      @team_2 = @account.teams[1]
+      @team_3 = Factory(:team, :account => @account)
+      @account.teams << @team_3
+      
+      @team_1.memberships.create(:user_id => @user.id, :active => true)
+      @team_2.memberships.create(:user_id => @user.id, :active => true)
     end
-    
-    it "should be successful" do
-        get :edit, :id => @user.id
-        response.should be_success
-    end
-    
+
     it "should redirect to signin page when not signed in" do
       controller.sign_out
       get :edit, :id => @user.id
       response.should redirect_to signin_path
     end
     
-    it "should not allow edit of a user who doesn't belong to the current account" do
+    it "should redirect for a user who doesn't belong to the current account" do
       @user.accounts.clear
       get :edit, :id => @user.id
       response.should redirect_to(@signed_in_user)
       flash[:error] =~ /don't have permission/i
     end
     
-    it "should show listing of permissions in sidebar" do
+    it "should show listing of permissions" do
       get :edit, :id => @user
-      response.should have_selector("p", :class => 'permissions')
+      response.should have_selector("ul", :class => 'permissions')
+    end
+    
+    it "should show the list of teams for the current account" do
+      get :edit, :id => @user.id
+      
+      response.should have_selector("li.team", :content => @team_1.name)
+      response.should have_selector("li.team", :content => @team_2.name)
+      response.should have_selector("li.team", :content => @team_3.name)
+    end
+      
+    it "should show a member's teams in the list as checked" do
+      get :edit, :id => @user.id
+      response.should have_selector("input[type=checkbox][checked=checked]", :value => @team_1.id.to_s)
+      response.should have_selector("input[type=checkbox][checked=checked]", :value => @team_2.id.to_s)
+      response.should_not have_selector("input[type=checkbox][checked=checked]", :value => @team_3.id.to_s)
+    end
+    
+    describe "when the logged in user is a not an account admin" do
+      
+      before(:each) do
+        @accountship.admin = false
+        @accountship.save
+        @membership = @team_1.memberships.create(:user_id => @signed_in_user.id, :admin => true, :active => true)
+      end
+      
+      it "should redirect for user not owned by the logged in (current) user" do
+        user_2 = Factory(:user, :email => Factory.next(:email))
+        @account.users << user_2
+        
+        get :edit, :id => user_2
+        response.should redirect_to(user_path(@signed_in_user))
+        flash[:error] =~ /don't have permission/i
+      end
+      
+      it "should not show submit/cancel for the permissions list" do
+        get :edit, :id => @user
+        
+        response.should_not have_selector(".actions input", :value => 'Update team access')
+      end
+      
+      it "should disable the permissions checkboxes" do
+        get :edit, :id => @user
+
+        response.should have_selector("input[type=checkbox][disabled=disabled]", :value => @team_1.id.to_s)
+        response.should have_selector("input[type=checkbox][disabled=disabled]", :value => @team_2.id.to_s)
+        response.should have_selector("input[type=checkbox][disabled=disabled]", :value => @team_3.id.to_s)
+      end
+      
+      it "should not show destroy user link" do
+        get :edit, :id => @user
+        response.should_not have_selector("a", :content => "Delete #{@user.name_or_email}")
+      end
     end
     
     describe "when the user to be edited is not the current user" do
@@ -248,6 +361,7 @@ describe UsersController do
         response.should_not have_selector("a", :content => "Delete #{@user.name_or_email}")
       end
     end
+    
   end
   
   describe "PUT 'update'" do
@@ -507,6 +621,13 @@ describe UsersController do
     
     before(:each) do
       @user = Factory(:user, :email => Factory.next(:email))
+      @account.users << @user
+    end
+    
+    it "should redirect for a user from another accoutn" do
+      orphan = Factory(:user, :email => Factory.next(:email))
+      get :send_reset, :id => orphan
+      response.should redirect_to(user_path(@signed_in_user))
     end
     
     it "should redirect to edit_user_path with a flash message" do

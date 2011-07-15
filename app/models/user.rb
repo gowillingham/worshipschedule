@@ -1,13 +1,17 @@
 require 'digest'
 
-class User < ActiveRecord::Base 
+class User < ActiveRecord::Base
   attr_accessor :password
   attr_accessor :validate_password
   
   attr_accessible :email, :first_name, :last_name, :home_phone, :mobile_phone, :office_phone, :office_phone_ext, :password, :password_confirmation
   
+  default_scope :order => 'CASE WHEN (LENGTH(last_name) = 0) THEN LOWER(email) ELSE LOWER(last_name) END'
+  
   has_many :accountships
   has_many :accounts, :through => :accountships
+  has_many :memberships
+  has_many :teams, :through => :memberships
   
   validates :first_name, :length => { :maximum => 50 }
   validates :last_name, :length => { :maximum => 50 }

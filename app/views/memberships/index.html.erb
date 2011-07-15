@@ -1,0 +1,47 @@
+<% unless @users.empty? %>
+  <div class="content shadow">
+    <div class="header">
+      <h1>
+        People on this team
+        <%= link_to 'Add people, remove people, change permissions', assign_team_path(@team) %>
+      </h1>
+    </div>
+    
+    <table class="persons">
+      
+      <thead>
+        <tr>
+          <th colspan="3" class="big">
+            <strong>Your church:</strong> <%= current_account.name %>
+            <span class="link">See the <%= link_to 'administrator list', admins_account_path(current_account), :class => 'cancel' %> to give or take away admin powers</span>
+          </th>
+        </tr>
+      </thead>
+    
+      <tbody>
+        <% @users.each_slice(3) do |row| %>
+          <tr>
+            <% row.each do |user| %>
+              <td>
+                <%= render 'users/person', :user => user %>
+              </td>
+            <% end %>
+          </tr>
+        <% end %>
+      </tbody>
+      
+    </table>
+  </div>
+<% else %>
+  <div class="blank_slate">
+    <%= image_tag 'empty_box.png', :style => 'width:175px;' %>
+    <div class="message">
+      <h2>Let's add the first member to this team.</h2>
+      <p>
+        Your team members are people that you've already added to your <%= APP_NAME %> account for <%= current_account.name %>.
+        You can assign as many people to your teams as you need. 
+      </p>
+      <%= render :partial => 'shared/button_link', :locals => { :url => assign_team_path(@team), :text => 'Add the first member' } %>
+    </div>
+  </div>
+<% end %>

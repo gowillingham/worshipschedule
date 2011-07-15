@@ -1,14 +1,27 @@
 <div class="card shadow">
   <div class="top">Your <%= APP_NAME %> profile</div>
   <div class="bottom">
-    <%= gravatar_for user, :size => 50, :default => :identicon %>
-    <ul>
-      <% unless user.name.blank? %>
-        <li class="name"><%= user.name unless user.name.blank? %></li>
-      <% end %>
-      <li class="email"><%= truncate user.email, :length => 22 %></li>
-      <li class="pass">Password: &bull;&bull;&bull;&bull;&bull;&bull;</li>
-    </ul>
-    <div class="padlock"><%= image_tag "/images/icons/lock.png", :alt => "Secure" %></div>
+    
+    <table>
+      <tbody>
+        <tr>
+          <td class="left"><%= gravatar_for user, :size => 50, :default => :identicon %></td>
+          <td>
+            <ul>
+              <% unless user.name.blank? %>
+                <li class="name"><%= user.name unless user.name.blank? %></li>
+              <% end %>
+              <li class="email"><%= truncate user.email, :length => 22 %></li>
+              <li class="pass">Password: &bull;&bull;&bull;&bull;&bull;&bull;</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <div class="padlock"><%= image_tag "/images/icons/lock.png", :alt => "Secure" %></div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>

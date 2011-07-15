@@ -12,6 +12,193 @@ describe TeamsController do
     controller.set_session_account(@account)
   end
   
+  describe "PUT 'remove_all'" do
+    
+    before(:each) do
+      @team = @account.teams[0]
+    end
+    
+    it "should not allow unauthenticated user" do
+      controller.sign_out
+      put :remove_all, :id => @team
+      response.should redirect_to(signin_path)
+    end
+    
+    it "should redirect for non-team or account admin" do
+      put :remove_all, :id => @team
+      response.should redirect_to(@signed_in_user)
+    end
+    
+    describe "for admin" do
+      
+      before(:each) do
+        @accountship = @signed_in_user.accountships.where(:account_id => @account.id).first
+        @accountship.admin = true
+        @accountship.save
+      end
+      
+      it "should allow account admin" do
+        put :remove_all, :id => @team
+        response.should redirect_to(assign_team_url(@team))
+      end
+      
+      it "should allow team admin" do
+        @accountship.admin = false
+        @accountship.save
+        membership = @team.memberships.create(:user_id => @signed_in_user.id, :admin => true)
+        
+        put :remove_all, :id => @team
+        response.should redirect_to(assign_team_url(@team))
+      end
+      
+      it "should remove all team members" do
+        member_one = Factory(:user, :email => Factory.next(:email))
+        member_two = Factory(:user, :email => Factory.next(:email))
+        @account.users << member_one
+        @account.users << member_two
+        @team.users << member_one
+        @team.users << member_two
+        
+        put :remove_all, :id => @team
+        
+        Membership.where('memberships.team_id = ? AND memberships.active = ?', @team.id, true).count.should eq(0)
+      end
+    end
+  end
+  
+  describe "PUT 'assign_all'" do
+    
+    before(:each) do
+      @team = @account.teams[0]
+    end
+    
+    it "should not allow unauthenticated user" do
+      controller.sign_out
+      put :assign_all, :id => @team
+      response.should redirect_to(signin_path)
+    end
+    
+    it "should redirect for non-team or account admin" do
+      put :assign_all, :id => @team
+      response.should redirect_to(@signed_in_user)
+    end
+    
+    describe "for admin" do
+      
+      before(:each) do
+        @accountship = @signed_in_user.accountships.where(:account_id => @account.id).first
+        @accountship.admin = true
+        @accountship.save
+      end
+      
+      it "should allow account admin" do
+        put :assign_all, :id => @team
+        response.should redirect_to(assign_team_url(@team))
+      end
+      
+      it "should allow team admin" do
+        @accountship.admin = false
+        @accountship.save
+        membership = @team.memberships.create(:user_id => @signed_in_user.id, :admin => true)
+        
+        put :assign_all, :id => @team
+        response.should redirect_to(assign_team_url(@team))
+      end
+      
+      it "should add all account members to the team" do
+        member_one = Factory(:user, :email => Factory.next(:email))
+        member_two = Factory(:user, :email => Factory.next(:email))
+        @account.users << member_one
+        @account.users << member_two
+        @team.users << member_one
+        @team.users << member_two
+        
+        put :assign_all, :id => @team
+        team = Team.find(@team.id)
+        team.users.exists?(member_one).should be_true
+        team.users.exists?(member_two).should be_true
+        team.users.exists?(@signed_in_user).should be_true
+      end
+      
+      it "should not add non-account members to the team" do
+        orphan = Factory(:user, :email => Factory.next(:email))
+        put :assign_all, :id => @team
+        Team.find(@team.id).users.exists?(orphan).should_not be_true
+      end
+    end
+  end
+  
+  describe "GET 'assign'" do
+    
+    before(:each) do
+      @team = @account.teams[0]
+    end
+    
+    it "should redirect for non-authenticated users" do
+      controller.sign_out
+      get :assign, :id => @team
+      response.should redirect_to(signin_path)
+    end
+    
+    it "should redirect for non-account or non team admin users" do
+      get :assign, :id => @team
+      response.should redirect_to(@signed_in_user)
+    end
+    
+    describe "for admin" do
+      
+      before(:each) do
+        @accountship = @signed_in_user.accountships.where('account_id = ?', @account.id).first
+        @accountship.admin = true
+        @accountship.save
+        
+        @user_1 = Factory(:user, :last_name => 'user_1', :email => Factory.next(:email))
+        @user_2 = Factory(:user, :last_name => 'user_2', :email => Factory.next(:email))
+        @user_3 = Factory(:user, :last_name => 'user_3', :email => Factory.next(:email))
+        @user_4 = Factory(:user, :last_name => 'user_4', :email => Factory.next(:email))
+        @user_1.accounts << @account
+        @user_2.accounts << @account
+        @user_3.accounts << @account
+        @user_4.accounts << @account
+        
+        @membership_1 = @team.memberships.create(:user_id => @user_1.id)
+        @membership_2 = @team.memberships.create(:user_id => @user_2.id)
+      end
+      
+      it "should allow team admin who isn't account admin" do
+        @accountship.admin = false
+        @accountship.save
+        membership = @team.memberships.create(:user_id => @signed_in_user.id, :admin => true)
+        get :assign, :id => @team
+        
+        response.should render_template('assign')
+      end
+      
+      it "should display all the users from account" do
+        get :assign, :id => @team
+        
+        response.should have_selector("label", :content => @user_1.first_name + ' ' + @user_1.last_name)
+        response.should have_selector("label", :content => @user_2.first_name + ' ' + @user_2.last_name)
+        response.should have_selector("label", :content => @user_3.first_name + ' ' + @user_3.last_name)
+        response.should have_selector("label", :content => @user_4.first_name + ' ' + @user_4.last_name)
+      end
+      
+      it "should show users on the team checked" do
+        get :assign, :id => @team
+        
+        response.should have_selector("input[type=checkbox][checked=checked]", :value => @user_1.id.to_s)
+        response.should have_selector("input[type=checkbox][checked=checked]", :value => @user_2.id.to_s)
+        response.should_not have_selector("input[type=checkbox][checked=checked]", :value => @user_3.id.to_s)
+        response.should_not have_selector("input[type=checkbox][checked=checked]", :value => @user_4.id.to_s)
+      end
+      
+      it "should have a back link" do
+        get :assign, :id => @team
+        response.should have_selector("a", :href => team_memberships_path(@team))
+      end
+    end
+  end
+  
   describe "DELETE 'destroy;" do
     
     before(:each) do
@@ -240,11 +427,8 @@ describe TeamsController do
       response.should have_selector('span', :content => @account.name)
     end
     
-    it "should display team.banner_text" do
-      get :show, :id => @account.teams[0]
+    it "should show a listing of team members in the sidebar"
 
-    end
-    
     describe "for admin users" do
       
       before(:each) do
