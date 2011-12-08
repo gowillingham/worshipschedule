@@ -28,8 +28,9 @@ Worshipschedule::Application.configure do
   # my email settings for mailcatcher ..
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
-    :host         => :localhost,
-    :port         => 1025
+    :host               => :localhost,
+    :port               => 1025,
+    :enable_starttles   => true
   }
 
   ## my email settings for gmail ..
