@@ -5,6 +5,8 @@ Worshipschedule::Application.routes.draw do
       get :assign
       put :assign_all, :to => 'teams#assign_all'
       put :remove_all, :to => 'teams#remove_all'
+      get :admins
+      put :admins, :to => 'teams#update_admins'
     end
     resources :memberships
   end

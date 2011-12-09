@@ -66,6 +66,19 @@ describe TeamsController do
     end
   end
   
+  describe "GET 'admins'" do
+    it "should allow account admin"
+    it "should allow team admin"
+    it "should show a listing of members"
+    it "should show team administrators in the list as checked"
+    it "should show team non-administrators as unchecked"
+  end
+  
+  describe "PUT 'admins'" do
+    it "should allow account admin"
+    it "should allow team admin"
+  end
+  
   describe "PUT 'assign_all'" do
     
     before(:each) do
@@ -452,7 +465,13 @@ describe TeamsController do
         response.should have_selector('a', :content => 'Team settings')
       end
       
-      it "should show the new toolbar"
+      it "should show the new skill link" do
+        get :show, :id => @account.teams[0]
+        response.should have_selector('div.link_bar a', :content => 'New skill')
+      end
+      
+      it "should show new event link"
+      it "should show new file link"
     end
     
     describe "for non-admin users" do

@@ -70,4 +70,12 @@ class TeamsController < ApplicationController
       render 'edit'
     end
   end
+  
+  def admins
+    @team = Team.find(params[:id])
+    @sidebar_partial = 'users/sidebar/placeholder'
+  end
+  
+  def update_admins
+  end
 end
