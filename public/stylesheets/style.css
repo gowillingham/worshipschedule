@@ -28,9 +28,9 @@ body                    {font-family:"Lucida Grande",verdana,arial,helvetica,san
 #main .content .header .big_button      {float:right;}
 #main .content .header ul               {float:right;display:inline;font-weight:normal;list-style:none;margin:0.75em 0;padding:0;}
 
-#main .content .header div.link_bar					{float:right;margin:0.75em 0;font-weight:normal;color:#ccc;}
-#main .content .header div.link_bar a				{color:red;}
-#main .content .header div.link_bar a:hover	{color:white;background-color:red;}
+div.link_bar					{float:right;margin:0.75em 0;font-weight:normal;color:#ccc;}
+div.link_bar a				{color:red;}
+div.link_bar a:hover	{color:white;background-color:red;}
 
 #main .content .form                          {padding:.4em 4em 3em 1.5em;}
 #main .content .form div.fieldset_desc        {color:#777;line-height:1.3em;}

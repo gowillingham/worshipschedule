@@ -1,7 +1,16 @@
 class TeamsController < ApplicationController
   before_filter :require_account_admin, :only => [:destroy, :create, :new]
-  before_filter(:only => [:assign, :edit, :update, :assign_all, :remove_all]) { require_account_or_team_admin(params[:id]) }
+  before_filter(:only => [:assign, :edit, :update, :assign_all, :remove_all, :admins]) { require_account_or_team_admin(params[:id]) }
   before_filter(:except => [:create, :new]) { require_team_for_current_account(params[:id]) }
+ 
+  def admins
+    @team = Team.find(params[:id])
+    @team_members = ??
+    @sidebar_partial = 'users/sidebar/placeholder'
+  end
+  
+  def update_admins
+  end
 
   def assign_all
     @team = Team.find(params[:id])
@@ -69,13 +78,5 @@ class TeamsController < ApplicationController
     else
       render 'edit'
     end
-  end
-  
-  def admins
-    @team = Team.find(params[:id])
-    @sidebar_partial = 'users/sidebar/placeholder'
-  end
-  
-  def update_admins
   end
 end

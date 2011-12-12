@@ -12,6 +12,41 @@ describe TeamsController do
     controller.set_session_account(@account)
   end
   
+  describe "GET 'admins'" do
+    
+    before(:each) do
+      @team = @account.teams[0]
+    end
+    
+    it "should not allow unauthorized access" do
+      controller.sign_out
+      get :admins, :id => @team
+      response.should redirect_to(signin_path)
+    end
+    
+    it "should re-direct for non-team or account admin" do
+      get :admins, :id => @team
+      response.should redirect_to(@signed_in_user)
+    end
+    
+    describe "for admin user" do
+      
+    end
+    
+    it "should allow account admin"
+    it "should allow team admin"
+    it "should show a listing of members"
+    it "should show team administrators in the list as checked"
+    it "should show team non-administrators as unchecked"
+  end
+  
+  describe "PUT 'admins'" do
+    it "should allow account admin"
+    it "should allow team admin"
+    it "should update the admin status of a team member"
+    it "should redirect to team settings page teams/id/edit"
+  end
+  
   describe "PUT 'remove_all'" do
     
     before(:each) do
@@ -64,19 +99,6 @@ describe TeamsController do
         Membership.where('memberships.team_id = ? AND memberships.active = ?', @team.id, true).count.should eq(0)
       end
     end
-  end
-  
-  describe "GET 'admins'" do
-    it "should allow account admin"
-    it "should allow team admin"
-    it "should show a listing of members"
-    it "should show team administrators in the list as checked"
-    it "should show team non-administrators as unchecked"
-  end
-  
-  describe "PUT 'admins'" do
-    it "should allow account admin"
-    it "should allow team admin"
   end
   
   describe "PUT 'assign_all'" do
