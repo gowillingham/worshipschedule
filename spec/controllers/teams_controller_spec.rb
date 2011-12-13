@@ -31,11 +31,44 @@ describe TeamsController do
     
     describe "for admin user" do
       
+      before(:each) do
+        @membership = @team.memberships.create(:user_id => @signed_in_user.id, :admin => true)
+        
+        @user_1 = Factory(:user, :last_name => 'user_1', :email => Factory.next(:email))
+        @user_2 = Factory(:user, :last_name => 'user_2', :email => Factory.next(:email))
+        @user_3 = Factory(:user, :last_name => 'user_3', :email => Factory.next(:email))
+        @user_1.accounts << @account
+        @user_2.accounts << @account
+        @user_3.accounts << @account
+        
+        @membership_1 = @team.memberships.create(:user_id => @user_1.id)
+        @membership_2 = @team.memberships.create(:user_id => @user_2.id)
+        @membership_3 = @team.memberships.create(:user_id => @user_3.id)
+        
+      end
+      
+      it "should allow team admin who isn't account admin" do
+        accountship = @signed_in_user.accountships.where('account_id = ?', @account.id).first
+        accountship.admin = false
+        accountship.save
+        
+        get :admins, :id => @team
+        response.should render_template(:admins)
+      end
+      
+      it "should show a listing of members" do
+        get :admins, :id => @team
+        
+        response.should have_selector("label", :content => @signed_in_user.first_name + ' ' + @signed_in_user.last_name)
+        response.should have_selector("label", :content => @user_1.first_name + ' ' + @user_1.last_name)
+        response.should have_selector("label", :content => @user_2.first_name + ' ' + @user_2.last_name)
+        response.should have_selector("label", :content => @user_3.first_name + ' ' + @user_3.last_name)
+      end
+      
+      
     end
     
-    it "should allow account admin"
     it "should allow team admin"
-    it "should show a listing of members"
     it "should show team administrators in the list as checked"
     it "should show team non-administrators as unchecked"
   end

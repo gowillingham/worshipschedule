@@ -5,8 +5,8 @@ class TeamsController < ApplicationController
  
   def admins
     @team = Team.find(params[:id])
-    @team_members = ??
-    @sidebar_partial = 'users/sidebar/placeholder'
+    @team_members = @team.users
+    @sidebar_partial = 'teams/sidebar/admins'
   end
   
   def update_admins
