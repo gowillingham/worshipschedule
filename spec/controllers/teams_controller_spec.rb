@@ -91,11 +91,73 @@ describe TeamsController do
     end
   end
   
-  describe "PUT 'admins'" do
-    it "should allow account admin"
-    it "should allow team admin"
-    it "should update the admin status of a team member"
-    it "should redirect to team settings page teams/id/edit"
+  describe "PUT 'update_admins'" do
+    
+    before(:each) do
+      @team = @account.teams[0]
+    end
+    
+    it "should not allow unauthorized access" do
+      controller.sign_out
+      put :update_admins, :id => @team
+      response.should redirect_to(signin_path)
+    end
+    
+    it "should re-direct for non-team or account admin" do
+      put :update_admins, :id => @team
+      response.should redirect_to(@signed_in_user)
+    end
+    
+    describe "for admin" do
+      
+      before(:each) do
+        @accountship = @signed_in_user.accountships.where('account_id = ?', @account.id).first
+        @accountship.admin = true
+        @accountship.save
+        
+        @membership = @team.memberships.create(:user => @signed_in_user)
+
+        @user_1 = Factory(:user, :last_name => 'user_1', :email => Factory.next(:email))
+        @user_2 = Factory(:user, :last_name => 'user_2', :email => Factory.next(:email))
+        @user_3 = Factory(:user, :last_name => 'user_3', :email => Factory.next(:email))
+        @user_1.accounts << @account
+        @user_2.accounts << @account
+        @user_3.accounts << @account
+        
+        @membership_1 = @team.memberships.create(:user_id => @user_1.id)
+        @membership_2 = @team.memberships.create(:user_id => @user_2.id)
+        @membership_3 = @team.memberships.create(:user_id => @user_3.id)
+      end
+      
+      it "should allow account admin" do
+        put :update_admins, :id => @team
+        
+        response.should redirect_to edit_team_path(@team)
+      end
+      
+      it "should allow team admin that is not account admin" do
+        @accountship.admin = false
+        @accountship.save
+        @membership.admin = true
+        @membership.save
+
+        put :update_admins, :id => @team
+      end 
+      
+      it "should update the admin status of a list of team members" do 
+          membership_id = [@membership_1.user_id.to_s, @membership_3.user_id.to_s]
+          
+          put :update_admins, :id => @team, :membership_id => membership_id
+          
+          Membership.where(:user_id => @membership_1.user_id, :team_id => @team.id).first.admin.should be_true
+          Membership.where(:user_id => @membership_2.user_id, :team_id => @team.id).first.admin.should_not be_true
+          Membership.where(:user_id => @membership_3.user_id, :team_id => @team.id).first.admin.should be_true
+      end 
+      it "should not allow user to remove self from admin role"
+    
+      it "should redirect to team settings page teams/id/edit on success" do
+      end
+    end 
   end
   
   describe "PUT 'remove_all'" do

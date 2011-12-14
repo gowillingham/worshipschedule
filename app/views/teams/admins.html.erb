@@ -6,7 +6,7 @@
     <%= form_for @team, { :url => admins_team_path(@team), :method => 'put' } do %>
       <div class="action">
         <%= submit_tag "Save these changes" %>
-        <%= link_to "&laquo;  Cancel".html_safe, users_path %>
+        <%= link_to "&laquo;  Cancel".html_safe, edit_team_path(@team) %>
         <span>and don't change <br />administrators</span>
       </div>
   
@@ -32,16 +32,16 @@
 					<% end %>
           
 					<% @memberships.each do |membership| %>					
-						<%# if !@account_admins.include?(membership.user) || !current_account.owner_id == membership.user.id %>
+						<% if !@account_admins.include?(membership.user) || !current_account.owner_id == membership.user.id %>
 							<tr>
 								<td>
 									<label>
-										<%= check_box_tag "membership_ids[]", membership.id, membership.admin %>
+										<%= check_box_tag "membership_id[]", membership.id, membership.admin %>
 										<%= membership.user.name_or_email %>
 									</label>
 								</td>
 							</tr>
-						<%# end %>
+						<% end %>
 					<% end %>
 					
         </tbody>
