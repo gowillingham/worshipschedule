@@ -32,6 +32,10 @@ describe TeamsController do
     describe "for admin user" do
       
       before(:each) do
+        @accountship = @signed_in_user.accountships.where('account_id = ?', @account.id).first
+        @accountship.admin = true
+        @accountship.save
+        
         @membership = @team.memberships.create(:user_id => @signed_in_user.id, :admin => true)
         
         @user_1 = Factory(:user, :last_name => 'user_1', :email => Factory.next(:email))
@@ -47,10 +51,17 @@ describe TeamsController do
         
       end
       
+      it "should allow account admin who isn't team admin" do
+        @membership.admin = false
+        @membership.save
+         
+        get :admins, :id => @team
+        response.should render_template(:admins)
+      end
+      
       it "should allow team admin who isn't account admin" do
-        accountship = @signed_in_user.accountships.where('account_id = ?', @account.id).first
-        accountship.admin = false
-        accountship.save
+        @accountship.admin = false
+        @accountship.save        
         
         get :admins, :id => @team
         response.should render_template(:admins)
@@ -65,12 +76,19 @@ describe TeamsController do
         response.should have_selector("label", :content => @user_3.first_name + ' ' + @user_3.last_name)
       end
       
-      
+      it "should show team administrators in the list as checked and non-admins as unchecked" do
+        @membership.admin = false
+        @membership.save
+        @membership_2.admin = true
+        @membership_2.save
+        
+        get :admins, :id => @team
+        
+        response.should_not have_selector("input[type=checkbox][checked=checked]", :value => @signed_in_user.id.to_s)        
+        response.should have_selector("input[type=checkbox][checked=checked]", :value => @user_2.id.to_s)        
+        response.should_not have_selector("input[type=checkbox][checked=checked]", :value => @user_3.id.to_s)        
+      end
     end
-    
-    it "should allow team admin"
-    it "should show team administrators in the list as checked"
-    it "should show team non-administrators as unchecked"
   end
   
   describe "PUT 'admins'" do

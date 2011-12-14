@@ -5,7 +5,11 @@ class TeamsController < ApplicationController
  
   def admins
     @team = Team.find(params[:id])
-    @team_members = @team.users
+    @account_admins = User.joins(:accountships).where('accountships.account_id = ? AND accountships.admin = ?', current_account.id, true)
+
+    # remove the account_admins from this listing ..
+    @memberships = @team.memberships.joins(:user).order('CASE WHEN (LENGTH(last_name) = 0) THEN LOWER(email) ELSE LOWER(last_name) END')
+    @title = 'Team administrators'
     @sidebar_partial = 'teams/sidebar/admins'
   end
   

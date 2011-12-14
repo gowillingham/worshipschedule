@@ -14,7 +14,36 @@
         <tbody>
           <tr><td class="note">Note: The "Team administrators" setting applies only to this team. </td></tr>
           <tr><td class="note"><strong>Which people are team administrators? </strong></td></tr>
+
+					<% @account_admins.each do |account_admin| %>
+						<tr>
+							<td>
+								<label>
+										<%= check_box_tag nil, nil, true, :disabled => true %>
+										<%= account_admin.name_or_email %>
+										<% if current_account.owner_id == account_admin.id %>
+											(account owner)
+										<% else %>
+											(account administrator)
+										<% end %>
+								</label>
+							</td>
+						</tr>
+					<% end %>
           
+					<% @memberships.each do |membership| %>					
+						<%# if !@account_admins.include?(membership.user) || !current_account.owner_id == membership.user.id %>
+							<tr>
+								<td>
+									<label>
+										<%= check_box_tag "membership_ids[]", membership.id, membership.admin %>
+										<%= membership.user.name_or_email %>
+									</label>
+								</td>
+							</tr>
+						<%# end %>
+					<% end %>
+					
         </tbody>
       </table>
     <% end %>
