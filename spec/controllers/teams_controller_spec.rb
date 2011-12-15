@@ -130,7 +130,7 @@ describe TeamsController do
       end
       
       it "should allow account admin" do
-        put :update_admins, :id => @team
+        put :update_admins, :id => @team, :membership_id => []
         
         response.should redirect_to edit_team_path(@team)
       end
@@ -141,21 +141,37 @@ describe TeamsController do
         @membership.admin = true
         @membership.save
 
-        put :update_admins, :id => @team
+        put :update_admins, :id => @team, :membership_id => [@membership.id.to_s]
+
+        response.should redirect_to edit_team_path(@team)
       end 
       
       it "should update the admin status of a list of team members" do 
           membership_id = [@membership_1.user_id.to_s, @membership_3.user_id.to_s]
-          
           put :update_admins, :id => @team, :membership_id => membership_id
           
           Membership.where(:user_id => @membership_1.user_id, :team_id => @team.id).first.admin.should be_true
           Membership.where(:user_id => @membership_2.user_id, :team_id => @team.id).first.admin.should_not be_true
           Membership.where(:user_id => @membership_3.user_id, :team_id => @team.id).first.admin.should be_true
       end 
-      it "should not allow user to remove self from admin role"
+      
+      it "should not allow user to remove self from admin role" do
+        @accountship.admin = false
+        @accountship.save
+        @membership.admin = true
+        @membership.save
+        
+        put :update_admins, :id => @team, :membership_id => []
+        
+        flash[:error].should =~ /remove yourself/i
+        response.should redirect_to admins_team_path(@team)
+      end 
     
       it "should redirect to team settings page teams/id/edit on success" do
+        membership_id = [@membership_1.user_id.to_s, @membership_3.user_id.to_s]
+        put :update_admins, :id => @team, :membership_id => membership_id
+
+        response.should redirect_to edit_team_path(@team)
       end
     end 
   end
@@ -376,7 +392,7 @@ describe TeamsController do
         delete :destroy, :id => @team
         
         response.should redirect_to(@signed_in_user)
-        flash[:success] =~ /removed/i
+        flash[:success].should =~ /removed/i
       end
     end
   end
@@ -416,10 +432,10 @@ describe TeamsController do
         end.should change(Team, :count).by(0)
       end
       
-      it "should redirect to teams#show with flash for the new team" do
+      it "should redirect to teams#show with for the new team" do
         post :create, :team => @attr
         response.should redirect_to(team_path(assigns(:team)))
-        flash[:success] =~ /successfully saved/i
+        flash[:success].should =~ /successfully saved/i
       end
     end
   end
