@@ -18,7 +18,16 @@ class Account < ActiveRecord::Base
       # don't modify the current user or owner ..
       unless (accountship.user == current_user) || (accountship.user == owner)
         if ids.include?(accountship.id.to_s)
-          accountship.update_attribute(:admin, true) unless accountship.admin?
+          unless accountship.admin?
+            
+            # set this user as account admin ..
+            accountship.update_attribute(:admin, true) 
+            
+            # reset any team administrations for this user ..
+            accountship.user.memberships.each do |membership|
+              membership.update_attribute(:admin, false)
+            end
+          end 
         else
           accountship.update_attribute(:admin, false) if accountship.admin?
         end

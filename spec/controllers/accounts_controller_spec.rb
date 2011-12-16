@@ -366,7 +366,15 @@ describe AccountsController do
           Accountship.find(@signed_in_user_accountship.id).admin.should be_true
         end
         
-        it "should remove all team administrator flags to false when assigning an account administrator"
+        it "should set all team administrator flags to false when assigning an account administrator" do
+          team = @account.teams.create(:name => 'New team')
+          membership = team.memberships.create(:user_id => @not_admin.id, :admin => true)
+          membership.save
+          
+          put :update_admins, :id => @account.id, :accountship_ids => [@not_admin_accountship.id.to_s]
+          
+          Membership.where(:user_id => @not_admin.id, :admin => true).first.should be_nil
+        end
       end
     end
     

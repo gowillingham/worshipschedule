@@ -568,9 +568,7 @@ describe TeamsController do
         membership = @team.memberships.create(:user_id => team_administrator.id, :admin => true)
         
         get :edit, :id => @team
-        
-        # todo: make sure owner, team admins, account admins aren't duplicated ..
-        
+
         response.should have_selector('li', :content => @signed_in_user.name_or_email)
         response.should have_selector('li', :content => @account_owner.name_or_email)
         response.should have_selector('li', :content => team_administrator.name_or_email)
