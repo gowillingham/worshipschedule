@@ -147,12 +147,12 @@ describe TeamsController do
       end 
       
       it "should update the admin status of a list of team members" do 
-          membership_id = [@membership_1.user_id.to_s, @membership_3.user_id.to_s]
-          put :update_admins, :id => @team, :membership_id => membership_id
-          
-          Membership.where(:user_id => @membership_1.user_id, :team_id => @team.id).first.admin.should be_true
-          Membership.where(:user_id => @membership_2.user_id, :team_id => @team.id).first.admin.should_not be_true
-          Membership.where(:user_id => @membership_3.user_id, :team_id => @team.id).first.admin.should be_true
+        membership_id = [@membership_1.user_id.to_s, @membership_3.user_id.to_s]
+        put :update_admins, :id => @team, :membership_id => membership_id
+        
+        Membership.where(:user_id => @membership_1.user_id, :team_id => @team.id).first.admin.should be_true
+        Membership.where(:user_id => @membership_2.user_id, :team_id => @team.id).first.admin.should_not be_true
+        Membership.where(:user_id => @membership_3.user_id, :team_id => @team.id).first.admin.should be_true
       end 
       
       it "should not allow user to remove self from admin role" do
@@ -170,7 +170,8 @@ describe TeamsController do
       it "should redirect to team settings page teams/id/edit on success" do
         membership_id = [@membership_1.user_id.to_s, @membership_3.user_id.to_s]
         put :update_admins, :id => @team, :membership_id => membership_id
-
+        
+        flash[:success].should =~ /changes have been saved/i
         response.should redirect_to edit_team_path(@team)
       end
     end 
@@ -537,6 +538,11 @@ describe TeamsController do
         accountship = @signed_in_user.accountships.where('account_id = ?', @account.id).first
         accountship.admin = true
         accountship.save
+        
+        @account_owner = Factory(:user, :email => Factory.next(:email))
+        @account.users << @account_owner
+        @account.owner_id = @account_owner.id
+        @account.save
       end
       
       it "should allow access" do
@@ -554,6 +560,20 @@ describe TeamsController do
         get :edit, :id => @team
         response.should have_selector('a', :href => team_path(@team))
         response.should have_selector('a', :content => "Yes, I understand - delete this team")
+      end
+      
+      it "should show a listing of administrators in the sidebar" do
+        team_administrator = Factory(:user, :first_name => 'new_team', :last_name => 'administrator', :email => Factory.next(:email))
+        @account.users << team_administrator
+        membership = @team.memberships.create(:user_id => team_administrator.id, :admin => true)
+        
+        get :edit, :id => @team
+        
+        # todo: make sure owner, team admins, account admins aren't duplicated ..
+        
+        response.should have_selector('li', :content => @signed_in_user.name_or_email)
+        response.should have_selector('li', :content => @account_owner.name_or_email)
+        response.should have_selector('li', :content => team_administrator.name_or_email)
       end
     end
     

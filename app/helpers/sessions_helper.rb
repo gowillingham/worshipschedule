@@ -162,6 +162,10 @@ module SessionsHelper
     @current_account ||= Account.find_by_id session[:account_id]
   end
   
+  def account_owner
+    User.where(:id => current_account.owner_id).first
+  end
+  
   def sign_out
     reset_session
     self.current_user = nil

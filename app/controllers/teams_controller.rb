@@ -14,7 +14,7 @@ class TeamsController < ApplicationController
   end
   
   def update_admins
-    @team = Team.find(params[:id])
+    @team = Team.find(params[:id])    
     
     if !admin? && !params[:membership_id].include?(current_user.memberships.where(:team_id => @team.id).first.id.to_s)
       flash[:error] = "You cannot remove yourself from this team's administrators. You will need to get an account administrator to do so. "
@@ -24,11 +24,6 @@ class TeamsController < ApplicationController
       flash[:success] = 'Your team administrator permission changes have been saved'
       redirect_to edit_team_url(@team)
     end
-
-    # if current_user not an admin
-    # if id's doesn't include current_user's membership 
-    # then redirect with flash message ..
-    
   end
 
   def assign_all
@@ -84,6 +79,8 @@ class TeamsController < ApplicationController
   
   def edit
     @team = Team.find(params[:id])
+    @admin_accountships = current_account.accountships.joins(:user).where(:admin => true)
+    @admin_memberships = @team.memberships.admin
     @sidebar_partial = 'teams/sidebar/edit'
   end
   

@@ -365,6 +365,8 @@ describe AccountsController do
           Accountship.find(@owner_accountship.id).admin.should be_true
           Accountship.find(@signed_in_user_accountship.id).admin.should be_true
         end
+        
+        it "should remove all team administrator flags to false when assigning an account administrator"
       end
     end
     

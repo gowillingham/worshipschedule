@@ -103,7 +103,7 @@ class AccountsController < ApplicationController
   
   def update_admins
     @account = Account.find(params[:id])
-    @account.assign_administrators(params[:accountship_ids], current_user)
+    @account.assign_administrators(params[:accountship_ids] || [], current_user)
     flash[:success] = "Your administrator permission changes have been saved. "
     redirect_to users_url
   end

@@ -12,4 +12,35 @@
     Team administrators
 		<%= link_to "Change", admins_team_path(@team) %>
   </h1>
+	<ul class="permissions">
+		<li>
+			<%= gravatar_for(account_owner, { :size => 35 }) %>
+			<div>
+				<%= account_owner.name_or_email %>
+				<br /><span>Account owner</span>
+			</div>
+		</li>
+		
+		<% @admin_accountships.each do |accountship| %>
+			<% unless accountship.user_id == account_owner.id %>
+				<li>
+					<%= gravatar_for(accountship.user, { :size => 35, :default => :identicon }) %>
+					<div>
+						<%= accountship.user.name_or_email %>
+						<br /><span>Account administrator</span>
+					</div>
+				</li>
+			<% end %>
+		<% end %>
+		
+		<% @admin_memberships.each do |membership| %>
+			<li>
+				<%= gravatar_for(membership.user, { :size => 35, :default => :identicon }) %>
+				<div>
+					<%= membership.user.name_or_email %>
+					<br /><span>Team administrator</span>
+				</div>
+			</li>			
+		<% end %>
+	</ul>
 </div>
