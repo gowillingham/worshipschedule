@@ -5,6 +5,7 @@ class Team < ActiveRecord::Base
   
   has_many :memberships, :dependent => :destroy
   has_many :users, :through => :memberships
+  has_many :skills, :dependent => :destroy
   
   validates_presence_of :account_id
   validates_presence_of :name

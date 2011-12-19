@@ -44,7 +44,7 @@ ActiveRecord::Schema.define(:version => 20111219160214) do
   add_index "memberships", ["team_id", "user_id"], :name => "index_memberships_on_team_id_and_user_id", :unique => true
 
   create_table "skills", :force => true do |t|
-    t.integer  "integer_id",  :null => false
+    t.integer  "team_id",     :null => false
     t.string   "name",        :null => false
     t.string   "description"
     t.datetime "created_at"
