@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110525164437) do
+ActiveRecord::Schema.define(:version => 20111219160214) do
 
   create_table "accounts", :force => true do |t|
     t.string   "name"
@@ -42,6 +42,16 @@ ActiveRecord::Schema.define(:version => 20110525164437) do
 
   add_index "memberships", ["active"], :name => "index_memberships_on_active"
   add_index "memberships", ["team_id", "user_id"], :name => "index_memberships_on_team_id_and_user_id", :unique => true
+
+  create_table "skills", :force => true do |t|
+    t.integer  "integer_id",  :null => false
+    t.string   "name",        :null => false
+    t.string   "description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "skills", ["name"], :name => "index_skills_on_name"
 
   create_table "teams", :force => true do |t|
     t.string   "name"
