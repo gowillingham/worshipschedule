@@ -3,7 +3,7 @@ class Membership < ActiveRecord::Base
   belongs_to :user
   
   scope :active, where(:active => true)
-  scope :admin, where(:admin => true)
+  scope :admin, where(:admin => true, :active => true)
   
   validates :team_id, :presence => true
   validates :user_id, :presence => true

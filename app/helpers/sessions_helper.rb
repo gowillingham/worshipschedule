@@ -31,7 +31,7 @@ module SessionsHelper
     if membership.nil?
       false
     else
-      membership.admin?
+      membership.admin? && membership.active?
     end
   end
   
