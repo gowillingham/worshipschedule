@@ -9,6 +9,7 @@ Worshipschedule::Application.routes.draw do
       put :admins, :to => 'teams#update_admins'
     end
     resources :memberships
+    resources :skills
   end
 
   resources :accounts do

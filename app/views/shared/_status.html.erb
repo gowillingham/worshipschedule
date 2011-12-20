@@ -2,6 +2,8 @@
   <% if admin? %>
     <% if ['teams'].include?(controller.controller_name) && !['create', 'new'].include?(controller.action_name) %>
       <%= link_to "Team settings", edit_team_path(@team), :class => 'settings' %>
+		<% elsif ['skills'].include?(controller.controller_name) %>
+    	<%= link_to "Team settings", edit_team_path(@team), :class => 'settings' %>
     <% else %>
       <%= current_user.name_or_email %>
     <% end %>
