@@ -608,7 +608,7 @@ describe TeamsController do
       response.should have_selector('h1', :content => @account.teams[0].name)
       response.should have_selector('span', :content => @account.name)
     end
-    
+
     it "should show a listing of team members in the sidebar"
 
     describe "for admin users" do
@@ -636,7 +636,7 @@ describe TeamsController do
       
       it "should show the new skill link" do
         get :show, :id => @account.teams[0]
-        response.should have_selector('div.link_bar a', :content => 'New skill')
+        response.should have_selector('a', :content => 'New skill')
       end
       
       it "should show new event link"
@@ -649,6 +649,11 @@ describe TeamsController do
         get :show, :id => @account.teams[0]
         response.should_not have_selector('a', :content => 'Team settings')
       end
+      
+      it "should not display the new skill link" do
+        get :show, :id => @account.teams[0]
+        response.should_not have_selector('div.link_bar a', :content => 'New skill')
+      end 
       
       it "should show the correct tabs" do
         get :show, :id => @account.teams[0]

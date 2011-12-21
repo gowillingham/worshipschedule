@@ -4,5 +4,7 @@ class Skill < ActiveRecord::Base
   default_scope :order => :name
   belongs_to :team
   
-  validates_presence_of :team_id, :name  
+  validates :team_id, :presence => true, :length => { :minimum => 1 }
+  validates :name, :presence => true, :length => { :maximum => 100 }
+  validates :description, :length => { :maximum => 500 }  
 end

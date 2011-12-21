@@ -1,10 +1,12 @@
 <div class="content shadow">
   <div class="header">
-	<div class="link_bar">
-		<%= link_to 'New skill', new_team_skill_path(@team) %>
-		|
-		<a href="#">New link</a>
-	</div>
+	<% if admin? || team_admin?(@team, current_user) %>
+		<div class="link_bar">
+			<%= link_to 'New skill', new_team_skill_path(@team) %>
+			|
+			<a href="#">New link</a>
+		</div>
+	<% end %>
     <h2>Team overview and activity</h2>
   </div>
   <div class="dashboard">
