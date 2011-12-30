@@ -5,6 +5,7 @@
   <%= csrf_meta_tag %>
   <%= favicon_link_tag %>
   <%= javascript_include_tag "jquery/jquery-1.5.min.js", "rails" %>
+  <%= yield :head %>
   <%= stylesheet_link_tag 'blueprint/screen', :media => 'screen' %>
   <%= stylesheet_link_tag 'blueprint/print',  :media => 'print' %>
   <%= stylesheet_link_tag 'style',  :media => 'screen' %>

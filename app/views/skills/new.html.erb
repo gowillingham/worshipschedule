@@ -8,7 +8,7 @@
       <%= render 'fields', :f => f %>      
       <div class="footer">
         <%= f.submit "Save changes" %>
-        or <%= link_to "Cancel", @team, :class => 'cancel' %>
+        or <%= link_to "Cancel", team_skills_path(@team), :class => 'cancel' %>
       </div>
     <% end %>
   </div>

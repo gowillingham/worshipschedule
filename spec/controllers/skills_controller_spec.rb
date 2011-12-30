@@ -18,6 +18,85 @@ describe SkillsController do
     it "should not allow a skill from a different team"
   end
   
+  describe "GET 'index'" do
+    
+    before(:each) do
+      @skill_1 = @team.skills.create(:name => 'Skill 1')
+      @skill_2 = @team.skills.create(:name => 'Skill 2', :description => 'A short description for this skill. ')
+      @skill_3 = @team.skills.create(:name => 'Skill 3', :description => 'A longer description for this skill. ' * 10)
+    end
+    
+    it "should allow account admin" do
+      get :index, :team_id => @team
+      
+      response.should render_template('index')
+    end
+    
+    it "should allow team admin" do
+      @accountship.update_attribute(:admin, false)
+      @team.memberships.create(:user_id => @signed_in_user.id, :admin => true)
+      
+      get :index, :team_id => @team
+      response.should render_template('index')
+    end   
+    
+    it "should allow a regular team member" do
+      @accountship.update_attribute(:admin, false)
+      @team.memberships.create(:user_id => @signed_in_user.id, :admin => false)
+      
+      get :index, :team_id => @team
+      response.should render_template('index')
+    end
+    
+    it "should hide admin features from non-admin" do
+      @accountship.update_attribute(:admin, false)
+      @team.memberships.create(:user_id => @signed_in_user.id, :admin => false)
+      get :index, :team_id => @team
+      
+      response.should_not have_selector('a', :content => 'New skill')
+      response.should_not have_selector('a', :content => 'Team settings')
+    end 
+    
+    it "should show admin features to admin" do
+      get :index, :team_id => @team
+      
+      response.should have_selector('a', :content => 'New skill')      
+      response.should have_selector('a', :content => 'Team settings')
+    end 
+    
+    it "should show all skills to admin" do
+      @team.skills.create(:name => 'skill 1')
+      @team.skills.create(:name => 'skill 2')
+      @team.skills.create(:name => 'skill 3')
+      get :index, :team_id => @team
+
+      response.should have_selector('td', :content => @team.skills[0].name)
+      response.should have_selector('td', :content => @team.skills[1].name)
+      response.should have_selector('td', :content => @team.skills[2].name)
+    end  
+    
+    it "should not allow team that belongs to another account" do
+      rogue_acct = Factory(:account, :name => 'Orphan')
+      team = rogue_acct.teams.create(:name => 'Orphan team')
+      
+      get :index, :team_id => team
+      
+      response.should_not render_template('index')
+    end
+    
+    it "should show a blank slate when there are no skills" do
+      @team.skills.clear
+      get :index, :team_id => @team
+      
+      response.should have_selector('div.blank_slate')
+      response.should have_selector('a', :content => 'Add the first skill', :href => new_team_skill_path(@team))
+    end
+    
+    it "should indicate (checked?) the logged in user's skills for this team"
+    it "should show a no skills message if for a non-admin user with no skills assigned"
+    
+  end
+  
   describe "POST 'create'" do
     
     before(:each) do

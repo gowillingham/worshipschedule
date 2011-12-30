@@ -1,15 +1,21 @@
 <div class="status">
-  <% if admin? %>
-    <% if ['teams'].include?(controller.controller_name) && !['create', 'new'].include?(controller.action_name) %>
-      <%= link_to "Team settings", edit_team_path(@team), :class => 'settings' %>
-		<% elsif ['skills'].include?(controller.controller_name) %>
-    	<%= link_to "Team settings", edit_team_path(@team), :class => 'settings' %>
-    <% else %>
-      <%= current_user.name_or_email %>
-    <% end %>
-  <% else %>
-    <%= current_user.name_or_email %>
-  <% end %>
+   <% if ['teams'].include?(controller.controller_name) && !['create', 'new'].include?(controller.action_name) %>
+		<% if admin? || team_admin?(@team, current_user)%>
+     	<%= link_to "Team settings", edit_team_path(@team), :class => 'settings' %>
+		<% else %>
+     	<%= current_user.name_or_email %>
+		<% end %>
+		
+	<% elsif ['skills'].include?(controller.controller_name) %>
+		<% if admin? || team_admin?(@team, current_user)%>
+			<%= link_to "Team settings", edit_team_path(@team), :class => 'settings' %>
+		<% else %>
+     	<%= current_user.name_or_email %>			
+		<% end %>
+   <% else %>
+     <%= current_user.name_or_email %>
+   <% end %>
+
   | <%= link_to 'My info', edit_user_path(current_user) %>
   | <%= link_to 'Sign out', signout_path, :method => :delete %>
   | <a href="#">Help</a>

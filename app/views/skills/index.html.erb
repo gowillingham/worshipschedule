@@ -1,0 +1,63 @@
+<% content_for :head do %>
+  <script type="text/javascript">
+    
+    $(document).ready(function(){
+			$("tr, .hover_menu").hover(
+				function(){
+					$(this).children("td").children(".hover_menu").show()
+				},
+				function(){
+					$(this).children("td").children(".hover_menu").hide()
+				}
+			)
+    })
+  </script>
+<% end %>
+
+<div class="content shadow">
+  <div class="header">
+	<% if admin? || team_admin?(@team, current_user) %>
+		<div class="link_bar">
+			<%= link_to 'New skill', new_team_skill_path(@team) %>
+		</div>
+	<% end %>
+    <h2>Skills for <%= @team.name %></h2>
+  </div>
+		
+	<% if @team.skills.any? %>
+		<div class="listing">
+			<table>
+				<% @team.skills.each do |skill| %>
+					<tr>
+						<td class="what">
+							<span class="skill">Skill</span>
+						</td>
+						<td class="item">
+							<div class="hover_menu">
+						    <%= link_to "Edit", edit_team_skill_path(@team, skill), :class => 'cancel' %>
+								| 
+						    <%= link_to "Remove", team_skill_path(@team, skill), :method => :delete, :class => 'cancel', :confirm => "Are you sure you want to remove this skill? It will be removed from all member profiles.\nNote: There is no undo.\n" %>
+							</div>
+							<div><a href="#"><%= skill.name %></a></div>
+							<% unless skill.description.nil? %>
+								<div class="desc"><%= skill.description %>
+							<% end %>
+						</td>
+					</tr>
+				<% end %>
+			</table>
+		</div>
+	<% else %>
+		<div class="blank_slate">
+	    <%= image_tag 'empty_box.png', :style => 'width:125px;' %>
+			<div class="message">
+				<h2>Let's add the first skill to this team. </h2>
+				<p>
+					Skills are things your team members can do. 
+					They help you decide who to schedule for events.
+				</p>
+	      <%= render :partial => 'shared/button_link', :locals => { :url => new_team_skill_path(@team), :text => 'Add the first skill' } %>				
+			</div>
+		</div>
+	<% end %>
+</div>
