@@ -130,13 +130,6 @@ div.link_bar a:hover	{color:white;background-color:red;}
 #main .dashboard table td.what span     {width:6em;display:block;font-size:.9em;text-align:right;padding:.2em .5em;background-color:#c87800;color:white;}
 #main .dashboard table td.what .availability  {background-color:green;}
 
-#main .listing table 										{margin:0;}
-#main .listing table td									{border-bottom:solid 1px #efefef;padding:4px 3px;}
-#main .listing table td.what						{width:1px;white-space:nowrap;vertical-align:top;}
-#main .listing table td.what span				{width:60px;display:block;font-size:10px;text-align:right;padding:2px 6px;background-color:#7a4a77;color:white;}
-#main .listing table td.item						{font-size:12px;padding:2px 3px 4px;vertical-align:top;}
-#main .listing table td.item .desc			{font-size:10px;color:#777;padding-top:2px;}
-#main .listing table td .hover_menu			{display:none;float:right;font-size:12px;}
 
 /* overrides blueprint table stripe */
 #main tbody tr:nth-child(even) td,
@@ -163,13 +156,15 @@ div.link_bar a:hover	{color:white;background-color:red;}
 #main .dashboard table td.what span     {width:6em;display:block;font-size:.9em;text-align:right;padding:.2em .5em;background-color:#c87800;color:white;}
 #main .dashboard table td.what .availability  {background-color:green;}
 
+
 #main .listing			 										{padding:12px 12px 12px 24px;}
 #main .listing table 										{}
 #main .listing table td									{border-bottom:solid 1px #efefef;padding:4px 3px;}
 #main .listing table td.what						{width:1px;white-space:nowrap;vertical-align:top;}
 #main .listing table td.what span				{width:60px;display:block;font-size:10px;text-align:right;padding:2px 6px;background-color:#7a4a77;color:white;}
 #main .listing table td.item						{font-size:12px;padding:2px 3px 4px;vertical-align:top;}
-#main .listing table td.item .desc			{font-size:10px;color:#777;}
+#main .listing table td.item .desc			{font-size:10px;color:#777;padding-top:2px;}
+#main .listing table td .hover_menu			{display:none;float:right;font-size:12px;}
 
 
 #main table.persons td                            {width:25%;border:none;padding:2em 0.4em 0;}

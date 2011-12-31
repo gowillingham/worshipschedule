@@ -33,12 +33,14 @@
 							<span class="skill">Skill</span>
 						</td>
 						<td class="item">
-							<div class="hover_menu">
-						    <%= link_to "Edit", edit_team_skill_path(@team, skill), :class => 'cancel' %>
-								| 
-						    <%= link_to "Remove", team_skill_path(@team, skill), :method => :delete, :class => 'cancel', :confirm => "Are you sure you want to remove this skill? It will be removed from all member profiles.\nNote: There is no undo.\n" %>
-							</div>
-							<div><a href="#"><%= skill.name %></a></div>
+							<% if team_admin?(@team, current_user)%>
+								<div class="hover_menu">
+							    <%= link_to "Edit", edit_team_skill_path(@team, skill), :class => 'cancel' %>
+									| 
+							    <%= link_to "Remove", team_skill_path(@team, skill), :method => :delete, :class => 'cancel', :confirm => "Are you sure you want to remove this skill? It will be removed from all member profiles.\nNote: There is no undo.\n" %>
+								</div>
+							<% end %>
+							<div><%= link_to skill.name, team_skill_path(@team, skill) %></div>
 							<% unless skill.description.nil? %>
 								<div class="desc"><%= skill.description %>
 							<% end %>
@@ -51,12 +53,20 @@
 		<div class="blank_slate">
 	    <%= image_tag 'empty_box.png', :style => 'width:125px;' %>
 			<div class="message">
-				<h2>Let's add the first skill to this team. </h2>
-				<p>
-					Skills are things your team members can do. 
-					They help you decide who to schedule for events.
-				</p>
-	      <%= render :partial => 'shared/button_link', :locals => { :url => new_team_skill_path(@team), :text => 'Add the first skill' } %>				
+				<% if team_admin?(@team, current_user) %>
+					<h2>Let's add the first skill to this team! </h2>
+					<p>
+						Skills are things your team members can do. 
+						They help you decide who to schedule for events.
+					</p>
+	      	<%= render :partial => 'shared/button_link', :locals => { :url => new_team_skill_path(@team), :text => 'Add the first skill' } %>				
+				<% elsif %>
+					<h2>No skills have been assigned to you yet! </h2>
+					<p>
+						Skills are things you can do for this team. 
+						A team administrator still needs to add skills to your profile for this team. 
+					</p>
+				<% end %>
 			</div>
 		</div>
 	<% end %>

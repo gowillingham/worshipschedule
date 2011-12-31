@@ -81,6 +81,7 @@ class TeamsController < ApplicationController
     @admin_accountships = current_account.accountships.joins(:user).where(:admin => true)
     @admin_memberships = @team.memberships.admin
     @sidebar_partial = 'teams/sidebar/edit'
+    @title = 'Team settings'
   end
   
   def update

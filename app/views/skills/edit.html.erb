@@ -1,0 +1,15 @@
+<div class="content shadow">
+  <div class="header">
+    <h2>Edit skill for <%= @team.name %></h2>
+  </div>
+  <div class="form">
+    <%= form_for @skill, :url => { :action => 'update' } do |f| %>
+      <%= render 'shared/errors', :object => @skill %>
+      <%= render 'fields', :f => f %>      
+      <div class="footer">
+        <%= f.submit "Save changes" %>
+        or <%= link_to "Cancel", team_skills_path(@team), :class => 'cancel' %>
+      </div>
+    <% end %>
+  </div>
+</div>

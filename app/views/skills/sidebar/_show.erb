@@ -1,0 +1,16 @@
+<div id="sidebar">
+	<% if team_admin?(@team, current_user) %>
+		<h1>Remove this skill?</h1>
+		<p>
+			Removing a skill <strong>immediately and permanently deletes</strong> all the data associated with this skill.
+			If you have scheduled someone with this skill for an event, they will no longer be assigned to that event for this skill.
+			<strong>There is no undo</strong> so be absolutely sure before removing it. 
+	    <br /><br />
+	    <%= link_to "Yes, I understand - delete this skill".html_safe, team_skill_path(@team), :method => :delete, :class => 'cancel', :confirm => "Are you sure you want to delete this skill?\nNote: There is no undo.\n" %>
+		</p>
+	<% end %>
+	<h1>
+		Team members with this skill
+		<a href="#">Change</a>
+	</h1>
+</div>

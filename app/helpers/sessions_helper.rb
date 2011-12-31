@@ -28,7 +28,9 @@ module SessionsHelper
   
   def team_admin?(team, user)
     membership = Membership.where('user_id = ? AND team_id = ?', user.id, team.id).first
-    if membership.nil?
+    if admin?
+      true
+    elsif membership.nil?
       false
     else
       membership.admin? && membership.active?
