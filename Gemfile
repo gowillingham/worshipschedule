@@ -16,7 +16,6 @@ gem 'autotest-rails-pure', '4.1.2'
 gem 'autotest-standalone', '4.5.5'
 gem 'autotest-growl', '0.2.9'
 
-gem 'devise', :git => "git://github.com/plataformatec/devise.git"
 gem 'possessive', '1.0.0'
 
 group :development do

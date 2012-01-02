@@ -10,6 +10,7 @@ Worshipschedule::Application.routes.draw do
     end
     resources :memberships
     resources :skills
+    resources :skillships, :only => [:create, :destroy, :index]
   end
 
   resources :accounts do
