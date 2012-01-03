@@ -2,6 +2,9 @@ class Membership < ActiveRecord::Base
   belongs_to :team
   belongs_to :user
   
+  has_many :skillships
+  has_many :skills, :through => :skillships
+    
   scope :active, where(:active => true)
   scope :admin, where(:admin => true, :active => true)
   
