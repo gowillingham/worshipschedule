@@ -12,6 +12,169 @@ describe SkillsController do
     controller.set_session_account(@account)
     
     @team = Factory(:team, :account_id => @account.id)
+    
+    @user_1 = Factory(:user, :email => Factory.next(:email))
+    @user_2 = Factory(:user, :email => Factory.next(:email))
+    @user_3 = Factory(:user, :email => Factory.next(:email))
+    @account.users << @user_1
+    @account.users << @user_2
+    @account.users << @user_3
+    @membership_1 = @team.memberships.create(:user_id => @user_1.id)
+    @membership_2 = @team.memberships.create(:user_id => @user_2.id)
+    @membership_3 = @team.memberships.create(:user_id => @user_3.id)
+    
+    @membership_ids = [
+      @membership_1.id.to_s,
+      @membership_3.id.to_s
+      ]
+  end
+  
+  describe "PUT 'update_skillships" do
+    
+    before(:each) do
+      @skill = @team.skills.create(:name => "new skill")
+    end
+    
+    it "should allow account admin" do
+      put :update_skillships, :team_id => @team, :id => @skill, :membership_ids => @membership_ids
+      
+      response.should redirect_to(edit_team_skill_path(@team, @skill))
+    end
+    
+    it "should allow team admin" do
+      @accountship.update_attribute(:admin, false)
+      membership = @team.memberships.create(:user_id => @signed_in_user.id, :admin => true)
+      put :update_skillships, :team_id => @team, :id => @skill, :membership_ids => @membership_ids
+      
+      response.should redirect_to(edit_team_skill_path(@team, @skill))
+    end
+    
+    it "should redirect regular user" do
+      @accountship.update_attribute(:admin, false)
+      put :update_skillships, :team_id => @team, :id => @skill, :membership_ids => @membership_ids
+      
+      response.should redirect_to(@signed_in_user)
+    end
+    
+    it "should redirect for a team from another account" do
+      account = Factory(:account)
+      team = account.teams.create(:name => 'orphan')
+      team.users << @signed_in_user
+      put :update_skillships, :team_id => team, :id => @skill, :membership_ids => @membership_ids
+      
+      response.should redirect_to(@signed_in_user)
+    end
+    
+    it "should redirect for skill from another team" do
+      team = Factory(:team, :account_id => @account.id)
+      skill = team.skills.create(:name => 'skill name')
+      put :update_skillships, :team_id => @team, :id => skill, :membership_ids => @membership_ids
+      
+      response.should redirect_to(@signed_in_user)
+    end
+    
+    it "should redirect for a membership from another team" do
+      team = Factory(:team ,:account_id => @account.id)
+      user = Factory(:user)
+      membership = team.memberships.create(:user_id => user.id)
+      put :update_skillships, :team_id => @team, :id => @skill, :membership_ids => [membership.id.to_s]
+      
+      response.should redirect_to(@signed_in_user)
+    end
+    
+    it "should assign the skill to the membership_ids in the list who don't have the skill" do
+      # two new memberships in listing @membership_ids increases count by 2
+      
+      lambda do
+        put :update_skillships, :team_id => @team, :id => @skill, :membership_ids => @membership_ids
+      end.should change(Skillship, :count).by(2)
+    end
+    
+    it "should un-assign the skill to the membership_ids that have the skill but aren't in the list" do
+      # two new memberships in listing @membership_ids plus one existing skillship increases count by 1
+      Skillship.create(:skill_id => @skill.id, :membership_id => @membership_2.id)
+      
+      lambda do
+        put :update_skillships, :team_id => @team, :id => @skill, :membership_ids => @membership_ids
+      end.should change(Skillship, :count).by(1)
+    end
+    
+    it "should redirect to skill#edit on success" do
+      put :update_skillships, :team_id => @team, :id => @skill, :membership_ids => @membership_ids
+      
+      response.should redirect_to(edit_team_skill_path(@team, @skill))
+    end
+  end
+  
+  describe "GET 'skillships" do
+    
+    before(:each) do
+      @skill = @team.skills.create(:name => "new skill")
+    end
+    
+    it "should allow account admin" do
+      get :skillships, :team_id => @team, :id => @skill
+      
+      response.should render_template('skillships')
+    end 
+    
+    it "should allow team admin" do
+      @accountship.update_attribute(:admin, false)
+      @team.memberships.create(:user_id => @signed_in_user, :admin => true)
+      get :skillships, :team_id => @team, :id => @skill
+      
+      response.should render_template('skillships')
+    end
+    
+    it "should redirect regular user" do
+      @accountship.update_attribute(:admin, false)
+      get :skillships, :team_id => @team, :id => @skill
+      
+      response.should redirect_to(@signed_in_user)
+    end
+    
+    it "should redirect for a team from another account" do
+      account = Factory(:account)
+      account.accountships.create(:user_id => @signed_in_user, :admin => true)
+      team = account.teams.create(:name => 'orphan')
+      get :skillships, :team_id => team, :id => @skill
+      
+      response.should redirect_to(@signed_in_user)
+    end
+    
+    it "should redirect for a skill from another team" do
+      team = @account.teams.create(:name => 'orphan')
+      skill = team.skills.create(:name => 'orphan')
+      get :skillships, :team_id => @team, :id => skill
+      
+      response.should redirect_to(@signed_in_user)
+    end
+
+    it "should show a listing of memberships for the given team" do
+      get :skillships, :team_id => @team, :id => @skill
+      
+      response.should have_selector('label', :content => @user_1.name_or_email)
+      response.should have_selector('label', :content => @user_2.name_or_email)
+      response.should have_selector('label', :content => @user_3.name_or_email)
+    end
+    
+    it "should show members with this accountship as checked" do
+      @skill.memberships << @membership_1
+      @skill.memberships << @membership_3
+      get :skillships, :team_id => @team, :id => @skill
+      
+      response.should have_selector("input[type=checkbox][checked=checked]", :value => @membership_1.id.to_s)        
+      response.should_not have_selector("input[type=checkbox][checked=checked]", :value => @membership_2.id.to_s)        
+      response.should have_selector("input[type=checkbox][checked=checked]", :value => @membership_3.id.to_s)        
+    end
+    
+    it "should show a message if there are no memberships for the team (team has no members)" do
+      @team.memberships.clear
+      get :skillships, :team_id => @team, :id => @skill
+      
+      response.should have_selector('div.blank_slate', :content => 'no members')
+    end 
+    
   end
   
   describe "GET 'show'" do
@@ -72,7 +235,11 @@ describe SkillsController do
     end
     
     it "should list the members with the skill in the sidebar"    
-    it "should show a link to edit the members with the skill"
+    it "should show a link to edit the members with the skill" do
+      get :show, :team_id => @team, :id => @skill
+      
+      response.should have_selector('a', :content => 'Change', :href => skillships_team_skill_path(@team, @skill))
+    end
     
     it "should not show admin features to regular users" do
       @accountship.update_attribute(:admin, false)

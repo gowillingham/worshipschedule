@@ -21,14 +21,5 @@ describe SkillshipsController do
     before(:each) do
       
     end
-    
-    it "should allow account admin"
-    it "should allow team admin"
-    it "should redirect regular user" 
-    it "should add a skillship given valid attributes"
-    it "should not allow a team from another account"
-    it "should not allow a skill from another team"
-    it "should not allow a membership from another team"
-    it "should not create a skillship for another team"
   end
 end

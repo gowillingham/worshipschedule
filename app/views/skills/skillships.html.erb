@@ -1,0 +1,59 @@
+<div class="content shadow">
+  <div class="header">
+    <h1>Assign this skill to team members</h1>
+  </div>
+	<% if @memberships.any? %>
+	  <div class="form assign">
+	    <%= form_tag skillships_team_skill_path(@team, @skill), :method => :put do %>
+		    <div class="action">
+					<%= submit_tag 'Save these changes' %>
+		      <%= link_to "&laquo;  Cancel".html_safe, edit_team_skill_path(@team, @skill) %>
+		      <p>
+		        <span>Assign skills</span>
+						Check the box in front of someone's name to assign this skill to them. 
+						Uncheck to remove the skill.
+						<br /><br />
+						If a member is checked here, you will be able to schedule them for '<%= @skill.name %>' when you create an event.
+		      </p>
+		    </div>
+		    <table>
+		      <thead>
+		        <tr>
+		          <th><%= @skill.name %></th>
+		        </tr>
+		      </thead>
+		      <tbody>
+		        <tr>
+		          <td class="bulk_links">
+		            Assign skill to:
+		            <%= link_to 'Everyone', '#', :method => :put, 'data-message' => "Are you sure you want to assign #{@skill.name} to everyone on this team? " %>
+		            | <%= link_to 'No one', '#', :method => :put, 'data-message' => "Are you sure you want to remove #{@skill.name} from everyone on this team? " %>
+		          </td>
+		        </tr>          
+		        <% @memberships.each do |membership| %>
+		          <tr>
+		            <td>
+			            <label>
+			              <%= check_box_tag "membership_ids[]", membership.id, @skill.memberships.include?(membership), :id => nil, :class => 'checkbox' %>
+			              <%= membership.user.name_or_email %>
+			            </label>
+		            </td>
+		          </tr>
+		        <% end %>
+		      </tbody>
+		    </table>
+			<% end %>
+	  </div>
+	<% else %>
+		<div class="blank_slate">
+	    <%= image_tag 'empty_box.png', :style => 'width:125px;' %>
+			<div class="message">
+					<h2>There are no members on this team</h2>
+					<p>
+						Before you can assign this skill, you'll need some members to assign it to!
+						Add some members from your account, and then return to this page to assign their skills.
+					</p>
+	      	<%= render :partial => 'shared/button_link', :locals => { :url => new_team_membership_path(@team), :text => 'Add the first member' } %>				
+		</div>
+	<% end %>
+</div>

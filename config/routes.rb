@@ -12,11 +12,13 @@ Worshipschedule::Application.routes.draw do
     resources :memberships do
       member do
         get :skillships, :to => 'memberships#skillships'
+        put :skillships, :to => 'memberships#update_skillships'
       end
     end
     resources :skills  do
       member do
         get :skillships, :to => 'skills#skillships'
+        put :skillships, :to => 'skills#update_skillships'
       end
     end
   end
