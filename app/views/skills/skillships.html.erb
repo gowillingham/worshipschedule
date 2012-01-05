@@ -1,3 +1,39 @@
+<% content_for :head do %>
+  <script type="text/javascript">
+    
+    $(document).ready(function(){
+			var dirty = false
+      
+      $(".bulk_links a").click(function(){
+				var action = $(this).attr('data-action')
+				
+				if (action == 'update-all') {
+					$(".checkbox").attr("checked", true)
+				}
+				else {
+					$(".checkbox").attr("checked", false)
+					dirty = true
+				}
+				return false
+      })
+
+			$(".checkbox").change(function(){
+				if ($(this).attr("checked") == "") {dirty = true}
+			})
+			
+			$(".submit").click(function(){
+				var answer 
+				if (dirty) {
+					answer = confirm($(this).attr("data-message"))
+					if (!answer) {
+						return false
+					}
+				}
+			})
+    })
+  </script>
+<% end %>
+
 <div class="content shadow">
   <div class="header">
     <h1>Assign this skill to team members</h1>
@@ -6,7 +42,7 @@
 	  <div class="form assign">
 	    <%= form_tag skillships_team_skill_path(@team, @skill), :method => :put do %>
 		    <div class="action">
-					<%= submit_tag 'Save these changes' %>
+					<%= submit_tag 'Save these changes', :class => 'submit', 'data-message' => 'Are you sure? If you are removing this skill from any members, they will be removed from events where they are scheduled for this skill. There is no undo. ' %>
 		      <%= link_to "&laquo;  Cancel".html_safe, edit_team_skill_path(@team, @skill) %>
 		      <p>
 		        <span>Assign skills</span>
@@ -26,8 +62,8 @@
 		        <tr>
 		          <td class="bulk_links">
 		            Assign skill to:
-		            <%= link_to 'Everyone', '#', :method => :put, 'data-message' => "Are you sure you want to assign #{@skill.name} to everyone on this team? " %>
-		            | <%= link_to 'No one', '#', :method => :put, 'data-message' => "Are you sure you want to remove #{@skill.name} from everyone on this team? " %>
+		            <%= link_to 'Everyone', '#', 'data-action' => 'update-all' %>
+		            | <%= link_to 'No one', '#', 'data-action' => 'clear-all' %>
 		          </td>
 		        </tr>          
 		        <% @memberships.each do |membership| %>

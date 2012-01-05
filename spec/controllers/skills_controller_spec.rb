@@ -102,6 +102,7 @@ describe SkillsController do
     it "should redirect to skill#edit on success" do
       put :update_skillships, :team_id => @team, :id => @skill, :membership_ids => @membership_ids
       
+      flash[:success].should =~ /were changed/i
       response.should redirect_to(edit_team_skill_path(@team, @skill))
     end
   end
