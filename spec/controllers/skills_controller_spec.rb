@@ -248,6 +248,7 @@ describe SkillsController do
 
       response.should_not have_selector('a', :href => edit_team_path(@team))
       response.should_not have_selector('a', :href => edit_team_skill_path(@team, @skill))
+      response.should_not have_selector('a', :href => skillships_team_skill_path(@team, @skill))
     end
   end
   

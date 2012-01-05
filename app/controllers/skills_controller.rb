@@ -9,6 +9,7 @@ class SkillsController < ApplicationController
     @skill = Skill.find(params[:id])
     
     @skill.assign_skillships(params[:membership_ids] || [])
+    flash[:success] = "The members with this skill were changed"
     redirect_to edit_team_skill_url(@team, @skill)
   end
   
@@ -42,7 +43,7 @@ class SkillsController < ApplicationController
   def edit
     @team = Team.find(params[:team_id])
     @skill = Skill.find(params[:id])
-    @sidebar_partial = 'skills/sidebar/show'
+    @sidebar_partial = 'skills/sidebar/edit'
     @title = 'Skill settings'
     
     render 'edit'
