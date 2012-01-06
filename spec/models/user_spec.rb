@@ -134,6 +134,45 @@ describe User do
         user.should == @user
       end
     end
+    
+    describe "sortable_name method" do
+      it "should return the last_name if provided" do
+        has_names = Factory(:user, :email => Factory.next(:email))        
+        User.find(has_names.id).sortable_name.should eq(has_names.last_name)
+      end
+      
+      it "should return first_name if no last_name is provided" do
+        no_last_name = Factory(:user, :email => Factory.next(:email), :last_name => nil)
+        User.find(no_last_name.id).sortable_name.should eq(no_last_name.first_name)        
+      end 
+      
+      it "should return email if no first_name or last_name is provided" do
+        no_first_or_last_name = Factory(:user, :email => Factory.next(:email), :last_name => nil, :first_name => nil)
+        User.find(no_first_or_last_name.id).sortable_name.should eq(no_first_or_last_name.email)
+      end
+    end
+    
+    describe "admin?(account) method" do
+      it "should return the user's admin status as a boolean" do
+        account = Factory(:account, :name => "Test")
+        user = Factory(:user, :email => Factory.next(:email))
+        accountship = account.accountships.create(:user_id => user.id, :admin => true)
+        
+        user.admin?(account).should be_true
+      end
+    end 
+    
+    describe "owner?(account) method" do
+      it "should return the user's owner status as a boolean" do
+        account = Factory(:account, :name => "Test")
+        user = Factory(:user, :email => Factory.next(:email))
+        account.owner_id = user.id
+        account.save
+        accountship = account.accountships.create(:user_id => user.id)
+        
+        user.owner?(account).should be_true
+      end
+    end 
   end
   
   describe "accountships" do

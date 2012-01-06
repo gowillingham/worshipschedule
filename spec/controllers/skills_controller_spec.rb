@@ -13,9 +13,9 @@ describe SkillsController do
     
     @team = Factory(:team, :account_id => @account.id)
     
-    @user_1 = Factory(:user, :email => Factory.next(:email))
-    @user_2 = Factory(:user, :email => Factory.next(:email))
-    @user_3 = Factory(:user, :email => Factory.next(:email))
+    @user_1 = Factory(:user, :first_name => 'name_1', :email => Factory.next(:email))
+    @user_2 = Factory(:user, :first_name => 'name_2', :email => Factory.next(:email))
+    @user_3 = Factory(:user, :first_name => 'name_3', :email => Factory.next(:email))
     @account.users << @user_1
     @account.users << @user_2
     @account.users << @user_3
@@ -235,17 +235,25 @@ describe SkillsController do
       response.should have_selector('a', :content => 'Edit', :href => edit_team_skill_path(@team, @skill))
     end
     
-    it "should list the members with the skill in the sidebar"    
+    it "should list the members with the skill in the sidebar" do 
+      @skill.memberships << @membership_1 << @membership_2 << @membership_3
+      get :show, :team_id => @team, :id => @skill
+      
+      response.should have_selector('li', :content => @user_1.name_or_email)
+      response.should have_selector('li', :content => @user_2.name_or_email)
+      response.should have_selector('li', :content => @user_3.name_or_email)
+    end   
+
     it "should show a link to edit the members with the skill" do
       get :show, :team_id => @team, :id => @skill
       
-      response.should have_selector('a', :content => 'Change', :href => skillships_team_skill_path(@team, @skill))
     end
     
     it "should not show admin features to regular users" do
       @accountship.update_attribute(:admin, false)
       get :show, :team_id => @team, :id => @skill
 
+      response.should_not have_selector('a', :content => 'Change', :href => skillships_team_skill_path(@team, @skill))
       response.should_not have_selector('a', :href => edit_team_path(@team))
       response.should_not have_selector('a', :href => edit_team_skill_path(@team, @skill))
       response.should_not have_selector('a', :href => skillships_team_skill_path(@team, @skill))
@@ -377,7 +385,14 @@ describe SkillsController do
       response.should have_selector('a', :content => 'Cancel', :href => team_skills_path(@team))
     end
     
-    it "should show a listing of members with the skill in the sidebar"
+    it "should list the members with the skill in the sidebar" do 
+      @skill.memberships << @membership_1 << @membership_2 << @membership_3
+      get :show, :team_id => @team, :id => @skill
+      
+      response.should have_selector('li', :content => @user_1.name_or_email)
+      response.should have_selector('li', :content => @user_2.name_or_email)
+      response.should have_selector('li', :content => @user_3.name_or_email)
+    end   
   end
   
   describe "DELETE 'destroy'" do

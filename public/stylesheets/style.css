@@ -184,18 +184,20 @@ div.big_button a:hover                  {background-color:transparent;color:#000
 
 #sidebar                            {margin:1em 1em 1em 0}
 #sidebar h1                         {background-color:#edf3fe;color:#444;padding:0.75em;font-weight:bold;font-size:1.1em;}
+#sidebar h1 a                       {float:right;font-weight:normal;font-size:.9em;}
 #sidebar p                          {font-size:1.0em;line-height:01.3em;margin:1em 0.5em 2.0em;}
 
-#sidebar ul.permissions                   {list-style-type:none;margin:0 0 0 1em;padding:0;}
-#sidebar ul.permissions li								{clear:both;}
-#sidebar ul.permissions li label          {font-weight:normal;}
-#sidebar ul.permissions li.account label  {margin:0;padding:0;font-weight:bold;}
-#sidebar ul.permissions li.team           {margin:.25em 0 .25em 1em;padding:0;}
-#sidebar ul.permissions li.actions        {margin:1em 0;}
-#sidebar ul.permissions li .gravatar			{float:left;margin:.25em .5em .25em .25em;}
-#sidebar ul.permissions li div						{font-size:12px;line-height:14px;padding:6px;font-weight:bold;}
-#sidebar ul.permissions li div span				{color:gray;font-weight:normal;}
-#sidebar h1 a                             {float:right;font-weight:normal;font-size:.9em;}
+#sidebar ul                   {list-style-type:none;margin:0 0 0 1em;padding:0;}
+#sidebar ul li								{clear:both;}
+#sidebar ul li label          {font-weight:normal;}
+#sidebar ul li.account label  {margin:0;padding:0;font-weight:bold;}
+#sidebar ul li.team           {margin:.25em 0 .25em 1em;padding:0;}
+#sidebar ul li.actions        {margin:1em 0;}
+#sidebar ul li .gravatar			{float:left;margin:.25em .5em .25em .25em;}
+#sidebar ul li div						{font-size:12px;line-height:14px;padding:6px;font-weight:bold;}
+#sidebar ul li div span				{color:gray;font-weight:normal;}
+
+#sidebar ul.skillships li div	{font-size:14px;font-weight:normal;padding:9px 0;}
 
 #admin_info            {background-color:#ffffcc;padding:.5em .75em;}
 #admin_info h1         {font-size:1.1em;background-color:transparent;border:none;margin:0;padding:0.75em 0.25em;}

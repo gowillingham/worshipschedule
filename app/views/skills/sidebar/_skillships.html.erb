@@ -1,6 +1,14 @@
-<h1>
-	Team members with this skill
-	<% if team_admin?(@team, current_user) %>	
-		<%= link_to 'Change', skillships_team_skill_path(@team, @skill)%>
+<ul class="skillships">
+	<% unless @skillships.nil? %>
+		<% @skillships.each do |skillship| %>
+			<li>
+				<%= gravatar_for(skillship.membership.user, { :size => 25, :default => :identicon  }) %>
+				<div>
+					<%= skillship.membership.user.name_or_email %>
+				</div>
+			</li>
+		<% end %>
+	<% else %>
+	
 	<% end %>
-</h1>
+</ul>

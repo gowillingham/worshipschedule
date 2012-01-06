@@ -24,6 +24,8 @@ class SkillsController < ApplicationController
   def show
     @team = Team.find(params[:team_id])
     @skill = Skill.find(params[:id])
+    @skillships = Skillship.joins(:membership).where("skillships.skill_id = ? AND memberships.active = ?", @skill.id, true)
+    @skillships.sort! { |a,b,| a.membership.user.sortable_name.downcase <=> b.membership.user.sortable_name.downcase }
     @sidebar_partial = 'skills/sidebar/show'
     @title = "Team skills"
   end
@@ -43,6 +45,8 @@ class SkillsController < ApplicationController
   def edit
     @team = Team.find(params[:team_id])
     @skill = Skill.find(params[:id])
+    @skillships = Skillship.joins(:membership).where("skillships.skill_id = ? AND memberships.active = ?", @skill.id, true)
+    @skillships.sort! { |a,b,| a.membership.user.sortable_name.downcase <=> b.membership.user.sortable_name.downcase }
     @sidebar_partial = 'skills/sidebar/edit'
     @title = 'Skill settings'
     

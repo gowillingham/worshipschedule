@@ -62,6 +62,31 @@ class User < ActiveRecord::Base
     end
   end
   
+  def sortable_name
+    rv = self.email
+    unless self.first_name.blank?
+      rv = self.first_name
+    end
+    unless self.last_name.blank?
+      rv = self.last_name
+    end
+    
+    rv
+  end
+  
+  def admin?(account)
+    accountship = Accountship.where("user_id = ? AND account_id =?", self.id, account.id).first
+    unless accountship.nil?
+      accountship.admin?
+    else
+      false
+    end
+  end
+  
+  def owner?(account)
+    account.owner_id == self.id
+  end
+  
   private
   
     def should_validate_password?

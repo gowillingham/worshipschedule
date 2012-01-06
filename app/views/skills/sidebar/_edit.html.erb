@@ -9,5 +9,11 @@
 	    <%= link_to "Yes, I understand - delete this skill".html_safe, team_skill_path(@team), :method => :delete, :class => 'cancel', :confirm => "Are you sure you want to delete this skill?\nNote: There is no undo.\n" %>
 		</p>
 	<% end %>
+	<h1>
+		Team members with this skill
+		<% if team_admin?(@team, current_user) %>	
+			<%= link_to 'Change', skillships_team_skill_path(@team, @skill)%>
+		<% end %>
+	</h1>
 	<%= render 'skills/sidebar/skillships' %>
 </div>
