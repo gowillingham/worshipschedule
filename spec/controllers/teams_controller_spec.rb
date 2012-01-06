@@ -573,8 +573,6 @@ describe TeamsController do
         response.should have_selector('li', :content => @account_owner.name_or_email)
         response.should have_selector('li', :content => team_administrator.name_or_email)
       end
-      
-      it "should show administrators in alphabetical order" 
     end
     
     describe "for non-admin users" do

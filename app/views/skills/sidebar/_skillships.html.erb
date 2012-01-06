@@ -1,5 +1,5 @@
 <ul class="skillships">
-	<% unless @skillships.nil? %>
+	<% unless @skillships.nil? || !@skillships.any? %>
 		<% @skillships.each do |skillship| %>
 			<li>
 				<%= gravatar_for(skillship.membership.user, { :size => 25, :default => :identicon  }) %>
@@ -9,6 +9,8 @@
 			</li>
 		<% end %>
 	<% else %>
-	
+		<li class="blank_slate">
+			None of the people on this team have been assigned to this skill yet
+		</li>
 	<% end %>
 </ul>

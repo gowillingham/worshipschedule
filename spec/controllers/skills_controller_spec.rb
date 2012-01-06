@@ -243,12 +243,14 @@ describe SkillsController do
       response.should have_selector('li', :content => @user_2.name_or_email)
       response.should have_selector('li', :content => @user_3.name_or_email)
     end   
-
-    it "should show a link to edit the members with the skill" do
+    
+    it "should show message if there are no members with the skill" do
+      @skill.skillships.clear
       get :show, :team_id => @team, :id => @skill
       
+      response.should have_selector('li', :content => 'None of the people on this team have been assigned to this skill yet')
     end
-    
+
     it "should not show admin features to regular users" do
       @accountship.update_attribute(:admin, false)
       get :show, :team_id => @team, :id => @skill

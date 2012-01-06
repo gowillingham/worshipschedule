@@ -199,6 +199,8 @@ div.big_button a:hover                  {background-color:transparent;color:#000
 
 #sidebar ul.skillships li div	{font-size:14px;font-weight:normal;padding:9px 0;}
 
+#sidebar ul li.blank_slate		{margin-top:10px;}
+
 #admin_info            {background-color:#ffffcc;padding:.5em .75em;}
 #admin_info h1         {font-size:1.1em;background-color:transparent;border:none;margin:0;padding:0.75em 0.25em;}
 #admin_info ul         {margin:.5em .75em .5em 0;}

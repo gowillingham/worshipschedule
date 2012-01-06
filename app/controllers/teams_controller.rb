@@ -79,7 +79,9 @@ class TeamsController < ApplicationController
   def edit
     @team = Team.find(params[:id])
     @admin_accountships = current_account.accountships.joins(:user).where(:admin => true)
+    @admin_accountships.sort! { |a,b| a.user.sortable_name.downcase <=> b.user.sortable_name.downcase }
     @admin_memberships = @team.memberships.admin
+    @admin_memberships.sort! { |a,b| a.user.sortable_name.downcase <=> b.user.sortable_name.downcase }
     @sidebar_partial = 'teams/sidebar/edit'
     @title = 'Team settings'
   end
