@@ -17,6 +17,7 @@ gem 'autotest-standalone', '4.5.5'
 gem 'autotest-growl', '0.2.9'
 
 gem 'possessive', '1.0.0'
+gem 'validates_timeliness', '~> 3.0.2'
 
 group :development do
   gem 'rspec-rails', '2.5.0'

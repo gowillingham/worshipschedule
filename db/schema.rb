@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120109162319) do
+ActiveRecord::Schema.define(:version => 20120109180346) do
 
   create_table "accounts", :force => true do |t|
     t.string   "name"
@@ -35,7 +35,6 @@ ActiveRecord::Schema.define(:version => 20120109162319) do
     t.integer  "team_id",                        :null => false
     t.string   "name",                           :null => false
     t.string   "description"
-    t.string   "color"
     t.datetime "start_at",                       :null => false
     t.datetime "end_at"
     t.boolean  "all_day",     :default => false, :null => false
