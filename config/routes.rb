@@ -9,12 +9,15 @@ Worshipschedule::Application.routes.draw do
       put :admins, :to => 'teams#update_admins'
     end
     
+    resources :events
+    
     resources :memberships do
       member do
         get :skillships, :to => 'memberships#skillships'
         put :skillships, :to => 'memberships#update_skillships'
       end
     end
+    
     resources :skills  do
       member do
         get :skillships, :to => 'skills#skillships'
