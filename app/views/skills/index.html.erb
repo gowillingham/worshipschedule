@@ -21,7 +21,7 @@
 			<%= link_to 'New skill', new_team_skill_path(@team) %>
 		</div>
 	<% end %>
-    <h2>Skills for <%= @team.name %></h2>
+    <h2>All skills for <%= @team.name %></h2>
   </div>
 		
 	<% if @team.skills.any? %>
@@ -36,8 +36,6 @@
 							<% if team_admin?(@team, current_user)%>
 								<div class="hover_menu">
 							    <%= link_to "Edit", edit_team_skill_path(@team, skill), :class => 'cancel' %>
-									| 
-							    <%= link_to "Remove", team_skill_path(@team, skill), :method => :delete, :class => 'cancel', :confirm => "Are you sure you want to remove this skill? It will be removed from all member profiles.\nNote: There is no undo.\n" %>
 								</div>
 							<% end %>
 							<div><%= link_to skill.name, team_skill_path(@team, skill) %></div>

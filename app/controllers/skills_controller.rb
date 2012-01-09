@@ -63,7 +63,9 @@ class SkillsController < ApplicationController
   def index
     @team = Team.find(params[:team_id])
     @skills = @team.skills
-    @sidebar_partial = 'users/sidebar/placeholder'
+    membership = Membership.where('user_id = ? AND team_id = ? and active = ?', current_user.id, @team.id, true).first
+    @skillships = Skillship.where('membership_id = ?', membership.id).all unless membership.nil?
+    @sidebar_partial = 'skills/sidebar/index'
     @title = 'Team skills'
     render 'index'
   end

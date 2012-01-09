@@ -56,7 +56,10 @@ class TeamsController < ApplicationController
   
   def show
     @team = Team.find(params[:id])
-    @sidebar_partial = 'users/sidebar/placeholder'
+    @memberships = Membership.joins(:user).where("team_id = ? AND active = ?", @team.id, true).all
+    @memberships.sort! { |a,b| a.user.sortable_name.downcase <=> b.user.sortable_name.downcase }
+    @title = "Team details"
+    @sidebar_partial = 'teams/sidebar/show'
   end
   
   def new

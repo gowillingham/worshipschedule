@@ -609,7 +609,25 @@ describe TeamsController do
       response.should have_selector('span', :content => @account.name)
     end
 
-    it "should show a listing of team members in the sidebar"
+    it "should show a listing of team members in the sidebar" do
+      first = Factory(:user, :email => Factory.next(:email), :first_name => "first", :last_name => "user")
+      second = Factory(:user, :email => Factory.next(:email), :first_name => "second", :last_name => "user")
+      third = Factory(:user, :email => Factory.next(:email), :first_name => "third", :last_name => "user")
+      @account.users << first << second << third
+      @account.teams[0].users << first << second << third
+      get :show, :id => @account.teams[0]
+      
+      response.should have_selector('li', :content => first.name_or_email)
+      response.should have_selector('li', :content => second.name_or_email)
+      response.should have_selector('li', :content => third.name_or_email)
+    end
+    
+    it "should show a message in the sidebar if there are no team members for the team" do
+      @account.teams[0].memberships.clear
+      get :show, :id => @account.teams[0]
+
+      response.should have_selector('li.blank_slate', :content => "None of the people")
+    end
 
     describe "for admin users" do
       

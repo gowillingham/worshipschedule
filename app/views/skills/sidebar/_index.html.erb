@@ -1,0 +1,23 @@
+<div id="sidebar">
+	<% unless @skillships.nil? %>
+		<h1>My skills for this team</h1>
+		<div class="listing">
+			<table>
+				<tbody>
+					<% if @skillships.any? %>
+						<% @skillships.each do |skillship| %>
+						<tr>
+							<td class="what"><span>Skill</span></td>
+							<td><%= skillship.skill.name %></td>
+						</tr>
+						<% end %>
+					<% else %>
+						<tr>
+							<td class="blank_slate">This skill has not been assigned to any of the people on this team</td>
+						</tr>
+					<% end %>
+				</tbody>
+			</table>
+		</div>
+	<% end %>
+</div>

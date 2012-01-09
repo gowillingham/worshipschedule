@@ -248,7 +248,7 @@ describe SkillsController do
       @skill.skillships.clear
       get :show, :team_id => @team, :id => @skill
       
-      response.should have_selector('li', :content => 'None of the people on this team have been assigned to this skill yet')
+      response.should have_selector('li', :content => 'None of the people on this team have been assigned to this skill')
     end
 
     it "should not show admin features to regular users" do
@@ -518,15 +518,12 @@ describe SkillsController do
       response.should have_selector('td', :content => @skill_3.name)
     end  
     
-    it "should show remove/edit links to admin" do
+    it "should show edit link to admin" do
       get :index, :team_id => @team
 
       response.should have_selector('td .hover_menu a', :content => 'Edit', :href => edit_team_skill_path(@team, @skill_1))
       response.should have_selector('td .hover_menu a', :content => 'Edit', :href => edit_team_skill_path(@team, @skill_2))
       response.should have_selector('td .hover_menu a', :content => 'Edit', :href => edit_team_skill_path(@team, @skill_3))
-      response.should have_selector('td .hover_menu a', :content => 'Remove', :href => team_skill_path(@team, @skill_1))
-      response.should have_selector('td .hover_menu a', :content => 'Remove', :href => team_skill_path(@team, @skill_2))
-      response.should have_selector('td .hover_menu a', :content => 'Remove', :href => team_skill_path(@team, @skill_3))
     end
     
     it "should not allow team that belongs to another account" do
@@ -546,10 +543,29 @@ describe SkillsController do
       response.should have_selector('a', :content => 'Add the first skill', :href => new_team_skill_path(@team))
     end
     
-    it "should indicate which skills (member-skills) belong to the current user with a check"
-    it "should only show the skills (member-skills) for current_user if they are a regular user"
-    it "should show blank slate to user who hasn't been assigned any skills"
+    it "should show a listing of the current user's skills in the sidebar" do
+      membership = @team.memberships.create(:user_id => @signed_in_user.id)
+      membership.skills << @skill_1 << @skill_2 << @skill_3
+      get :index, :team_id => @team
+      
+      response.should have_selector('td', :content => @skill_1.name)
+      response.should have_selector('td', :content => @skill_2.name)
+      response.should have_selector('td', :content => @skill_3.name)
+    end
     
+    it "should show a blank slate if the current_user has no skills" do
+      membership = @team.memberships.create(:user_id => @signed_in_user.id)
+      membership.skills.clear
+      get :index, :team_id => @team      
+      
+      response.should have_selector('td.blank_slate', :content => 'This skill has not been assigned')
+    end
+    
+    it "should not show the listing if the current_user is not a team member" do
+      get :index, :team_id => @team
+      
+      response.should_not have_selector('h1', :content => 'Team members with this skill')
+    end
   end
   
   describe "POST 'create'" do

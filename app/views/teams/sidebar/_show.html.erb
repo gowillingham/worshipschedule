@@ -1,0 +1,31 @@
+<div id="sidebar">
+	<h1>People on this team</h1>
+	<ul>
+	<% if @memberships.any? %>
+		<% @memberships.each do |membership| %>
+			<li>
+				<%= gravatar_for(membership.user, { :size => 35, :default => :identicon }) %>
+				<div>
+					<%= membership.user.name_or_email %>
+					<br />
+					<span>
+						<% if membership.user.owner?(current_account) %>
+							Account owner
+						<% elsif membership.user.admin?(current_account) %>
+							Account administrator
+						<% elsif membership.admin? %>
+							Team administrator
+						<% else %>
+							Team member
+						<% end %>
+					</span>
+				</div>
+			</li>
+		<% end %>
+	<% else %>
+		<li class="blank_slate">
+			None of the people in your account have been assigned to this team
+		</li>
+	<% end %>
+	</ul>
+</div>
