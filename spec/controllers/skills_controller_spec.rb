@@ -558,7 +558,7 @@ describe SkillsController do
       membership.skills.clear
       get :index, :team_id => @team      
       
-      response.should have_selector('td.blank_slate', :content => 'This skill has not been assigned')
+      response.should have_selector('td.blank_slate', :content => 'None of the skills for this team')
     end
     
     it "should not show the listing if the current_user is not a team member" do
