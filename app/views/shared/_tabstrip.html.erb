@@ -7,10 +7,8 @@
 <% elsif ['teams', 'memberships', 'skills', 'events'].include?(controller.controller_name) && !(['teams'].include?(controller.controller_name) && ['new', 'create'].include?(controller.action_name)) %>
   <ul class="tabs">
     <li><%= link_to "Overview", @team, :class => 'teams' %></li>
-    <% if admin? %>
-      <li><%= link_to "Skills", team_skills_path(@team), :class => 'skills' %></li>
-    <% end %>
-    <li><%= link_to "Events", "/" %></li>
+    <li><%= link_to "Skills", team_skills_path(@team), :class => 'skills' %></li>
+    <li><%= link_to "Events", team_events_path(@team), :class => 'events' %></li>
     <li><%= link_to "Files", "/" %></li>
   </ul>
   <% if admin? %>
