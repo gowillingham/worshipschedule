@@ -15,6 +15,10 @@ describe Team do
     end 
   end
   
+  it "should have an events method" do
+    @team.should respond_to(:events)
+  end
+  
   it "should have a users method" do
     @team.should respond_to(:users)
   end

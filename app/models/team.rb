@@ -4,6 +4,7 @@ class Team < ActiveRecord::Base
   default_scope :order => 'name ASC'
   
   has_many :memberships, :dependent => :destroy
+  has_many :events, :dependent => :destroy
   has_many :users, :through => :memberships
   has_many :skills, :dependent => :destroy
   

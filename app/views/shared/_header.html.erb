@@ -10,7 +10,7 @@
         <%= APP_NAME %>
       <% end %>
     
-  <% elsif ['teams', 'memberships', 'skills'].include? controller.controller_name %>
+  <% elsif ['teams', 'memberships', 'skills', 'events'].include? controller.controller_name %>
   
     <div class="include_backlink">
       <ul><li><%= link_to "&laquo; Back to teams".html_safe, current_user %></li></ul>

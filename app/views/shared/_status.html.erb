@@ -6,7 +6,7 @@
      	<%= current_user.name_or_email %>
 		<% end %>
 		
-	<% elsif ['skills'].include?(controller.controller_name) %>
+	<% elsif ['skills', 'events'].include?(controller.controller_name) %>
 		<% if admin? || team_admin?(@team, current_user)%>
 			<%= link_to "Team settings", edit_team_path(@team), :class => 'settings' %>
 		<% else %>
