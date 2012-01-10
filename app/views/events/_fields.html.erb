@@ -1,0 +1,35 @@
+<h3>Event name</h3>
+<p class="block_intro">Provide a name for this event. </p>
+<div class="block">
+  <%= f.text_field :name %>
+</div>
+<h3>When?</h3>
+<p class="block_intro">The start date and optional ending date. Start and end times are optional. </p>
+<div class="block">
+	<table>
+		<tbody>
+			<tr>
+				<td>From</td>
+				<td>
+					<%= f.date_select :start_at %>
+					at <%= f.time_select :start_at , {:ignore_date => true, :include_blank => true, :default => nil, :minute_step => 15, :ampm => true} %>
+				</td>
+			</tr>
+			<tr>
+				<td>Until</td>
+				<td>
+					<%= f.date_select :end_at %>
+					at <%= f.time_select :end_at , :ignore_date => true, :include_blank => true, :default => nil, :minute_step => 15 %>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<br />
+	<%= f.check_box :all_day %>
+	<label for="team_event_all_day">This is an all day event</label>
+</div>
+<h3>Description</h3>
+<p class="block_intro">Provide an optional description. </p>
+<div class="block">
+  <%= f.text_area :description, :cols => 50, :rows => 10 %>
+</div>

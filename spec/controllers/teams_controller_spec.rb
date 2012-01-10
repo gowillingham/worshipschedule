@@ -677,7 +677,7 @@ describe TeamsController do
         get :show, :id => @account.teams[0]
 
         response.should have_selector('ul.tabs li a', :content => 'Overview')
-        response.should_not have_selector('ul.tabs li a', :content => 'Skills')
+        response.should have_selector('ul.tabs li a', :content => 'Skills')
         response.should have_selector('ul.tabs li a', :content => 'Events')
         response.should have_selector('ul.tabs li a', :content => 'Files')
         response.should_not have_selector('ul.tabs li a', :content => 'People and permissions')

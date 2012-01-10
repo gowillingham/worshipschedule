@@ -1,0 +1,15 @@
+<div class="content shadow">
+  <div class="header">
+    <h2>Add an event for <%= @team.name %></h2>
+  </div>
+  <div class="form">
+    <%= form_for @event, :url => { :action => 'create' } do |f| %>
+      <%= render 'shared/errors', :object => @event %>
+      <%= render 'fields', :f => f %>      
+      <div class="footer">
+        <%= f.submit "Save changes" %>
+        or <%= link_to "Cancel", team_events_path(@team), :class => 'cancel' %>
+      </div>
+    <% end %>
+  </div>
+</div>
