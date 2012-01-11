@@ -2,7 +2,8 @@ class SkillsController < ApplicationController
   before_filter(:except => [:index, :show]) { require_account_or_team_admin(params[:team_id]) }
   before_filter { require_team_for_current_account(params[:team_id]) }
   before_filter(:only => [:destroy, :edit, :update, :show, :skillships, :update_skillships]) { require_skill_for_current_team(params[:team_id], params[:id]) }
-  before_filter(:only => [:update_skillships]) { require_memberships_for_current_team(params[:team_id], params[:membership_ids] || [])}
+  before_filter(:only => [:update_skillships]) { require_memberships_for_current_team(params[:team_id], params[:membership_ids] || []) }
+  before_filter { require_team_member(params[:team_id]) }
   
   def update_skillships
     @team = Team.find(params[:team_id])

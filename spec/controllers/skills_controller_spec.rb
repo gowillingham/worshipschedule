@@ -30,8 +30,6 @@ describe SkillsController do
       
   end
   
-  it "a regular user should not be able to access any pages unless they are a team members"
-
   describe "PUT 'update_skillships" do
     
     before(:each) do
@@ -200,11 +198,19 @@ describe SkillsController do
       response.should render_template('show')
     end
     
-    it "should allow a regular user" do
+    it "should allow a regular user who is a team member" do
       @accountship.update_attribute(:admin, false)
+      @team.users << @signed_in_user
       get :show, :team_id => @team, :id => @skill
 
       response.should render_template('show')
+    end
+    
+    it "should redirect a regular user who is not a team member" do
+      @accountship.update_attribute(:admin, false)
+      get :show, :team_id => @team, :id => @skill
+
+      response.should redirect_to(@signed_in_user)      
     end
     
     it "should redirect for a team from another account" do

@@ -12,8 +12,6 @@ describe TeamsController do
     controller.set_session_account(@account)
   end
   
-  it "a regular user should not be able to access any pages unless they are a team member"
-  
   describe "GET 'admins'" do
     
     before(:each) do
