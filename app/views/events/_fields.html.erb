@@ -18,8 +18,8 @@
 			<tr>
 				<td>Until</td>
 				<td>
-					<%= f.date_select :end_at %>
-					at <%= f.time_select :end_at , :ignore_date => true, :include_blank => true, :default => nil, :minute_step => 15 %>
+					<%= f.date_select :end_at, :include_blank => true, :default => nil %>
+					at <%= f.time_select :end_at, :ignore_date => true, :include_blank => true, :default => nil, :minute_step => 15 %>
 				</td>
 			</tr>
 		</tbody>

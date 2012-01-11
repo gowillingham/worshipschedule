@@ -5,5 +5,5 @@ class Event < ActiveRecord::Base
   validates :description, :length => { :maximum => 500 }
   
   validates_datetime :start_at
-  validates_datetime :end_at, :allow_nil => true, :after => :start_at
+  validates_datetime :end_at, :allow_nil => true, :on_or_after => :start_at
 end

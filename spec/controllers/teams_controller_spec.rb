@@ -12,6 +12,8 @@ describe TeamsController do
     controller.set_session_account(@account)
   end
   
+  it "a regular user should not be able to access any pages unless they are a team member"
+  
   describe "GET 'admins'" do
     
     before(:each) do
@@ -49,6 +51,16 @@ describe TeamsController do
         @membership_2 = @team.memberships.create(:user_id => @user_2.id)
         @membership_3 = @team.memberships.create(:user_id => @user_3.id)
         
+      end
+      
+      it "should redirect for a team admin from another team" do
+        @accountship.update_attribute(:admin, false)
+        @membership.update_attribute(:admin, false)
+        team = Factory(:team, :account_id => @account.id)
+        membership = team.memberships.create(:user_id => @signed_in_user.id, :admin => true)
+        get :admins, :id => @team
+        
+        response.should redirect_to(@signed_in_user)
       end
       
       it "should allow account admin who isn't team admin" do
@@ -129,6 +141,16 @@ describe TeamsController do
         @membership_3 = @team.memberships.create(:user_id => @user_3.id)
       end
       
+      it "should redirect for a team admin from another team" do
+        @accountship.update_attribute(:admin, false)
+        @membership.update_attribute(:admin, false)
+        team = Factory(:team, :account_id => @account.id)
+        membership = team.memberships.create(:user_id => @signed_in_user.id, :admin => true)
+        put :update_admins, :id => @team, :membership_id => []
+        
+        response.should redirect_to(@signed_in_user)
+      end
+      
       it "should allow account admin" do
         put :update_admins, :id => @team, :membership_id => []
         
@@ -202,6 +224,15 @@ describe TeamsController do
         @accountship.save
       end
       
+      it "should redirect for a team admin from another team" do
+        @accountship.update_attribute(:admin, false)
+        team = Factory(:team, :account_id => @account.id)
+        membership = team.memberships.create(:user_id => @signed_in_user.id, :admin => true)
+        put :remove_all, :id => @team
+        
+        response.should redirect_to(@signed_in_user)
+      end
+      
       it "should allow account admin" do
         put :remove_all, :id => @team
         response.should redirect_to(assign_team_url(@team))
@@ -254,6 +285,15 @@ describe TeamsController do
         @accountship = @signed_in_user.accountships.where(:account_id => @account.id).first
         @accountship.admin = true
         @accountship.save
+      end
+      
+      it "should redirect for a team admin from another team" do
+        @accountship.update_attribute(:admin, false)
+        team = Factory(:team, :account_id => @account.id)
+        membership = team.memberships.create(:user_id => @signed_in_user.id, :admin => true)
+        put :assign_all, :id => @team
+        
+        response.should redirect_to(@signed_in_user)
       end
       
       it "should allow account admin" do
@@ -337,6 +377,15 @@ describe TeamsController do
         get :assign, :id => @team
         
         response.should render_template('assign')
+      end
+      
+      it "should redirect for a team admin from another team" do
+        @accountship.update_attribute(:admin, false)
+        team = Factory(:team, :account_id => @account.id)
+        membership = team.memberships.create(:user_id => @signed_in_user.id, :admin => true)
+        get :assign, :id => @team
+        
+        response.should redirect_to(@signed_in_user)
       end
       
       it "should display all the users from account" do
@@ -475,8 +524,9 @@ describe TeamsController do
       response.should redirect_to(signin_path)
     end
     
-    it "should only allow admin access" do
+    it "should redirect for a regular user" do
       put :update, :id => @team, :team => @attr
+      
       response.should redirect_to(user_path(@signed_in_user))
     end
     
@@ -488,9 +538,28 @@ describe TeamsController do
         accountship.save
       end
       
-      it "should allow access" do
+      it "should allow access for account admin" do
         put :update, :id => @team, :team => @attr
         response.should be_success
+      end
+      
+      it "should allow access or team admin" do
+        accountship = @signed_in_user.accountships.where('account_id = ?', @account.id).first
+        accountship.update_attribute(:admin, false)
+        membership = @team.memberships.create(:user_id => @signed_in_user.id, :admin => true)
+        put :update, :id => @team, :team => @attr
+        
+        response.should render_template('edit')
+      end
+      
+      it "should redirect for a team admin from another team" do
+        accountship = @signed_in_user.accountships.where('account_id = ?', @account.id).first
+        accountship.update_attribute(:admin, false)
+        team = Factory(:team, :account_id => @account.id)
+        membership = team.memberships.create(:user_id => @signed_in_user.id, :admin => true)
+        put :update, :id => @team, :team => @attr
+        
+        response.should redirect_to(@signed_in_user)
       end
       
       it "should require a name" do
@@ -587,6 +656,10 @@ describe TeamsController do
     
   describe "GET 'show'" do
     
+    before(:each) do
+      @membership = @account.teams[0].memberships.create(:user_id => @signed_in_user, :admin => false)
+    end
+    
     it "should be successful" do
       get :show, :id => @account.teams[0]
       response.should be_success
@@ -596,6 +669,17 @@ describe TeamsController do
       controller.sign_out
       get :show, :id => @account.teams[0]
       response.should redirect_to(signin_path)
+    end
+    
+    it "should redirect for a member from another team" do
+      accountship = @signed_in_user.accountships.where('account_id = ?', @account.id).first
+      accountship.update_attribute(:admin, false)
+      team = Factory(:team, :account_id => @account.id)
+      membership = team.memberships.create(:user_id => @signed_in_user.id, :admin => true)
+      @membership.delete
+      get :show, :id => @account.teams[0]
+      
+      response.should redirect_to(@signed_in_user)
     end
     
     it "should have a back to dashboard link" do
@@ -622,13 +706,6 @@ describe TeamsController do
       response.should have_selector('li', :content => third.name_or_email)
     end
     
-    it "should show a message in the sidebar if there are no team members for the team" do
-      @account.teams[0].memberships.clear
-      get :show, :id => @account.teams[0]
-
-      response.should have_selector('li.blank_slate', :content => "None of the people")
-    end
-
     describe "for admin users" do
       
       before(:each) do
@@ -637,6 +714,13 @@ describe TeamsController do
         accountship.save
       end
       
+      it "should show a message in the sidebar if there are no team members for the team" do
+        @account.teams[0].memberships.clear
+        get :show, :id => @account.teams[0]
+
+        response.should have_selector('li.blank_slate', :content => "None of the people")
+      end
+
       it "should show the correct tabs" do
         get :show, :id => @account.teams[0]
         response.should have_selector('ul.tabs li a', :content => 'Overview')
@@ -657,7 +741,12 @@ describe TeamsController do
         response.should have_selector('a', :content => 'New skill')
       end
       
-      it "should show new event link"
+      it "should show new event link" do
+        get :show, :id => @account.teams[0]
+        
+        response.should have_selector('a', :content => 'New event', :href => new_team_event_path(@account.teams[0]))
+      end
+      
       it "should show new file link"
     end
     
@@ -683,8 +772,6 @@ describe TeamsController do
         response.should_not have_selector('ul.tabs li a', :content => 'People and permissions')
         response.should_not have_selector('ul.tabs li a', :content => 'Email')
       end
-    end
-    
+    end    
   end
-
 end

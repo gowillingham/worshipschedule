@@ -27,8 +27,11 @@ describe SkillsController do
       @membership_1.id.to_s,
       @membership_3.id.to_s
       ]
+      
   end
   
+  it "a regular user should not be able to access any pages unless they are a team members"
+
   describe "PUT 'update_skillships" do
     
     before(:each) do

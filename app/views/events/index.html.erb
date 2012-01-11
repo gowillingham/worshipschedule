@@ -1,0 +1,70 @@
+<% content_for :head do %>
+  <script type="text/javascript">
+    
+    $(document).ready(function(){
+			$("tr, .hover_menu").hover(
+				function(){
+					$(this).children("td").children(".hover_menu").show()
+				},
+				function(){
+					$(this).children("td").children(".hover_menu").hide()
+				}
+			)
+    })
+  </script>
+<% end %>
+
+<div class="content shadow">
+  <div class="header">
+	<% if admin? || team_admin?(@team, current_user) %>
+		<div class="link_bar">
+			<%= link_to 'New event', new_team_event_path(@team) %>
+		</div>
+	<% end %>
+    <h2>All events for <%= @team.name %></h2>
+  </div>
+		
+	<% if @team.events.any? %>
+		<div class="listing">
+			<table>
+				<% @team.events.each do |event| %>
+					<tr>
+						<td class="what">
+							<span class="event">Event</span>
+						</td>
+						<td class="item">
+							<% if team_admin?(@team, current_user) || admin? %>
+								<div class="hover_menu">
+							    <%= link_to "Edit", edit_team_event_path(@team, event), :class => 'cancel' %>
+								</div>
+							<% end %>
+							<div><%= link_to event.name, team_event_path(@team, event) %></div>
+							<% unless event.description.nil? %>
+								<div class="desc"><%= event.description %>
+							<% end %>
+						</td>
+					</tr>
+				<% end %>
+			</table>
+		</div>
+	<% else %>
+		<div class="blank_slate">
+	    <%= image_tag 'empty_box.png', :style => 'width:125px;' %>
+			<div class="message">
+				<% if team_admin?(@team, current_user) || admin? %>
+					<h2>Let's add the first event to this team! </h2>
+					<p>
+						You'll need some events before you can start scheduling your people.
+						Once you have some, you can add people to events by skill.
+					</p>
+	      	<%= render :partial => 'shared/button_link', :locals => { :url => new_team_event_path(@team), :text => 'Add the first event' } %>				
+				<% elsif %>
+					<h2>This team doesn't have any events! </h2>
+					<p>
+						A team administrator still needs to create some events for this team. 
+					</p>
+				<% end %>
+			</div>
+		</div>
+	<% end %>
+</div>
