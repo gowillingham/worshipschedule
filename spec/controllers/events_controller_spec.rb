@@ -22,9 +22,7 @@ describe EventsController do
       :all_day => false
     }
   end
-  
-  it "a regular user should not be able to any pages unless they are a team member"
-  
+
   describe "GET 'index'" do
     
     before(:each) do
@@ -47,11 +45,19 @@ describe EventsController do
       response.should render_template('index')
     end
     
-    it "should allow a regular user" do
+    it "should allow a regular team member" do
       @accountship.update_attribute(:admin, false)
+      @team.memberships.create(:user_id => @signed_in_user, :admin => false)
       get :index, :team_id => @team
       
       response.should render_template('index')
+    end
+    
+    it "should redirect for a user who is not a team member" do
+      @accountship.update_attribute(:admin, false)
+      get :index, :team_id => @team
+      
+      response.should redirect_to(@signed_in_user)
     end
     
     it "should redirect for a team that is not from the current_account" do

@@ -23,27 +23,30 @@
 	<% end %>
     <h2>All events for <%= @team.name %></h2>
   </div>
-		
-	<% if @team.events.any? %>
-		<div class="listing">
+
+
+
+	<% if @events.any? %>
+		<div class="listing events">
 			<table>
-				<% @team.events.each do |event| %>
-					<tr>
-						<td class="what">
-							<span class="event">Event</span>
-						</td>
-						<td class="item">
-							<% if team_admin?(@team, current_user) || admin? %>
-								<div class="hover_menu">
-							    <%= link_to "Edit", edit_team_event_path(@team, event), :class => 'cancel' %>
-								</div>
-							<% end %>
-							<div><%= link_to event.name, team_event_path(@team, event) %></div>
-							<% unless event.description.nil? %>
-								<div class="desc"><%= event.description %>
-							<% end %>
-						</td>
-					</tr>
+				<% @events.first.start_at.to_date.upto(@events.last.start_at.to_date) do |date| %>
+					<% events_start_at = @events.map { |e| e.start_at.to_date }%>
+					<% if events_start_at.include?(date) %>
+						<tr class="date"><td class="when" colspan="2"><span><%= date %></span></td><td>&nbsp;</td></tr>
+					<% end %>
+					<% @events.each do |event| %>
+						<% if event.start_at.to_date == date %>
+							<tr>
+								<td class="what"><span class="event">Event</span></td>
+								<td class="item">
+									<% if team_admin?(@team, current_user) || admin? %>
+										<div class="hover_menu"><%= link_to "Edit", edit_team_event_path(@team, event), :class => 'cancel' %></div>
+									<% end %>
+									<div><%= link_to event.name, team_event_path(@team, event) %></div>
+								</td>
+							</tr>
+						<% end %>
+					<% end %>
 				<% end %>
 			</table>
 		</div>
@@ -55,7 +58,7 @@
 					<h2>Let's add the first event to this team! </h2>
 					<p>
 						You'll need some events before you can start scheduling your people.
-						Once you have some, you can add people to events by skill.
+						Once you do, you can add people to events by skill.
 					</p>
 	      	<%= render :partial => 'shared/button_link', :locals => { :url => new_team_event_path(@team), :text => 'Add the first event' } %>				
 				<% elsif %>
