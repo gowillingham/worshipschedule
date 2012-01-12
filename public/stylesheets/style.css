@@ -148,10 +148,11 @@ th .link                      {font-size:0.8em;float:right;margin-top:.2em;}
 .listing table td.item .desc				{font-size:10px;color:#777;padding-top:2px;}
 .listing table td .hover_menu				{display:none;float:right;font-size:12px;}
                                   	
-.events 														{padding:12px 12px 12px 24px;}
-.events table 											{width:100%;}
-.events table tr.date td						{border-bottom:none;}
-.events table tr.date td.when span	{border-bottom:solid 1px #efefef;margin-left:-24px;}
+.for_events				 												{margin:12px 0;}
+.for_events table 												{width:100%;margin:0;}
+.for_events table tr.date td							{border-bottom:none;padding:15px 0 6px;}
+.for_events table tr.date td.when h2			{display:inline;border-bottom:solid 1px #ccc;margin-left:-27px;white-space:nowrap;padding:0 0 2px 0;color:#666;text-transform:uppercase;font-size:9px;font-weight:bold;}
+.for_events table tr.date td.when h2 span {margin-left:29px;}
 
 #sidebar .listing 								{padding:0;margin:0;}
 #sidebar .listing table td 				{border-bottom-color:#dedede;}

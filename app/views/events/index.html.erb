@@ -27,12 +27,19 @@
 
 
 	<% if @events.any? %>
-		<div class="listing events">
+		<div class="listing for_events">
 			<table>
 				<% @events.first.start_at.to_date.upto(@events.last.start_at.to_date) do |date| %>
 					<% events_start_at = @events.map { |e| e.start_at.to_date }%>
 					<% if events_start_at.include?(date) %>
-						<tr class="date"><td class="when" colspan="2"><span><%= date %></span></td><td>&nbsp;</td></tr>
+						<tr class="date">
+							<td class="when" colspan="2">
+								<h2 class="date">
+									<span><%= date.strftime("%A, %d %B %Y") %></span>
+								</h2>
+							</td>
+							<td>&nbsp;</td>
+						</tr>
 					<% end %>
 					<% @events.each do |event| %>
 						<% if event.start_at.to_date == date %>
