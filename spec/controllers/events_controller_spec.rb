@@ -92,7 +92,8 @@ describe EventsController do
 
       response.should_not have_selector('a', :content => 'Edit', :href => edit_team_event_path(@team, @event_1))
       response.should_not have_selector('a', :content => 'Edit', :href => edit_team_event_path(@team, @event_2))
-      response.should_not have_selector('a', :content => 'Edit', :href => edit_team_event_path(@team, @event_3))      
+      response.should_not have_selector('a', :content => 'Edit', :href => edit_team_event_path(@team, @event_3)) 
+      response.should_not have_selector('a', :content => 'New event', :href => new_team_event_path(@team))     
     end
 
     it "should display a blank slate to an admin if there are no events for the team" do

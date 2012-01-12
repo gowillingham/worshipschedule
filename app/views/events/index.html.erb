@@ -27,16 +27,23 @@
 
 
 	<% if @events.any? %>
+		<% today = Date.new %>
 		<div class="listing for_events">
 			<table>
-				<% @events.first.start_at.to_date.upto(@events.last.start_at.to_date) do |date| %>
+				<% @events.first.start_at.to_date.downto(@events.last.start_at.to_date) do |date| %>
 					<% events_start_at = @events.map { |e| e.start_at.to_date }%>
 					<% if events_start_at.include?(date) %>
 						<tr class="date">
 							<td class="when" colspan="2">
+								<% if date == today.to_date %>
 								<h2 class="date">
 									<span><%= date.strftime("%A, %d %B %Y") %></span>
 								</h2>
+								<% else %>
+								<h2 class="date">
+									<span><%= date.strftime("%A, %d %B %Y") %></span>
+								</h2>
+								<% end %>
 							</td>
 							<td>&nbsp;</td>
 						</tr>

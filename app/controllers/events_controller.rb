@@ -6,7 +6,7 @@ class EventsController < ApplicationController
   def index
     @team = Team.find(params[:team_id])
     @events = @team.events
-    @events.sort! { |a,b| a.start_at <=> b.start_at}
+    @events.sort! { |a,b| b.start_at <=> a.start_at}
     @title = 'All events'
     @sidebar_partial = 'users/sidebar/placeholder'
   end
