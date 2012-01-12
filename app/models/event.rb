@@ -6,4 +6,12 @@ class Event < ActiveRecord::Base
   
   validates_datetime :start_at
   validates_datetime :end_at, :allow_nil => true, :on_or_after => :start_at
+  
+  def time_for_display
+    if self.all_day
+      "All day"
+    else
+      self.start_at.to_time.strftime("%l:%M%P").downcase.chop
+    end
+  end
 end

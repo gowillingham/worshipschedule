@@ -140,19 +140,21 @@ th .link                      {font-size:0.8em;float:right;margin-top:.2em;}
 #main .dashboard table td.what .availability  {background-color:green;}
 
 
-.listing			 											{padding:12px 12px 12px 24px;}
+.listing			 											{padding:12px 40px 12px 24px;}
 .listing table td										{border-bottom:solid 1px #efefef;padding:4px 3px;}
 .listing table td.what							{width:1px;white-space:nowrap;vertical-align:top;}
 .listing table td.what span					{width:60px;display:block;font-size:10px;text-align:right;padding:2px 6px;background-color:#7a4a77;color:white;}
-.listing table td.item							{font-size:12px;padding:2px 3px 4px;vertical-align:top;}
+.listing table td.item							{font-size:12px;padding:4px 3px 4px 8px;vertical-align:top;}
 .listing table td.item .desc				{font-size:10px;color:#777;padding-top:2px;}
 .listing table td .hover_menu				{display:none;float:right;font-size:12px;}
                                   	
-.for_events				 												{margin:12px 0;}
-.for_events table 												{width:100%;margin:0;}
-.for_events table tr.date td							{border-bottom:none;padding:15px 0 6px;}
-.for_events table tr.date td.when h2			{display:inline;border-bottom:solid 1px #ccc;margin-left:-27px;white-space:nowrap;padding:0 0 2px 0;color:#666;text-transform:uppercase;font-size:9px;font-weight:bold;}
-.for_events table tr.date td.when h2 span {margin-left:29px;}
+.for_events				 													{margin:12px 0;}
+.for_events table 													{width:100%;margin:0;}
+.for_events table td.what .start_at 				{text-align:right;color:#7a4a77;font-size:10px;padding-top:1px;}
+.for_events table tr.date td								{border-bottom:none;padding:15px 0 6px;}
+.for_events table tr.date td.when h2				{display:inline;border-bottom:solid 1px #ccc;margin-left:-27px;white-space:nowrap;padding:2px 5px 2px 0;color:#666;text-transform:uppercase;font-size:9px;font-weight:bold;}
+.for_events table tr.date td.when h2.today	{border-bottom:none;color:black;background-color:#fff000;padding:2px 5px 2px 0}
+.for_events table tr.date td.when h2 span 	{margin-left:29px;}
 
 #sidebar .listing 								{padding:0;margin:0;}
 #sidebar .listing table td 				{border-bottom-color:#dedede;}

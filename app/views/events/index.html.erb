@@ -35,12 +35,12 @@
 					<% if events_start_at.include?(date) %>
 						<tr class="date">
 							<td class="when" colspan="2">
-								<% if date == today.to_date %>
-								<h2 class="date">
-									<span><%= date.strftime("%A, %d %B %Y") %></span>
+								<% if date == Time.now.to_date %>
+								<h2 class="today">
+									<span>Today</span>
 								</h2>
 								<% else %>
-								<h2 class="date">
+								<h2>
 									<span><%= date.strftime("%A, %d %B %Y") %></span>
 								</h2>
 								<% end %>
@@ -51,12 +51,18 @@
 					<% @events.each do |event| %>
 						<% if event.start_at.to_date == date %>
 							<tr>
-								<td class="what"><span class="event">Event</span></td>
+								<td class="what">
+									<span class="event">Event</span>
+									<div class="start_at"><%=event.time_for_display %></div>
+								</td>
 								<td class="item">
 									<% if team_admin?(@team, current_user) || admin? %>
 										<div class="hover_menu"><%= link_to "Edit", edit_team_event_path(@team, event), :class => 'cancel' %></div>
 									<% end %>
 									<div><%= link_to event.name, team_event_path(@team, event) %></div>
+									<% unless event.description.blank? %>
+										<div class="desc"><%= event.description %>
+									<% end %>
 								</td>
 							</tr>
 						<% end %>
