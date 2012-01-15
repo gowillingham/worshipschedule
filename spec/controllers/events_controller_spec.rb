@@ -17,7 +17,7 @@ describe EventsController do
       :team_id => @team.id,
       :name => 'New event',
       :description => 'the description',
-      :start_at => '2012-02-01 19:30',
+      :start_at_date => '2012-02-01 19:30',
       :end_at => '2012-02-01 21:30',
       :all_day => false
     }
@@ -157,7 +157,7 @@ describe EventsController do
     
     it "should not add the event given invalid attributes" do
       lambda do
-        post :create, :team_id => @team, :event => @attr.merge(:start_at => nil)
+        post :create, :team_id => @team, :event => @attr.merge(:start_at_date => nil)
       end.should change(Event, :count).by(0)
     end
     

@@ -11,15 +11,20 @@ describe Event do
       :team_id => @team.id,
       :name => 'New event',
       :description => 'the description',
-      :start_at => '2012-02-01 7:30 pm',
-      :end_at => '2012-02-01 9:30 pm',
-      :all_day => false
+      :start_at_date => '2012-03-03 5:30 pm',
+      :start_at_time => '5:30 pm',
+      :end_at_time => '6:30 pm',
+      :end_at_date => '2012-03-04 6:30 pm'
     }
   end
   
   it "should create an instance" do
     Event.create!(@attr)
   end
+    
+  it "given valid attributes it should be valid" do
+    Event.new(@attr).should be_valid
+  end 
   
   it "should require an name" do
     Event.new(@attr.merge(:name => '')).should_not be_valid
@@ -33,38 +38,93 @@ describe Event do
     Event.new(@attr.merge(:description => "0123456789" * 51)).should_not be_valid
   end
   
-  it "should require a start_at date and time" do
-    Event.new(@attr.merge(:start_at => nil)).should_not be_valid
+  it "should require a start_at date" do
+    Event.new(@attr.merge(:start_at_date => nil)).should_not be_valid
+    Event.new(@attr.merge(:start_at_date => '')).should_not be_valid
+  end
+  
+  it "should allow end_at_date to be nil" do
+    Event.new(@attr.merge(:end_at_date => nil)).should be_valid
+    Event.new(@attr.merge(:end_at_date => '')).should be_valid
+  end
+  
+  it "should allow start_at_time to be nil" do
+    Event.new(@attr.merge(:start_at_time => nil, :end_at_time => nil)).should be_valid
+    Event.new(@attr.merge(:start_at_time => '', :end_at_time => nil)).should be_valid
+  end
+  
+  it "should not allow end_at_time to be before start_at_time" do
+    Event.new(@attr.merge(:start_at_date => '2012-03-03', :start_at_time => '5:30 pm', :end_at_date => '2012-03-03', :end_at_time => '4:30 pm')).should_not be_valid
+    
   end
   
   it "should not accept an invalid date" do 
-    Event.new(@attr.merge(:start_at => "2012-02-31 00:00 am"))
-  end 
-  
-  it "should allow end_at to be nil" do
-    Event.new(@attr.merge(:end_at => nil)).should be_valid
+    Event.new(@attr.merge(:start_at_date => "2012-02-31")).should_not be_valid
+    Event.new(@attr.merge(:end_at_date => "2012-02-31")).should_not be_valid
   end
   
-  it "should require end_at after start_at" do
-    Event.new(@attr.merge(:end_at => '2012-02-01 4:30 pm')).should_not be_valid
+  it "should require end_at_date on or after start_at_date" do
+    Event.new(@attr.merge(:end_at_date => '2012-02-01')).should_not be_valid
   end
   
   it "should create an event given valid attributes" do
     lambda do
-      Event.create(@attr.merge(:end_at => nil))
+      Event.create(@attr.merge(:end_at_date => nil, :end_at_time => nil))
     end.should change(Event, :count).by(1)
   end
   
   it "should not create an event given invalid attributes" do
     lambda do
-      Event.create(@attr.merge(:start_at => '2012-02-31'))
+      Event.create(@attr.merge(:start_at_date => '2012-02-31'))
     end.should change(Event, :count).by(0)
   end
+  
+  it "should set all_day to true if start_at_time is not provided" do
+    event = Event.create(@attr.merge(:start_at_time => nil, :end_at_time => nil))
+    Event.find(event.id).all_day.should be_true
+  end
+  
+  it "should set all_day to false if start_at_time is provided" do
+    event = Event.create(@attr.merge(:start_at_time => '5:30 pm', :end_at_time => nil, :end_at_date => nil))
+    Event.find(event.id).all_day.should be_false
+  end
+  
+  it "should set all_day to true if end_at_date is not equal to start_at_date" do
+    event = Event.create(@attr.merge(:start_at_date => '2008-03-01', :end_at_date => '2008-03-03', :start_at_time => nil, :end_at_time => nil))
+    Event.find(event.id).all_day.should be_true
+  end
+  
+  it "should return times as nil if all_day is true" do
+    event = Event.create(@attr.merge(:start_at_time => nil, :end_at_time => nil))
+    Event.find(event.id).start_at_time.should be_nil
+    Event.find(event.id).end_at_time.should be_nil
+  end
+  it "should return start_at_date = end_at_date and all_day as false if start_at_time only is provided"
+  it "should return start_at_time = end_at_time and all_day as false if start_at_time and end_at_time are provided"
+  it "should return start_at_time = end_at_time and all_day as true if end_at_time is provided without end_at_time"
+  
+  it "should treat all_day, start_at, end_at as read-only" 
   
   describe "method" do
     
     before(:each) do
       @event = Event.create(@attr)
+    end
+    
+    it "should respond to start_at_time" do
+      @event.should respond_to(:start_at_time) 
+    end 
+    
+    it "should respond to start_at_date" do
+      @event.should respond_to(:start_at_date)
+    end
+    
+    it "should respond to end_at_time" do
+      @event.should respond_to(:end_at_time)
+    end
+    
+    it "should respond to end_at_date" do
+      @event.should respond_to(:end_at_date)
     end
     
     describe "team" do

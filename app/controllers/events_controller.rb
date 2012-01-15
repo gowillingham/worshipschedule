@@ -14,7 +14,6 @@ class EventsController < ApplicationController
   def create 
     @team = Team.find(params[:team_id])
     @event = @team.events.new(params[:event])
-    @event.all_day = true if (params[:event]["start_at(4i)"].blank? && params[:event]["start_at(4i)"].blank?)
     if @event.save
       flash[:success] = 'The new event was successfully saved '
       redirect_to(team_events_path(@team))
