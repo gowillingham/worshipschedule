@@ -27,8 +27,8 @@ describe EventsController do
     
     before(:each) do
       @event_1 = @team.events.create(@attr)
-      @event_2 = @team.events.create(@attr.merge(:name => 'event 2', :start_at => '2012-02-15 12:00', :end_at => nil))
-      @event_3 = @team.events.create(@attr.merge(:name => 'event 3', :start_at => '2012-02-15 5:00', :end_at => nil))
+      @event_2 = @team.events.create(@attr.merge(:name => 'event 2', :start_at_date => '2012-02-15', :start_at_time => '12:00 pm', :end_at_date => nil, :end_at_time => nil))
+      @event_3 = @team.events.create(@attr.merge(:name => 'event 3', :start_at_date => '2012-02-15', :start_at_time => '5:00 pm', :end_at_date => nil, :end_at_time => nil))
     end 
     
     it "should allow an account admin" do
