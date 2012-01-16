@@ -20,7 +20,11 @@ class Event < ActiveRecord::Base
   
   def time_for_display
     if self.all_day
-      "All day"
+      unless end_at.nil?
+        "Multi day"
+      else
+        "All day"
+      end
     else
       self.start_at.to_time.strftime("%l:%M%P").downcase.chop
     end
