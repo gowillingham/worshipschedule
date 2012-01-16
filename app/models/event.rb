@@ -2,7 +2,9 @@ class Event < ActiveRecord::Base
   belongs_to :team
     
   attr_accessor :start_at_date, :start_at_time, :end_at_date, :end_at_time
-
+  attr_accessible :start_at_date, :start_at_time, :end_at_date, :end_at_time, :name, :description, :team_id
+  attr_readonly :start_at, :end_at, :all_day
+  
   validates :name, :presence => true, :length => { :minimum => 1, :maximum => 100}
   validates :description, :length => { :maximum => 500 }
   
