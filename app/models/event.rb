@@ -45,10 +45,10 @@ class Event < ActiveRecord::Base
           end        
         else
           self.start_at_date = start_at.to_date
-          self.start_at_time = start_at.to_time
+          self.start_at_time = start_at.to_time.strftime("%l:%M %P")
           unless end_at.nil?
             self.end_at_date = end_at.to_date
-            self.end_at_time = end_at.to_time
+            self.end_at_time = end_at.to_time.strftime("%l:%M %P")
           else
             self.end_at_date = nil
             self.end_at_time = nil
@@ -72,7 +72,7 @@ class Event < ActiveRecord::Base
           else
             self.all_day = false
             self.start_at = DateTime.new(Date.parse(start_at_date).year, Date.parse(start_at_date).month, Date.parse(start_at_date).day, Time.parse(start_at_time).hour, Time.parse(start_at_time).min, 0, 0)
-            self.end_at = DateTime.new(Date.parse(start_at_date).year, Date.parse(start_at_date).month, Date.parse(start_at_date).day, Time.parse(start_at_time).hour, Time.parse(start_at_time).min, 0, 0)
+            self.end_at = DateTime.new(Date.parse(start_at_date).year, Date.parse(start_at_date).month, Date.parse(start_at_date).day, Time.parse(end_at_time).hour, Time.parse(end_at_time).min, 0, 0)
           end
         end
       else

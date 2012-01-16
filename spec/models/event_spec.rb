@@ -114,6 +114,8 @@ describe Event do
     event = Event.create(@attr.merge(:end_at_date =>nil, :end_at_time => '6:30 pm'))
     Event.find(event.id).end_at_date.should eq(Event.find(event.id).start_at_date)
     Event.find(event.id).all_day?.should be_false
+    Event.find(event.id).end_at_time.strip!.should eq(@attr[:end_at_time])
+    Event.find(event.id).start_at_time.strip!.should eq(@attr[:start_at_time])
   end
 
   describe "method" do
