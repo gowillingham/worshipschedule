@@ -1,3 +1,48 @@
+<% content_for :head do %>
+	<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/smoothness/jquery-ui.css" type="text/css" rel="stylesheet" />
+	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js"></script>  
+	<script type="text/javascript">
+		function clear_date_picker(){
+			$("span.time input").val('')
+			$("div.end input").val('')
+		}
+    
+    $(document).ready(function(){
+	
+			// arm the datepickers ..
+			options = {
+				dateFormat: 'yy-mm-dd'
+			}
+			$("#datepicker_start").datepicker(options)
+			$("#datepicker_end").datepicker(options)
+	
+			// show and hide the start/end date form fields..
+			$(".trigger a").click(function(){
+				trigger = $(this)
+				time_inputs = $("table.time")
+				end_date_input = $("div.end")
+				
+				clear_date_picker()
+				
+				if (trigger.hasClass("multi")) {
+					trigger.removeClass('multi')
+					trigger.text('Make this a multi-day event')
+					time_inputs.show()
+					end_date_input.hide()
+				}
+				else {
+					trigger.addClass('multi')
+					trigger.text('Make this a one-day event')
+					time_inputs.hide()
+					end_date_input.show()
+				}
+				
+				return false
+			})
+    })
+  </script>
+<% end %>
+
 <h3>Event name</h3>
 <p class="block_intro">Provide a name for this event. </p>
 <div class="block">

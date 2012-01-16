@@ -18,9 +18,57 @@ describe EventsController do
       :name => 'New event',
       :description => 'the description',
       :start_at_date => '2012-02-01 19:30',
-      :end_at => '2012-02-01 21:30',
-      :all_day => false
-    }
+      :start_at_time => '7:30 pm',
+      :end_at_date => '',
+      :end_at_time => ''
+      }
+  end
+  
+  describe "GET 'edit'" do
+    
+    before(:each) do
+      @event = Event.create(@attr)
+    end
+    
+    it "should allow an account admin" do
+      get :edit, :team_id => @team, :id => @event
+      
+      response.should render_template('edit')
+    end
+    
+    it "should allow a team admin who is not account admin" do
+      @team.memberships.create(:user_id => @signed_in_user, :admin => true)
+      @accountship.update_attribute(:admin, false)
+      get :edit, :team_id => @team, :id => @event
+      
+      response.should render_template('edit')
+    end
+    
+    it "should redirect a regular user" do
+      @accountship.update_attribute(:admin, false)
+      get :edit, :team_id => @team, :id => @event
+      
+      response.should redirect_to(@signed_in_user)
+      flash[:error].should =~ /don't have permission/i
+    end
+    
+    it "should redirect for a team that is not from the current_account" do
+      account = Factory(:account)
+      team = Factory(:team, :account_id => account.id)
+      get :edit, :team_id => team, :id => @event
+      
+      response.should redirect_to(@signed_in_user)
+      flash[:error].should =~ /don't have permission/i
+    end
+    
+    it "should redirect for an event that does not belong to the current team" do
+      team = @account.teams.create(:name => 'Name')
+      event = Event.create(@attr.merge(:team_id => team.id))
+      get :edit, :team_id => @team, :id => event
+
+      response.should redirect_to(@signed_in_user)
+      flash[:error].should =~ /don't have permission/i
+    end
   end
 
   describe "GET 'index'" do
@@ -157,7 +205,7 @@ describe EventsController do
     
     it "should not add the event given invalid attributes" do
       lambda do
-        post :create, :team_id => @team, :event => @attr.merge(:start_at_date => nil)
+        post :create, :team_id => @team, :event => @attr.merge(:end_at_date => '2011-02-01')
       end.should change(Event, :count).by(0)
     end
     
