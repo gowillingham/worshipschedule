@@ -6,18 +6,40 @@
 <h3>When?</h3>
 <p class="block_intro">The start date and optional ending date. Start and end times are optional. </p>
 <div class="block date">
-	<div class="start">
-		<%= f.text_field :start_at_date, :class => 'date-picker' %>
-		<span class="time">
-			from <%= f.text_field :start_at_time, :class => 'time-picker' %> to <%= f.text_field :end_at_time, :class => 'time-picker' %>
-		</span>
-	</div>
-	<div class="end" style="display:none;">
-		<%= f.text_field :end_at_date, :class =>'date-picker' %>
-	</div>
-	<div class="trigger">
-		<a href="#">Make this a multi-day event</a>
-	</div>
+		<table>
+			<tbody>
+				<tr>
+					<td>
+						<div class="start">
+							<%= f.text_field :start_at_date, :class => 'date_field	', :id => "datepicker_start", :readonly => "readonly" %>
+						</div>
+						<div class="end" style="display:none;">
+							<%= f.text_field :end_at_date, :class =>'date_field', :id => "datepicker_end", :readonly => 'readonly' %>
+						</div>
+						<div class="trigger">
+							<a href="#">Make this a multi-day event</a>
+						</div>
+					</td>
+					<td style="vertical-align:top;">
+						<table class="time">
+							<tbody>
+								<tr>
+									<td class="label">&nbsp;from&nbsp;</td>
+									<td>
+										<div><%= f.text_field :start_at_time, :class => 'time_field' %></div>
+										<div class="hint">ex. 9:30 am</div>
+									</td>
+									<td class="label">&nbsp;to&nbsp;</td>
+									<td>
+										<%= f.text_field :end_at_time, :class => 'time_field' %>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</td>
+				</tr>
+			</tbody>
+		</table>
 </div>
 <h3>Description</h3>
 <p class="block_intro">Provide an optional description. </p>
