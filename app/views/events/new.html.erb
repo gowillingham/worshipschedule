@@ -1,3 +1,35 @@
+<% content_for :head do %>
+  <script type="text/javascript">
+		function clear_date_picker(){
+			$("span.time input").val('')
+			$("div.end input").val('')
+		}
+    
+    $(document).ready(function(){
+			$(".trigger a").click(function(){
+				trigger = $(this)
+				time_inputs = $("span.time")
+				end_date_input = $("div.end")
+				
+				clear_date_picker()
+				
+				if (trigger.hasClass("multi")) {
+					trigger.removeClass('multi')
+					trigger.text('Make this a multi-day event')
+					time_inputs.show()
+					end_date_input.hide()
+				}
+				else {
+					trigger.addClass('multi')
+					trigger.text('Make this a one-day event')
+					time_inputs.hide()
+					end_date_input.show()
+				}
+			})
+    })
+  </script>
+<% end %>
+
 <div class="content shadow">
   <div class="header">
     <h2>Add an event for <%= @team.name %></h2>

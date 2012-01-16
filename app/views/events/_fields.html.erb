@@ -5,28 +5,19 @@
 </div>
 <h3>When?</h3>
 <p class="block_intro">The start date and optional ending date. Start and end times are optional. </p>
-<div class="block">
-	<table>
-		<tbody>
-			<tr>
-				<td>From</td>
-				<td>
-					<%= f.date_select :start_at %>
-					at <%= f.time_select :start_at , {:ignore_date => true, :include_blank => true, :default => nil, :minute_step => 15, :ampm => true} %>
-				</td>
-			</tr>
-			<tr>
-				<td>Until</td>
-				<td>
-					<%= f.date_select :end_at, :include_blank => true, :default => nil %>
-					at <%= f.time_select :end_at, :ignore_date => true, :include_blank => true, :default => nil, :minute_step => 15 %>
-				</td>
-			</tr>
-		</tbody>
-	</table>
-	<br />
-	<%= f.check_box :all_day %>
-	<label for="team_event_all_day">This is an all day event</label>
+<div class="block date">
+	<div class="start">
+		<%= f.text_field :start_at_date, :class => 'date-picker' %>
+		<span class="time">
+			from <%= f.text_field :start_at_time, :class => 'time-picker' %> to <%= f.text_field :end_at_time, :class => 'time-picker' %>
+		</span>
+	</div>
+	<div class="end" style="display:none;">
+		<%= f.text_field :end_at_date, :class =>'date-picker' %>
+	</div>
+	<div class="trigger">
+		<a href="#">Make this a multi-day event</a>
+	</div>
 </div>
 <h3>Description</h3>
 <p class="block_intro">Provide an optional description. </p>

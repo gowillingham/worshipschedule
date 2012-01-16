@@ -47,6 +47,13 @@ div.link_bar a:hover	{color:white;background-color:red;}
 #main .content .form .block_intro             {margin:.25em 0;color:#666;line-height:1.3em;}
 #main .content .form .block                   {margin:0 0 2.5em 0;background-color:#f0f0f0;padding:.4em;}
 #main .content .form .block textarea          {width:40em;height:7em;}
+
+#main .content .form .block.date .start,
+#main .content .form .block.date .end								{padding:0 0 4px 0;}
+#main .content .form .block.date input.date-picker	{width:200px;}
+#main .content .form .block.date input.time-picker	{width:50px;}
+#main .content .form .block.date .trigger					{font-size:10px;padding-left:1px;margin-top:-3px;}
+
 #main .content .form .block label             {font-weight:normal;color:#666;}
 #main .content .form .block p                 {color:#666;font-size:1em;line-height:1.3em;margin-bottom:1.5em;}
 
