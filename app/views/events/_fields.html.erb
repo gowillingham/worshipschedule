@@ -13,12 +13,14 @@
 		function set_date_picker(is_all_day, trigger){
 			time_inputs = $("table.time")
 			end_date_input = $("div.end")
+			
 
 			if (is_all_day) {
 				trigger.addClass('multi')
 				trigger.text('Make this a one-day event')
 				time_inputs.hide()
 				end_date_input.show()
+			console.log("running set_date_picker ..")
 			}
 			else {
 				trigger.removeClass('multi')
@@ -29,18 +31,14 @@
 		}
     
     $(document).ready(function(){
-	
-			// set the initial state of the date selector ..
-			if ($("input.start_time").val()) {set_date_picker(false, $(".trigger a"))}
-			else {set_date_picker(true, $(".trigger a"))}
-	
+
 			// arm the date-picker text fields ..
 			$("#datepicker_start").datepicker(options)
 			$("#datepicker_end").datepicker(options)
 	
 			// arm the date selector trigger ..
 			$(".trigger a").click(function(){
-				
+
 				clear_date_picker()
 				if ($(this).hasClass("multi")) { 
 					set_date_picker(false, $(this))
@@ -67,18 +65,29 @@
 			<tbody>
 				<tr>
 					<td>
+						<% if @event.all_day %>
+							<% trigger_text = 'Make this a one-day event'%>
+							<% end_at_display_style = ''%>
+							<% trigger_class = 'multi' %>
+							<% time_field_display_style = 'display:none;'%>
+						<% else %>
+							<% trigger_text = 'Make this a multi-day event'%>
+							<% end_at_display_style = 'display:none;'%>
+							<% trigger_class = '' %>
+							<% time_field_display_style = '' %>
+						<% end %>
 						<div class="start">
 							<%= f.text_field :start_at_date, :class => 'date_field	', :id => "datepicker_start", :readonly => "readonly" %>
 						</div>
-						<div class="end" style="display:none;">
+						<div class="end" style="<%= end_at_display_style %>">
 							<%= f.text_field :end_at_date, :class =>'date_field', :id => "datepicker_end", :readonly => 'readonly' %>
 						</div>
 						<div class="trigger">
-							<a href="#">Make this a multi-day event</a>
+							<a href="#" class="<%= trigger_class%>"><%= trigger_text %></a>
 						</div>
 					</td>
 					<td style="vertical-align:top;">
-						<table class="time">
+						<table class="time" style="<%= time_field_display_style %>">
 							<tbody>
 								<tr>
 									<td class="label">&nbsp;from&nbsp;</td>
