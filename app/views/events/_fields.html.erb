@@ -12,7 +12,8 @@
 		
 		function set_date_picker(is_all_day, trigger){
 			time_inputs = $("table.time")
-			end_date_input = $("div.end")
+			end_date_input = $("tr.to_date")
+			to_from_labels = $("td.to_from_labels")
 			
 
 			if (is_all_day) {
@@ -20,6 +21,7 @@
 				trigger.text('Make this a one-day event')
 				time_inputs.hide()
 				end_date_input.show()
+				to_from_labels.show()
 			console.log("running set_date_picker ..")
 			}
 			else {
@@ -27,6 +29,7 @@
 				trigger.text('Make this a multi-day event')
 				time_inputs.show()
 				end_date_input.hide()
+				to_from_labels.hide()
 			}
 		}
     
@@ -68,23 +71,38 @@
 						<% if @event.all_day %>
 							<% trigger_text = 'Make this a one-day event'%>
 							<% end_at_display_style = ''%>
-							<% trigger_class = 'multi' %>
 							<% time_field_display_style = 'display:none;'%>
+							<% to_from_labels_display_style = '' %>
+							<% trigger_class = 'multi' %>
 						<% else %>
 							<% trigger_text = 'Make this a multi-day event'%>
 							<% end_at_display_style = 'display:none;'%>
 							<% trigger_class = '' %>
 							<% time_field_display_style = '' %>
+							<% to_from_labels_display_style = 'display:none;' %>
 						<% end %>
-						<div class="start">
-							<%= f.text_field :start_at_date, :class => 'date_field	', :id => "datepicker_start", :readonly => "readonly" %>
-						</div>
-						<div class="end" style="<%= end_at_display_style %>">
-							<%= f.text_field :end_at_date, :class =>'date_field', :id => "datepicker_end", :readonly => 'readonly' %>
-						</div>
-						<div class="trigger">
-							<a href="#" class="<%= trigger_class%>"><%= trigger_text %></a>
-						</div>
+						<table>
+							<tbody>
+								<tr class="from_date">
+									<td class="to_from_labels" style="<%= to_from_labels_display_style %>">From</td>
+									<td>
+										<%= f.text_field :start_at_date, :class => 'date_field	', :id => "datepicker_start", :readonly => "readonly" %>
+									</td>
+								</tr>
+								<tr class="to_date" style="<%= end_at_display_style%>">
+									<td class="to_from_labels" style="<%= to_from_labels_display_style %>">To</td>
+									<td>
+										<%= f.text_field :end_at_date, :class =>'date_field', :id => "datepicker_end", :readonly => 'readonly' %>
+									</td>
+								</tr>
+								<tr>
+									<td class="to_from_labels" style="<%= to_from_labels_display_style %>">&nbsp;</td>
+									<td class="trigger">
+										<a href="#" class="<%= trigger_class%>"><%= trigger_text %></a>
+									</td>
+								</tr>
+							<tbody>
+						</table>
 					</td>
 					<td style="vertical-align:top;">
 						<table class="time" style="<%= time_field_display_style %>">

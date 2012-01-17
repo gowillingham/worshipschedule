@@ -58,9 +58,10 @@ div.link_bar a:hover	{color:white;background-color:red;}
 #main .content .form .block.date table.time td div			{font-size:10px;}
 #main .content .form .block.date table.time td div.hint	{margin:1px 0 0 5px;color:#999;}
 #main .content .form .block.date table.time td.label		{vertical-align:top;padding-top:3px;}
-#main .content .form .block.date input.date_field				{width:175px;}
+#main .content .form .block.date input.date_field				{width:175px;margin:1px 0}
 #main .content .form .block.date input.time_field				{width:70px;}
 #main .content .form .block.date .trigger								{font-size:10px;padding-left:1px;margin-top:-3px;}
+#main .content .form .block.date td.to_from_labels			{text-align:right;vertical-align:middle;padding:0 5px;font-size:12px;}
 .ui-widget																							{font-size:10px;}
 .ui-datepicker																					{width:auto;}
 .ui-datepicker th																				{font-weight:normal;font-size:1.1em;padding:0.5em;}
