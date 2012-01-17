@@ -8,7 +8,7 @@ class EventsController < ApplicationController
     @team = Team.find(params[:team_id])
     @event = Event.find(params[:id])
     @title = 'Edit event'
-    @sidebar_partial = 'users/sidebar/placeholder'
+    @sidebar_partial = 'events/sidebar/edit'
   end 
   
   def index

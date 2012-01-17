@@ -2,43 +2,55 @@
 	<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/smoothness/jquery-ui.css" type="text/css" rel="stylesheet" />
 	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js"></script>  
 	<script type="text/javascript">
+	
+		var options = {dateFormat: 'yy-mm-dd'}
+	
 		function clear_date_picker(){
-			$("span.time input").val('')
+			$("table.time input").val('')
 			$("div.end input").val('')
+		}
+		
+		function set_date_picker(is_all_day, trigger){
+			time_inputs = $("table.time")
+			end_date_input = $("div.end")
+
+			if (is_all_day) {
+				trigger.addClass('multi')
+				trigger.text('Make this a one-day event')
+				time_inputs.hide()
+				end_date_input.show()
+			}
+			else {
+				trigger.removeClass('multi')
+				trigger.text('Make this a multi-day event')
+				time_inputs.show()
+				end_date_input.hide()
+			}
 		}
     
     $(document).ready(function(){
 	
-			// arm the datepickers ..
-			options = {
-				dateFormat: 'yy-mm-dd'
-			}
+			// set the initial state of the date selector ..
+			if ($("input.start_time").val()) {set_date_picker(false, $(".trigger a"))}
+			else {set_date_picker(true, $(".trigger a"))}
+	
+			// arm the date-picker text fields ..
 			$("#datepicker_start").datepicker(options)
 			$("#datepicker_end").datepicker(options)
 	
-			// show and hide the start/end date form fields..
+			// arm the date selector trigger ..
 			$(".trigger a").click(function(){
-				trigger = $(this)
-				time_inputs = $("table.time")
-				end_date_input = $("div.end")
 				
 				clear_date_picker()
-				
-				if (trigger.hasClass("multi")) {
-					trigger.removeClass('multi')
-					trigger.text('Make this a multi-day event')
-					time_inputs.show()
-					end_date_input.hide()
+				if ($(this).hasClass("multi")) { 
+					set_date_picker(false, $(this))
 				}
-				else {
-					trigger.addClass('multi')
-					trigger.text('Make this a one-day event')
-					time_inputs.hide()
-					end_date_input.show()
-				}
-				
+				else { 
+					set_date_picker(true, $(this)) 
+				}				
 				return false
 			})
+			
     })
   </script>
 <% end %>
@@ -71,12 +83,12 @@
 								<tr>
 									<td class="label">&nbsp;from&nbsp;</td>
 									<td>
-										<div><%= f.text_field :start_at_time, :class => 'time_field' %></div>
+										<div><%= f.text_field :start_at_time, :class => 'time_field start_time' %></div>
 										<div class="hint">ex. 9:30 am</div>
 									</td>
 									<td class="label">&nbsp;to&nbsp;</td>
 									<td>
-										<%= f.text_field :end_at_time, :class => 'time_field' %>
+										<%= f.text_field :end_at_time, :class => 'time_field end_time' %>
 									</td>
 								</tr>
 							</tbody>
