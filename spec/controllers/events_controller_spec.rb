@@ -17,11 +17,73 @@ describe EventsController do
       :team_id => @team.id,
       :name => 'New event',
       :description => 'the description',
-      :start_at_date => '2012-02-01 19:30',
+      :start_at_date => '2012-02-01',
       :start_at_time => '7:30 pm',
       :end_at_date => '',
       :end_at_time => ''
       }
+  end
+  
+  describe "PUT 'update'" do
+    
+    before(:each) do
+      @event = Event.create(@attr)
+      @new_attr = {:name => 'New name', :description => 'Some new stuff', :start_at_time => '11:30 pm'}
+    end
+    
+    it "should allow an account admin" do
+      put :update, :team_id => @team, :id => @event, :event => @new_attr
+      
+      response.should redirect_to(team_events_path(@team))
+    end
+    
+    it "should allow a team admin who is not account admin" do
+      @team.memberships.create(:user_id => @signed_in_user, :admin => true)
+      @accountship.update_attribute(:admin, false)
+      put :update, :team_id => @team, :id => @event, :event => @new_attr
+      
+      response.should redirect_to(team_events_path(@team))
+    end
+    
+    it "should redirect a regular user" do
+      @accountship.update_attribute(:admin, false)
+      put :update, :team_id => @team, :id => @event, :event => @new_attr
+      
+      response.should redirect_to(@signed_in_user)
+      flash[:error].should =~ /don't have permission/i
+    end
+    
+    it "should redirect for a team that is not from the current_account" do
+      account = Factory(:account)
+      team = Factory(:team, :account_id => account.id)
+      put :update, :team_id => team, :id => @event, :event => @new_attr
+      
+      response.should redirect_to(@signed_in_user)
+      flash[:error].should =~ /don't have permission/i
+    end
+    
+    it "should redirect for an event that does not belong to the current team" do
+      team = @account.teams.create(:name => 'Name')
+      event = Event.create(@attr.merge(:team_id => team.id))
+      put :update, :team_id => @team, :id => event, :event => @new_attr
+
+      response.should redirect_to(@signed_in_user)
+      flash[:error].should =~ /don't have permission/i
+    end
+    
+    it "should update given valid attributes" do
+      put :update, :team_id => @team, :id => @event, :event => @new_attr
+      @event.reload.name.should eq(@new_attr[:name])
+      @event.reload.description.should eq(@new_attr[:description])
+    end
+    
+    it "should not update given invalid attributes" do
+      lambda do
+        put :update, :team_id => @team, :id => @event, :event => @new_attr.merge(:start_at_date => '')
+      end.should change(Event, :count).by(0)
+    end
+    
+    it "should redirect to events#index with message on success"
   end
   
   describe "GET 'edit'" do

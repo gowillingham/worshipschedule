@@ -8,13 +8,13 @@ class Event < ActiveRecord::Base
   validates :name, :presence => true, :length => { :minimum => 1, :maximum => 100}
   validates :description, :length => { :maximum => 500 }
   
-  validates_date :start_at_date
+  validates_date :start_at_date, :allow_blank => false
   validates_time :start_at_time, :allow_blank => true
   
-  validates_date :end_at_date, :allow_blank => true, :on_or_after => :start_at_date, :on_or_after_message => 'must be on or after starting time'
+  validates_date :end_at_date, :allow_blank => true, :after => :start_at_date, :after_message => 'must be after starting date'
   validates_time :end_at_time, :allow_blank => true, :after => :start_at_time, :after_message => 'must be after starting time'
   
-  after_validation :set_start_at_end_at
+  before_save :set_start_at_end_at
   after_initialize :refresh_readable_attributes
   after_find :refresh_readable_attributes
   
@@ -33,53 +33,63 @@ class Event < ActiveRecord::Base
   private 
   
     def refresh_readable_attributes
+      
       unless start_at.nil?
         if all_day?
           self.start_at_time = nil
           self.end_at_time = nil
-          self.start_at_date = start_at.to_date
-          unless end_at.nil?
-            self.end_at_date = end_at.to_date
-          else
+          self.start_at_date = start_at.to_date.strftime("%Y-%m-%d")
+          if end_at.nil?
             self.end_at_date = nil
-          end        
-        else
-          self.start_at_date = start_at.to_date
-          self.start_at_time = start_at.to_time.strftime("%l:%M %P")
-          unless end_at.nil?
-            self.end_at_date = end_at.to_date
-            self.end_at_time = end_at.to_time.strftime("%l:%M %P")
           else
-            self.end_at_date = nil
-            self.end_at_time = nil
+            self.end_at_date = end_at.to_date.strftime("%Y-%m-%d")
           end
         end
-      end
+          
+        if !all_day?
+          self.start_at_date = start_at.to_date.strftime("%Y-%m-%d")
+          self.start_at_time = start_at.to_time.strftime("%l:%M %P")
+          self.end_at_date = nil
+          if end_at.nil?
+            self.end_at_time = nil
+          else
+            self.end_at_time = end_at.to_time.strftime("%l:%M %P")
+          end
+        end
+      end      
     end
   
-    # sets private members storing event dates/times right after validation
     def set_start_at_end_at
-      if end_at_date.blank?
-        if start_at_time.blank?
+      
+      if start_at_time.blank?
+        
+        # no start_at_time so ..        
+        if end_at_date.blank?
+          # its all_day, start_at_date only, disregard times
           self.all_day = true
-          self.start_at = start_at_date
+          self.start_at = DateTime.new(DateTime.parse(start_at_date).year, DateTime.parse(start_at_date).month, DateTime.parse(start_at_date).day, 0, 0, 0, 0) unless start_at_date.blank?        
           self.end_at = nil
         else
-          if end_at_time.blank?
-            self.all_day = false
-            self.start_at = DateTime.new(Date.parse(start_at_date).year, Date.parse(start_at_date).month, Date.parse(start_at_date).day, Time.parse(start_at_time).hour, Time.parse(start_at_time).min, 0, 0)
-            self.end_at = nil
-          else
-            self.all_day = false
-            self.start_at = DateTime.new(Date.parse(start_at_date).year, Date.parse(start_at_date).month, Date.parse(start_at_date).day, Time.parse(start_at_time).hour, Time.parse(start_at_time).min, 0, 0)
-            self.end_at = DateTime.new(Date.parse(start_at_date).year, Date.parse(start_at_date).month, Date.parse(start_at_date).day, Time.parse(end_at_time).hour, Time.parse(end_at_time).min, 0, 0)
-          end
+          # its all_day, start_at-date + end_at_date, disregard times 
+          self.all_day = true
+          self.start_at = DateTime.new(DateTime.parse(start_at_date).year, DateTime.parse(start_at_date).month, DateTime.parse(start_at_date).day, 0, 0, 0, 0) unless start_at_date.blank?        
+          self.end_at = DateTime.new(DateTime.parse(end_at_date).year, DateTime.parse(end_at_date).month, DateTime.parse(end_at_date).day, 0, 0, 0, 0) unless start_at_date.blank?
         end
-      else
-        # start_at_date + end_at_date
-        self.all_day = true
-        self.start_at = start_at_date
-        self.end_at = end_at_date
       end
+      
+      if !start_at_time.blank?  
+        # has start_at_time so ..
+        if end_at_time.blank? 
+          # its not all_day, start_at_date + start_at_time, disregard end_at_time + end_at_date
+          self.all_day = false
+          self.start_at = DateTime.new(DateTime.parse(start_at_date).year, DateTime.parse(start_at_date).month, DateTime.parse(start_at_date).day, DateTime.parse(start_at_time).hour, DateTime.parse(start_at_time).min, 0, 0) unless start_at_date.blank?
+          self.end_at = nil
+        else
+          # its not all_day, start_at_date = end_at_date, save times too
+          self.all_day = false
+          self.start_at = DateTime.new(DateTime.parse(start_at_date).year, DateTime.parse(start_at_date).month, DateTime.parse(start_at_date).day, DateTime.parse(start_at_time).hour, DateTime.parse(start_at_time).min, 0, 0) unless start_at_date.blank?
+          self.end_at = DateTime.new(DateTime.parse(start_at_date).year, DateTime.parse(start_at_date).month, DateTime.parse(start_at_date).day, DateTime.parse(end_at_time).hour, DateTime.parse(end_at_time).min, 0, 0) unless start_at_date.blank?
+        end
+      end 
     end
 end

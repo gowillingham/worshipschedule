@@ -78,7 +78,7 @@ describe Event do
   
   it "should not create an event given invalid attributes" do
     lambda do
-      Event.create(@attr.merge(:start_at_date => '2012-02-31'))
+      Event.create(@attr.merge(:name => ''))
     end.should change(Event, :count).by(0)
   end
   
@@ -110,9 +110,9 @@ describe Event do
     Event.find(event.id).all_day?.should be_false
   end
   
-  it "should return end_at_date set to start_at_date and all_day? as false if start_at_time and end_at_time are provided" do
+  it "should return end_at_date set to nil and all_day? as false if start_at_time and end_at_time are provided" do
     event = Event.create(@attr.merge(:end_at_date =>nil, :end_at_time => '6:30 pm'))
-    Event.find(event.id).end_at_date.should eq(Event.find(event.id).start_at_date)
+    Event.find(event.id).end_at_date.should be_nil
     Event.find(event.id).all_day?.should be_false
     Event.find(event.id).end_at_time.strip!.should eq(@attr[:end_at_time])
     Event.find(event.id).start_at_time.strip!.should eq(@attr[:start_at_time])

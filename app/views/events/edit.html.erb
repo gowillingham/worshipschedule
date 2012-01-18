@@ -4,7 +4,7 @@
     <h2>Edit an event for <%= @team.name %></h2>
   </div>
   <div class="form">
-    <%= form_for @event, :url => { :action => 'create' } do |f| %>
+    <%= form_for @event, :url => { :action => 'update' } do |f| %>
       <%= render 'shared/errors', :object => @event %>
       <%= render 'fields', :f => f %>      
       <div class="footer">

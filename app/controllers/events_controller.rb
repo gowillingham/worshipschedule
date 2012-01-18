@@ -1,8 +1,20 @@
 class EventsController < ApplicationController
   before_filter(:except => [:show, :index]) { require_account_or_team_admin(params[:team_id]) }
   before_filter { require_team_for_current_account(params[:team_id]) }
-  before_filter(:only => [:edit]) { require_event_for_current_team(params[:team_id], params[:id])}
+  before_filter(:only => [:edit, :update]) { require_event_for_current_team(params[:team_id], params[:id])}
   before_filter { require_team_member(params[:team_id]) }
+  
+  def update
+    @team = Team.find(params[:team_id])
+    @event = Event.find(params[:id])
+    if @event.update_attributes(params[:event])
+      flash[:success] = "The changes to the event were saved"
+      redirect_to(team_events_url(@team))
+    else
+      @sidebar_partial = 'users/sidebar/placeholder'
+      render 'edit'
+    end    
+  end
   
   def edit
     @team = Team.find(params[:team_id])
@@ -24,7 +36,7 @@ class EventsController < ApplicationController
     @event = @team.events.new(params[:event])
     if @event.save
       flash[:success] = 'The new event was successfully saved '
-      redirect_to(team_events_path(@team))
+      redirect_to(team_events_url(@team))
     else
       @sidebar_partial = 'users/sidebar/placeholder'
       render 'new'
