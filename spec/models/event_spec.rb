@@ -26,8 +26,14 @@ describe Event do
     Event.new(@attr).should be_valid
   end 
   
-  it "should require an name" do
-    Event.new(@attr.merge(:name => '')).should_not be_valid
+  it "should call the event 'untitled event' if no name is provided" do
+    event = Event.create(@attr.merge(:name => nil))
+    
+    event.name =~ /untitled event/i
+  end
+  
+  it "should not require an name" do
+    Event.new(@attr.merge(:name => '')).should be_valid
   end
   
   it "should not allow a name that is too long" do
@@ -78,7 +84,7 @@ describe Event do
   
   it "should not create an event given invalid attributes" do
     lambda do
-      Event.create(@attr.merge(:name => ''))
+      Event.create(@attr.merge(:start_at_date => 'not a date'))
     end.should change(Event, :count).by(0)
   end
   

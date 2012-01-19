@@ -60,7 +60,7 @@ class EventsController < ApplicationController
   
   def new
     @team = Team.find(params[:team_id])
-    @event = @team.events.new
+    @event = @team.events.new(:start_at_date => Date.today.to_s)
     @title = "New event"
     @sidebar_partial = 'users/sidebar/placeholder'
   end

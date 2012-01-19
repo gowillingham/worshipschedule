@@ -4,7 +4,7 @@ class Event < ActiveRecord::Base
   attr_accessor :start_at_date, :start_at_time, :end_at_date, :end_at_time
   attr_accessible :team_id, :start_at_date, :start_at_time, :end_at_date, :end_at_time, :name, :description
   
-  validates :name, :presence => true, :length => { :maximum => 100}
+  validates :name, :length => { :maximum => 100}
   validates :description, :length => { :maximum => 500 }
   
   validates_date :start_at_date, :allow_blank => false
@@ -14,6 +14,9 @@ class Event < ActiveRecord::Base
   validates_time :end_at_time, :allow_blank => true, :after => :start_at_time, :after_message => 'must be after starting time'
   
   before_save :set_start_at_end_at
+  before_save do |event|
+    event.name = 'Untitled event' if event.name.blank?
+  end
   
   after_initialize :refresh_readable_attributes
   after_find :refresh_readable_attributes
