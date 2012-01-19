@@ -72,18 +72,37 @@ describe EventsController do
     end
     
     it "should update given valid attributes" do
-      put :update, :team_id => @team, :id => @event, :event => @new_attr
-      @event.reload.name.should eq(@new_attr[:name])
-      @event.reload.description.should eq(@new_attr[:description])
+      attrib = { 
+        :name => 'New name for this event', 
+        :description => 'yes there is one',
+        :start_at_date => '2001-01-01',
+        :start_at_time => '5:01 pm',
+        :end_at_date => '2012-06-01'
+      }
+      put :update, :team_id => @team, :id => @event, :event => attrib
+      
+      Event.find(@event.id).name.should eq(attrib[:name])
+      Event.find(@event.id).description.should eq(attrib[:description])
+      Event.find(@event.id).start_at_date.should eq(attrib[:start_at_date])
+      Event.find(@event.id).start_at_time.should eq(attrib[:start_at_time])
+      Event.find(@event.id).end_at_date.should be_nil
+      Event.find(@event.id).end_at_time.should be_nil
+      
+      response.should redirect_to(team_events_path(@team))
+      flash[:success].should =~ /event were saved/i
+    end
+    
+    it "should not update given invalid date" do
+      put :update, :team_id => @team, :id => @event, :event => { :start_at_date => '2012-02-31' }
+      
+      @event.reload.start_at_date.should eq(@attr[:start_at_date])
     end
     
     it "should not update given invalid attributes" do
-      lambda do
-        put :update, :team_id => @team, :id => @event, :event => @new_attr.merge(:start_at_date => '')
-      end.should change(Event, :count).by(0)
+      put :update, :team_id => @team, :id => @event, :event => @new_attr.merge(:start_at_date => '')
+      
+      @event.reload.start_at_date.should eq(@attr[:start_at_date])
     end
-    
-    it "should redirect to events#index with message on success"
   end
   
   describe "GET 'edit'" do

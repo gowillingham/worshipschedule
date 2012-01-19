@@ -2,10 +2,9 @@ class Event < ActiveRecord::Base
   belongs_to :team
     
   attr_accessor :start_at_date, :start_at_time, :end_at_date, :end_at_time
-  attr_accessible :start_at_date, :start_at_time, :end_at_date, :end_at_time, :name, :description, :team_id
-  attr_readonly :start_at, :end_at, :all_day
+  attr_accessible :team_id, :start_at_date, :start_at_time, :end_at_date, :end_at_time, :name, :description
   
-  validates :name, :presence => true, :length => { :minimum => 1, :maximum => 100}
+  validates :name, :presence => true, :length => { :maximum => 100}
   validates :description, :length => { :maximum => 500 }
   
   validates_date :start_at_date, :allow_blank => false
@@ -15,6 +14,7 @@ class Event < ActiveRecord::Base
   validates_time :end_at_time, :allow_blank => true, :after => :start_at_time, :after_message => 'must be after starting time'
   
   before_save :set_start_at_end_at
+  
   after_initialize :refresh_readable_attributes
   after_find :refresh_readable_attributes
   
@@ -38,25 +38,25 @@ class Event < ActiveRecord::Base
         if all_day?
           self.start_at_time = nil
           self.end_at_time = nil
-          self.start_at_date = start_at.to_date.strftime("%Y-%m-%d")
+          self.start_at_date = start_at.to_date.strftime("%Y-%m-%d").strip
           if end_at.nil?
             self.end_at_date = nil
           else
-            self.end_at_date = end_at.to_date.strftime("%Y-%m-%d")
+            self.end_at_date = end_at.to_date.strftime("%Y-%m-%d").strip
           end
         end
           
         if !all_day?
-          self.start_at_date = start_at.to_date.strftime("%Y-%m-%d")
-          self.start_at_time = start_at.to_time.strftime("%l:%M %P")
+          self.start_at_date = start_at.to_date.strftime("%Y-%m-%d").strip
+          self.start_at_time = start_at.to_time.strftime("%l:%M %P").strip
           self.end_at_date = nil
           if end_at.nil?
             self.end_at_time = nil
           else
-            self.end_at_time = end_at.to_time.strftime("%l:%M %P")
+            self.end_at_time = end_at.to_time.strftime("%l:%M %P").strip
           end
         end
-      end      
+      end  
     end
   
     def set_start_at_end_at

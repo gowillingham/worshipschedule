@@ -82,41 +82,51 @@ describe Event do
     end.should change(Event, :count).by(0)
   end
   
-  it "should set all_day to true if start_at_time is not provided" do
+  it "should return expected attributes when no times or end_at_date are provided" do
+    event = Event.create(@attr.merge(:end_at_date => nil, :end_at_time => nil, :start_at_time => nil))
+    event.reload.all_day.should be_true
+    event.reload.start_at_date.should eq(@attr[:start_at_date])
+    event.reload.start_at_time.should be_nil
+    event.reload.end_at_date.should be_nil
+    event.reload.end_at_time.should be_nil    
+  end 
+  
+  it "should return expected attributes when start date and start time are provided without end time" do
+    event = Event.create(@attr.merge(:end_at_date => nil, :end_at_time => nil))
+    event.reload.all_day.should be_false
+    event.reload.start_at_date.should eq(@attr[:start_at_date])
+    event.reload.start_at_time.should eq(@attr[:start_at_time])
+    event.reload.end_at_date.should be_nil
+    event.reload.end_at_time.should be_nil
+  end
+  
+  it "should return expected attributes when start date, start time, and end time are provided without end date" do
+    event = Event.create(@attr.merge(:end_at_date => nil))
+    event.reload.all_day.should be_false
+    event.reload.start_at_date.should eq(@attr[:start_at_date])
+    event.reload.start_at_time.should eq(@attr[:start_at_time])
+    event.reload.end_at_date.should be_nil
+    event.reload.end_at_time.should eq(@attr[:end_at_time])   
+  end 
+  
+  it "should return expected attributes when start date and end date are provided without times" do
     event = Event.create(@attr.merge(:start_at_time => nil, :end_at_time => nil))
-    Event.find(event.id).all_day.should be_true
-  end
+    event.reload.all_day.should be_true
+    event.reload.start_at_date.should eq(@attr[:start_at_date])
+    event.reload.start_at_time.should be_nil
+    event.reload.end_at_date.should eq(@attr[:end_at_date])
+    event.reload.end_at_time.should be_nil 
+  end 
   
-  it "should set all_day to false if start_at_time is provided" do
-    event = Event.create(@attr.merge(:start_at_time => '5:30 pm', :end_at_time => nil, :end_at_date => nil))
-    Event.find(event.id).all_day.should be_false
-  end
-  
-  it "should set all_day to true if end_at_date is not equal to start_at_date" do
-    event = Event.create(@attr.merge(:start_at_date => '2008-03-01', :end_at_date => '2008-03-03', :start_at_time => nil, :end_at_time => nil))
-    Event.find(event.id).all_day.should be_true
-  end
-  
-  it "should return times as nil if all_day is true" do
-    event = Event.create(@attr.merge(:start_at_time => nil, :end_at_time => nil))
-    Event.find(event.id).start_at_time.should be_nil
-    Event.find(event.id).end_at_time.should be_nil
-  end
-  
-  it "should return end_at_date and end_at_time as nil, and all_day as false if start_at_time only is provided" do
-    event = Event.create(@attr.merge(:end_at_date =>nil, :end_at_time => nil))
-    Event.find(event.id).end_at_date.should be_nil
-    Event.find(event.id).end_at_time.should be_nil
-    Event.find(event.id).all_day?.should be_false
-  end
-  
-  it "should return end_at_date set to nil and all_day? as false if start_at_time and end_at_time are provided" do
-    event = Event.create(@attr.merge(:end_at_date =>nil, :end_at_time => '6:30 pm'))
-    Event.find(event.id).end_at_date.should be_nil
-    Event.find(event.id).all_day?.should be_false
-    Event.find(event.id).end_at_time.strip!.should eq(@attr[:end_at_time])
-    Event.find(event.id).start_at_time.strip!.should eq(@attr[:start_at_time])
-  end
+  it "should return expected attributes on save" do
+    event = Event.create(@attr.merge(:end_at_date => nil))
+    event.reload.all_day.should be_false
+    event.reload.start_at_date.should eq(@attr[:start_at_date])
+    event.reload.start_at_time.should eq(@attr[:start_at_time])
+    event.reload.end_at_date.should be_nil
+    event.reload.end_at_time.should eq(@attr[:end_at_time])   
+  end  
+    
 
   describe "method" do
     
