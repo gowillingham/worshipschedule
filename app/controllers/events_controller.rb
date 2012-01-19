@@ -1,8 +1,17 @@
 class EventsController < ApplicationController
   before_filter(:except => [:show, :index]) { require_account_or_team_admin(params[:team_id]) }
   before_filter { require_team_for_current_account(params[:team_id]) }
-  before_filter(:only => [:edit, :update, :destroy]) { require_event_for_current_team(params[:team_id], params[:id])}
+  before_filter(:except => [:new, :create, :index]) { require_event_for_current_team(params[:team_id], params[:id])}
   before_filter { require_team_member(params[:team_id]) }
+  
+  def show
+    @team = Team.find(params[:team_id])
+    @event = Event.find(params[:id])
+    
+    @sidebar_partial = 'events/sidebar/show'
+    @title = 'Event details'
+    render 'show'
+  end
   
   def destroy
     @event = Event.find(params[:id])

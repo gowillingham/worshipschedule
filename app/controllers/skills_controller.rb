@@ -28,7 +28,7 @@ class SkillsController < ApplicationController
     @skillships = Skillship.joins(:membership).where("skillships.skill_id = ? AND memberships.active = ?", @skill.id, true)
     @skillships.sort! { |a,b,| a.membership.user.sortable_name.downcase <=> b.membership.user.sortable_name.downcase }
     @sidebar_partial = 'skills/sidebar/show'
-    @title = "Team skills"
+    @title = "Skill details"
   end
   
   def update

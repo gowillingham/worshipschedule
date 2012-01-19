@@ -18,15 +18,26 @@ class Event < ActiveRecord::Base
   after_initialize :refresh_readable_attributes
   after_find :refresh_readable_attributes
   
-  def time_for_display
-    if self.all_day
+  def when_range_text
+    str = start_at_date.to_date.strftime("%A, %d %B")   
+    if all_day?
+      str << " - #{end_at_date.to_date.strftime("%A, %d %B")}" unless end_at_date.nil?
+    else
+      str << ", #{Time.parse(start_at_time).strftime("%l:%M%P").downcase.strip.chop}"
+      str << " - #{Time.parse(end_at_time).strftime("%l:%M%P").downcase.strip.chop}" unless end_at_time.nil?
+    end
+    str
+  end
+  
+  def all_day_text
+    if all_day?
       unless end_at.nil?
         "Multi day"
       else
         "All day"
       end
     else
-      self.start_at.to_time.strftime("%l:%M%P").downcase.chop
+      Time.parse(start_at_time).strftime("%l:%M%P").downcase.chop
     end
   end
   

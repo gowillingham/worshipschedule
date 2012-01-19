@@ -53,7 +53,7 @@
 							<tr>
 								<td class="what">
 									<span class="event">Event</span>
-									<div class="start_at"><%=event.time_for_display %></div>
+									<div class="start_at"><%= event.all_day_text %></div>
 								</td>
 								<td class="item">
 									<% if team_admin?(@team, current_user) || admin? %>

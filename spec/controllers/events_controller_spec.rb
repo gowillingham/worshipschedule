@@ -24,6 +24,63 @@ describe EventsController do
       }
   end
   
+  describe "GET 'show'" do
+    
+    before(:each) do
+      @event = Event.create(@attr)
+    end
+    
+    it "should allow an account admin" do
+      get :show, :team_id => @team, :id => @event
+      
+      response.should render_template('show')
+    end
+    
+    it "should allow a team admin who is not account admin" do
+      @team.memberships.create(:user_id => @signed_in_user, :admin => true)
+      @accountship.update_attribute(:admin, false)
+      get :show, :team_id => @team, :id => @event
+
+      response.should render_template('show')
+    end
+    
+    it "should allow a regular user" do
+      @accountship.update_attribute(:admin, false)
+      membership = @team.memberships.create(:user_id => @signed_in_user)
+      get :show, :team_id => @team, :id => @event
+
+      response.should render_template('show')
+    end
+    
+    it "should redirect for a team that is not from the current_account" do
+      account = Factory(:account)
+      team = Factory(:team, :account_id => account.id)
+      get :show, :team_id => team, :id => @event
+
+      response.should redirect_to(@signed_in_user)
+      flash[:error].should =~ /don't have permission/i
+    end
+    
+    it "should redirect for an event that does not belong to the current team" do
+      team = @account.teams.create(:name => 'Name')
+      event = Event.create(@attr.merge(:team_id => team.id))
+      get :show, :team_id => @team, :id => event
+
+      response.should redirect_to(@signed_in_user)
+      flash[:error].should =~ /don't have permission/i
+    end
+    
+    it "should not show admin features to regular user" do
+      @accountship.update_attribute(:admin, false)
+
+      response.should_not have_selector('a', :content => 'remove')
+      response.should_not have_selector('a', :content => 'Change')
+      response.should_not have_selector('a', :content => 'Edit')
+    end
+    
+    it "should show listing of members scheduled for this event in sidebar"
+  end
+  
   describe "DELETE 'destroy'" do
     
     before(:each) do

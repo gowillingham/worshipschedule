@@ -163,6 +163,10 @@ th .link                      {font-size:0.8em;float:right;margin-top:.2em;}
 .listing table td.item							{font-size:12px;padding:4px 3px 4px 8px;vertical-align:top;}
 .listing table td.item .desc				{font-size:10px;color:#777;padding-top:2px;}
 .listing table td .hover_menu				{display:none;float:right;font-size:12px;}
+
+.listing.event h6										{font-weight:normal;font-size:14px;padding-bottom:0;margin-bottom:0;letter-spacing:1px;}
+.listing.event h2										{margin-bottom:15px;}
+.listing.event p										{color:#666;}
                                   	
 .for_events				 													{margin:12px 0;}
 .for_events table 													{width:100%;margin:0;}
