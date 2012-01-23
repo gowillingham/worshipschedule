@@ -4,7 +4,7 @@ body                    {font-family:"Lucida Grande",verdana,arial,helvetica,san
 .container a            {padding:0.1em;}
 .container a:hover      {background-color:#253966;color:#d6ffcf;}
 
-#main .blank_slate              {margin:2em auto 20em;width:70%;}
+#main .blank_slate              {margin:2em auto 10em;width:70%;}
 #main .blank_slate img          {padding:0;float:left;}
 #main .blank_slate h2           {margin:.5em 0;font-size:1.5em;font-weight:bold;}
 #main .blank_slate p            {font-size:1.2em;line-height:1.3em;margin-bottom:2em;}
@@ -104,6 +104,10 @@ div.link_bar a:hover	{color:white;background-color:red;}
 #main .content .assign table td.bulk_links a        {color:#888;}
 #main .content .assign table td.bulk_links a:hover  {color:#fff;}
 
+#sidebar ul li.bulk_links          {font-size:10px;color:#666;padding:0 0 0 4px;margin:0;}
+#sidebar ul li.bulk_links a        {color:#666;}
+#sidebar ul li.bulk_links a:hover  {color:#fff;}
+
 #main .content .form fieldset.profile td            {font-size:1.2em;line-height:1.2em;padding:1.0em 1em 0em 0;}
 #main .content .form fieldset.profile tr.hint td    {padding:.1em;}
 #main .content .form fieldset.profile tr.hint div   {padding:0;width:25em;white-space:normal;font-size:0.85em;line-height:1.1em;color:#9999bc;}
@@ -176,6 +180,14 @@ th .link                      {font-size:0.8em;float:right;margin-top:.2em;}
 .for_events table tr.date td.when h2.today	{border-bottom:none;color:black;background-color:#fff000;padding:2px 5px 2px 0}
 .for_events table tr.date td.when h2 span 	{margin-left:29px;}
 
+.for_slots																	{padding:20px 0;}
+.for_slots table 														{background-color:#fff;margin:0 1%;width:98%;border-collapse:collapse;border:none;}
+.for_slots table.header											{margin:10px 1% 0;}
+.for_slots table td													{width:20%;border:none;border:solid 1px #ccc;}
+.for_slots table td.skills									{background-color:#ddd;font-weight:bold;}
+.for_slots table.header td									{background-color:#ccc;font-weight:bold;font-size:;border:none;}
+.for_slots table td.blank										{background-color:#fff;border:none;}
+
 #sidebar .listing 								{padding:0;margin:0;}
 #sidebar .listing table td 				{border-bottom-color:#dedede;}
 
@@ -208,6 +220,12 @@ div.big_button a:hover                  {background-color:transparent;color:#000
 #sidebar ul li .gravatar			{float:left;margin:.25em .5em .25em .25em;}
 #sidebar ul li div						{font-size:12px;line-height:14px;padding:6px;font-weight:bold;}
 #sidebar ul li div span				{color:gray;font-weight:normal;}
+
+#sidebar ul.events									{margin:0;padding:0;}
+#sidebar ul.events li								{margin:8px 0;}
+#sidebar ul.events li.none					{margin:12px;color:#777;}
+#sidebar ul.events li label					{font-size:12px;font-weight:bold;}
+#sidebar ul.events li label div			{margin:-3px 0 0 0;padding:0 0 0 25px;font-size:10px;font-weight:normal;}
 
 #sidebar ul.skillships li div	{font-size:14px;font-weight:normal;padding:9px 0;}
 

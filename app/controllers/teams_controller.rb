@@ -2,8 +2,27 @@ class TeamsController < ApplicationController
   before_filter :require_account_admin, :only => [:destroy, :create, :new]
   before_filter(:only => [:assign, :edit, :update, :assign_all, :remove_all, :admins, :update_admins]) { require_account_or_team_admin(params[:id]) }
   before_filter(:except => [:create, :new]) { require_team_for_current_account(params[:id]) }
-  before_filter(:only => [:show]) { require_team_member(params[:id]) }
+  before_filter(:only => [:show, :slots]) { require_team_member(params[:id]) }
+  before_filter(:only => [:slots]) { require_events_from_current_team(params[:id], params[:show_events])}
  
+  def slots
+    @team = Team.find(params[:id])
+    @sidebar_events = @team.events.sort { |a,b| a.start_at <=> b.start_at } 
+    
+    # shows first event if no events are posted to this page from sidebar ..
+    unless params[:show_events].blank?
+      @selected_events = Event.find(params[:show_events]).sort { |a,b| a.start_at <=> b.start_at } unless params[:show_events].blank?
+    else
+      @selected_events = []
+    end
+    
+    @cols = 3
+    @title = "Schedule people"
+    
+    @sidebar_partial = 'teams/sidebar/slots'
+    render :layout => 'medium'
+  end
+  
   def admins
     @team = Team.find(params[:id])
     @account_admins = User.joins(:accountships).where('accountships.account_id = ? AND accountships.admin = ?', current_account.id, true)
@@ -101,4 +120,17 @@ class TeamsController < ApplicationController
       render 'edit'
     end
   end
+  
+  private
+  
+    def require_events_from_current_team(team_id, event_id_list)
+      unless event_id_list.blank?
+        team = Team.find(team_id)
+        events = Event.find(event_id_list)
+      
+        unless (team.events & events) == events
+          redirect_to current_user, :flash => { :error => "You don't have permission to view that team" }        
+        end
+      end
+    end
 end

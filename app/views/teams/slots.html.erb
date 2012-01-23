@@ -1,0 +1,121 @@
+<% content_for :head do %>
+	<script type="text/javascript">
+    $(document).ready(function(){
+			$(".bulk_links a").click(function(){
+				var action = $(this).attr("data-action")
+				
+				if (action == "select-all") { $(".checkbox").attr("checked", true) }
+				else { $(".checkbox").attr("checked", false) }
+				
+				return false
+			})
+    })
+  </script>
+<% end %>
+<div class="content shadow">
+	<div class="header">
+		<h2>People scheduled for <%= @team.name %></h2>
+	</div>
+	
+	<div class="for_slots">
+		<% if !@team.skills.any? %>
+			<div class="blank_slate">
+				<% if team_admin?(@team, current_user)%>
+			    <%= image_tag 'empty_box.png', :style => 'width:125px;' %>
+					<div class="message">
+						<h2>Let's add the first skill to this team! </h2>
+						<p>
+							No skills are set for this team. 
+							Skills are things team members can do. 
+							They help you decide who to schedule for events.
+						</p>
+		      	<%= render :partial => 'shared/button_link', :locals => { :url => new_team_skill_path(@team), :text => 'Add a new skill' } %>				
+					</div>
+				<% else %>
+			    <%= image_tag 'disconnect.png', :style => 'width:125px;' %>
+					<div class="message">
+						<h2>You can't view the schedule at this time </h2>
+						<p>
+							No skills are set for this team. 
+							Skills are things team members can do. 
+							A team administrator still needs to add skills to this team. 					
+						</p>
+					</div>
+				<% end %>
+			</div>
+			
+		<% elsif !@team.events.any? %>
+			<div class="blank_slate">
+				<% if team_admin?(@team, current_user)%>
+			    <%= image_tag 'empty_box.png', :style => 'width:125px;' %>
+					<div class="message">
+						<h2>Let's add the first event for this team! </h2>
+						<p>
+							No events are set for this team.
+							You'll use this page to assign your people to events. 
+							Events belong to teams, and you can assign your people to events by what they can do (their skills).
+						</p>
+		      	<%= render :partial => 'shared/button_link', :locals => { :url => new_team_event_path(@team), :text => 'Add a new event' } %>				
+					</div>
+				<% else %>
+			    <%= image_tag 'disconnect.png', :style => 'width:125px;' %>
+					<div class="message">
+						<h2>You can't view the schedule at this time </h2>
+						<p>
+							No events are set for this team. 
+							A team administrator still needs to add one or more events to this team. 					
+						</p>
+					</div>
+				<% end %>
+			</div>
+		<% else %>		
+			<% if @selected_events.any? %>
+				<% @selected_events.each_slice(@cols) do |events| %>
+					<table class="header">
+						<tbody>
+						<tr>
+							<td class="skills"></td>
+							<% @cols.times do |i| %>
+								<% if events[i].nil? %>
+									<td class="blank"></td>
+								<% else %>
+									<td>
+										<%= events[i].name %>
+									</td>
+								<% end %>
+							<% end %>
+						</tr>
+					</tbody>
+				</table>
+				<table>
+					<tbody>
+						<% @team.skills.each do |s| %>
+							<tr>
+								<td class="skills"><%= s.name %></td>
+								<% @cols.times do |i| %>
+									<% if events[i].nil? %>
+										<td class="blank"></td>
+									<% else %>
+										<td></td>
+									<% end %>
+								<% end %>
+							</tr>
+						<% end %>
+					<% end %>
+					</tbody>
+				</table>
+			<% else %>
+				<div class="blank_slate">
+			    <%= image_tag 'disconnect.png', :style => 'width:125px;' %>
+					<div class="message">
+						<h2>Choose an event or events to schedule</h2>
+						<p>
+							You have not selected any events. 
+							Pick one or more events to schedule from the team event list.
+						</p>
+					</div> 
+				</div>
+			<% end %>
+		<% end %>
+	</div>
+</div>

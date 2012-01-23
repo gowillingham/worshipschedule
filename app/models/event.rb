@@ -81,7 +81,7 @@ class Event < ActiveRecord::Base
         if end_at_date.blank?
           # its all_day, start_at_date only, disregard times
           self.all_day = true
-          self.start_at = DateTime.new(DateTime.parse(start_at_date).year, DateTime.parse(start_at_date).month, DateTime.parse(start_at_date).day, 0, 0, 0, 0) unless start_at_date.blank?        
+          self.start_at = DateTime.new(DateTime.parse(start_at_date).year, DateTime.parse(start_at_date).month, DateTime.parse(start_at_date).day, 0, 0, 0, 0)        
           self.end_at = nil
         else
           # its all_day, start_at-date + end_at_date, disregard times 

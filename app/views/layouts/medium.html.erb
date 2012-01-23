@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= title %></title>
+  <%= csrf_meta_tag %>
+  <%= favicon_link_tag %>
+  <%= javascript_include_tag "jquery/jquery-1.5.min.js", "rails" %>
+  <%= yield :head %>
+  <%= stylesheet_link_tag 'blueprint/screen', :media => 'screen' %>
+  <%= stylesheet_link_tag 'blueprint/print',  :media => 'print' %>
+  <%= stylesheet_link_tag 'style',  :media => 'screen' %>
+  <!--[if IE]><link rel="stylesheet" href="blueprint/ie.css" type="text/css" media="screen, projection" /><![endif]-->  
+</head>
+<body class="<%= "#{controller.controller_name} #{controller.action_name}" %>">
+  <div class="container">
+    <div class="span-24 last">
+      <%= render 'shared/header' %>
+    </div>
+    <div class="span-18">
+      <div id="main">
+        <%= render 'shared/show_flash' %>
+        <%= yield %>
+      </div>
+    </div>
+    <div class="span-6 last">
+      <%= render @sidebar_partial %>
+    </div>
+    <div class="span-24 last">
+      <div id="footer">
+        Managed with <%= link_to APP_NAME, root_url %>
+      </div>
+    </div>
+  </div>
+    <% if Rails.env.development? %>
+      <div class="span-24"><%= debug(params) %></div>
+      <div class="span-24"><%= debug(session) %></div>
+    <% end %>
+</body>
+</html>

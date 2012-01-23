@@ -7,9 +7,11 @@ Worshipschedule::Application.routes.draw do
       put :remove_all, :to => 'teams#remove_all'
       get :admins
       put :admins, :to => 'teams#update_admins'
+      get :slots
     end
     
     resources :events
+    resources :slots, :only => [:edit]
     
     resources :memberships do
       member do

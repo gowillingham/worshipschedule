@@ -12,6 +12,129 @@ describe TeamsController do
     controller.set_session_account(@account)
   end
   
+  describe "GET 'slots'" do
+    
+    before(:each) do
+      @team = @account.teams[0]
+      @accountship = @signed_in_user.accountships.where('account_id = ?', @account.id).first
+      @accountship.update_attribute(:admin, true)
+      
+      @team.skills.create(:name => 'skill1')
+      @team.skills.create(:name => 'skill2')
+      
+      @user_1 = Factory(:user, :email => Factory.next(:email))
+      @account.users << @user_1
+      @team.users << @user_1
+    
+      @event_1 = @team.events.create(:start_at_date => Time.now.strftime("%Y-%m-%d"), :name => 'Event 1')
+      @event_2 = @team.events.create(:start_at_date => 1.day.since(Time.now).strftime("%Y-%m-%d"), :name => 'Event 2')
+      @event_3 = @team.events.create(:start_at_date => 2.day.since(Time.now).strftime("%Y-%m-%d"), :name => 'Event 3')
+    
+      @event_list = [@event_1.id.to_s, @event_2.id.to_s, @event_3.id.to_s]
+    end
+    
+    it "should redirect if not logged in" do
+      controller.sign_out
+      get :slots, :id => @team, :show_events => nil
+      
+      response.should redirect_to(signin_path)
+    end
+    
+    it "should allow account admin" do
+      get :slots, :id => @team
+      
+      response.should render_template('slots')
+    end
+    
+    it "should allow team admin" do
+      @membership = @team.memberships.create(:user_id => @signed_in_user.id, :admin => true)
+      @accountship.update_attribute(:admin, false)
+      get :slots, :id => @team
+      
+      response.should render_template('slots')
+    end
+    
+    it "should allow regular team member" do
+      @membership = @team.memberships.create(:user_id => @signed_in_user.id, :admin => false)
+      @accountship.update_attribute(:admin, false)
+      get :slots, :id => @team
+      
+      response.should render_template('slots')
+    end
+    
+    it "should redirect for a non-admin, non-team member" do
+      @accountship.update_attribute(:admin, false)
+      get :slots, :id => @team
+      
+      response.should redirect_to(@signed_in_user)
+    end 
+    
+    it "should redirect for a team from another account" do
+      account = Factory(:account)
+      team = account.teams.create(:name => 'name')
+      get :slots, :id => team
+      
+      response.should redirect_to(@signed_in_user)
+    end
+    
+    it "should redirect for an event from another account" do
+      account = Factory(:account)
+      team = account.teams.create(:name => 'name')
+      event = team.events.create(:start_at_date => '2000-01-02', :name => 'orphan event')
+      get :slots, :id => @team, :show_events => @event_list << event.id.to_s
+      
+      response.should redirect_to(@signed_in_user)
+    end 
+    
+    it "should hide admin features from regular user"
+    
+    it "should display events posted from form in main content area" do
+      get :slots, :id => @team, :show_events => @event_list
+      
+      response.should have_selector('td', :content => @event_1.name)
+      response.should have_selector('td', :content => @event_2.name)
+      response.should have_selector('td', :content => @event_3.name)
+    end
+    
+    it "should show a listing of events in the sidebar" do
+      get :slots, :id => @team, :show_events => @event_list
+      
+      response.should have_selector('label', :content => @event_1.name)
+      response.should have_selector('label', :content => @event_2.name)
+      response.should have_selector('label', :content => @event_3.name)
+    end
+    
+    it "should show posted events as selected in sidebar" do
+      get :slots, :id => @team, :show_events => [@event_1.id.to_s, @event_3.id.to_s]
+
+      response.should have_selector("input[type=checkbox][checked=checked]", :value => @event_1.id.to_s)
+      response.should have_selector("input[type=checkbox]", :value => @event_2.id.to_s)
+      response.should_not have_selector("input[type=checkbox][checked=checked]", :value => @event_2.id.to_s)
+      response.should have_selector("input[type=checkbox][checked=checked]", :value => @event_3.id.to_s)
+    end
+    
+    it "should show a  blank slate message if no events are selected in the sidebar" do
+      get :slots, :id => @team, :show_events => []
+      
+      response.should have_selector('.blank_slate', :content => "have not selected any events")
+    end 
+    
+    it "should show a blank slate message if the team has no skills" do
+      @team.skills.clear
+      get :slots, :id => @team, :show_events => [@event_1.id.to_s, @event_3.id.to_s]
+      
+      response.should have_selector('.blank_slate', :content => 'No skills are set for this team')
+    end
+    
+    it "should show a blank slate message if the team has no events" do
+      @team.events.clear
+      get :slots, :id => @team, :show_events => []
+      
+      response.should have_selector('.blank_slate', :content => 'No events are set for this team')
+    end
+
+  end
+  
   describe "GET 'admins'" do
     
     before(:each) do
