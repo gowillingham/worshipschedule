@@ -311,6 +311,7 @@ body.memberships.index .tabs li a.users,
 body.teams.assign .tabs li a.users,
 body.skills .tabs li a.skills,
 body.events .tabs li a.events,
+body.slots .tabs li a.events,
 body.sessions.accounts .tabs li a.accounts           {background-color:#e5e5e5;font-weight:bold;color:#000;}
 
 /* setting selected team settings link */

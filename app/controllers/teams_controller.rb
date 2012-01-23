@@ -9,11 +9,11 @@ class TeamsController < ApplicationController
     @team = Team.find(params[:id])
     @sidebar_events = @team.events.sort { |a,b| a.start_at <=> b.start_at } 
     
-    # shows first event if no events are posted to this page from sidebar ..
     unless params[:show_events].blank?
       @selected_events = Event.find(params[:show_events]).sort { |a,b| a.start_at <=> b.start_at } unless params[:show_events].blank?
     else
-      @selected_events = []
+      @selected_events = @team.events.all if params[:all]
+      @selected_events ||= []
     end
     
     @cols = 3

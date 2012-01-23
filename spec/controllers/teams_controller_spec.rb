@@ -86,7 +86,7 @@ describe TeamsController do
       response.should redirect_to(@signed_in_user)
     end 
     
-    it "should hide admin features from regular user"
+    it "should hide admin features from regular user" 
     
     it "should display events posted from form in main content area" do
       get :slots, :id => @team, :show_events => @event_list
