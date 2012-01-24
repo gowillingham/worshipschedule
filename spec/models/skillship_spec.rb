@@ -50,5 +50,10 @@ describe Skillship do
       skillship = @skill.skillships.create(:membership_id => @membership.id)
       skillship.should respond_to(:skill)
     end
+    
+    it "a slots method" do
+      skillship = @skill.skillships.create(:membership_id => @membership.id)
+      skillship.should respond_to(:slots)
+    end
   end
 end

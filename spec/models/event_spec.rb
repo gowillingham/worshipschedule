@@ -164,6 +164,12 @@ describe Event do
       it "should return the team" do
         @event.team.should eq(@team)
       end
-    end    
+    end 
+    
+    describe "slots" do
+      it "should exist" do
+        @event.should respond_to(:slots)
+      end
+    end   
   end
 end
