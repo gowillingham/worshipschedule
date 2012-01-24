@@ -1,6 +1,42 @@
 <% content_for :head do %>
+	<%= stylesheet_link_tag "jquery/plugins/qtip/jquery.qtip" %>
+	<%= javascript_include_tag "jquery/plugins/qtip/jquery.qtip.min.js" %>
 	<script type="text/javascript">
     $(document).ready(function(){
+	
+	
+		$("td.cell").qtip({
+			content: { 
+				text: 'So here is the tooltip. Gotta build a form and put it in here.',
+				title: {
+					text: 'title text',
+					button: 'x'
+				} 
+			},
+			show: 'click',
+			hide: 'unfocus',
+			style: { 
+				classes: 'ui-tooltip-light ui-tooltip-shadow' 
+			},
+			position: { 
+				adjust: { screen: true } 
+			}
+			// events: {
+			// 	render: function(event, api) {
+			// 		$(window).bind('keydown', function(e){
+			// 			if (e.keycode === 27) { api.hide(e); }
+			// 		});
+			// 	}
+			// }
+		})
+
+	
+	
+	
+	
+	
+	
+			// arm select all/none links ..
 			$(".bulk_links a").click(function(){
 				var action = $(this).attr("data-action")
 				
@@ -96,7 +132,7 @@
 									<% if events[i].nil? %>
 										<td class="blank"></td>
 									<% else %>
-										<td></td>
+										<td class="cell"></td>
 									<% end %>
 								<% end %>
 							</tr>
