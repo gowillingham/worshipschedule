@@ -7,8 +7,13 @@ class TeamsController < ApplicationController
  
   def slots
     @team = Team.find(params[:id])
-    @sidebar_events = @team.events.sort { |a,b| a.start_at <=> b.start_at } 
-    
+    @sidebar_events = @team.events.sort { |a,b| a.start_at <=> b.start_at }
+    @skillships = Skillship.find(
+      :all, 
+      :joins => 'JOIN memberships ON skillships.membership_id = memberships.id JOIN users ON memberships.user_id = users.id',
+      :select => 'skillships.id, skillships.skill_id AS skill_id, users.first_name, users.last_name, memberships.id AS membership_id',
+      :conditions => ['memberships.team_id = ?', @team.id]
+      )
     unless params[:show_events].blank?
       @selected_events = Event.find(params[:show_events]).sort { |a,b| a.start_at <=> b.start_at } unless params[:show_events].blank?
     else

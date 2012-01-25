@@ -4,31 +4,25 @@
 	<script type="text/javascript">
     $(document).ready(function(){
 	
-	
-		$("td.cell").qtip({
-			content: { 
-				text: 'So here is the tooltip. Gotta build a form and put it in here.',
-				title: {
-					text: 'title text',
-					button: 'x'
-				} 
-			},
-			show: 'click',
-			hide: 'unfocus',
-			style: { 
-				classes: 'ui-tooltip-light ui-tooltip-shadow' 
-			},
-			position: { 
-				adjust: { screen: true } 
-			}
-			// events: {
-			// 	render: function(event, api) {
-			// 		$(window).bind('keydown', function(e){
-			// 			if (e.keycode === 27) { api.hide(e); }
-			// 		});
-			// 	}
-			// }
-		})
+			$("td.cell").each(function(){
+				$(this).qtip({
+					content: { 
+						text: $('div.remote', $(this)),
+						title: {
+							text: $(this).attr('data-title'),
+							button: 'x'
+						} 
+					},
+					show: 'click',
+					hide: 'unfocus',
+					style: { 
+						classes: 'ui-tooltip-light ui-tooltip-shadow' 
+					},
+					position: { 
+						adjust: { screen: true } 
+					}
+				});
+			});
 
 	
 	
@@ -125,14 +119,23 @@
 				</table>
 				<table>
 					<tbody>
-						<% @team.skills.each do |s| %>
+						<% @team.skills.each do |skill| %>
 							<tr>
-								<td class="skills"><%= s.name %></td>
+								<td class="skills"><%= skill.name %></td>
 								<% @cols.times do |i| %>
 									<% if events[i].nil? %>
 										<td class="blank"></td>
 									<% else %>
-										<td class="cell"></td>
+										<td class="cell" data-title="<%= "skill_id:#{skill.id} event_id:#{events[i].id}" %>">
+											<div style="display:none;" class='remote'>
+												<%= form_for events[i], :url => slots_team_event_path(@team, events[i]), :html => { :method => 'put' } do |f| %>
+													<%= hidden_field :skill_id, skill.id %>
+													<% options = @skillships.find_all { |s| s.skill_id == skill.id}.map { |s| [s.last_name + ', ' + s.first_name, s.id] }%>
+													<%= select_tag :skillship_ids, options_for_select(options), :multiple => true %>
+													<%= submit_tag 'Save' %>
+												<% end %>
+											</div>
+										</td>
 									<% end %>
 								<% end %>
 							</tr>

@@ -4,6 +4,10 @@ class EventsController < ApplicationController
   before_filter(:except => [:new, :create, :index]) { require_event_for_current_team(params[:team_id], params[:id])}
   before_filter { require_team_member(params[:team_id]) }
   
+  def slots
+    
+  end
+  
   def show
     @team = Team.find(params[:team_id])
     @event = Event.find(params[:id])

@@ -10,8 +10,12 @@ Worshipschedule::Application.routes.draw do
       get :slots
     end
     
-    resources :events
-    resources :slots, :only => [:edit]
+    resources :events do
+      member do
+        put :slots, :to => 'events#slots'
+      end
+    end
+    resources :slots, :only => [:update]
     
     resources :memberships do
       member do
