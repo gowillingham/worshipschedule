@@ -11,7 +11,7 @@ describe TeamsController do
     signin_user @signed_in_user
     controller.set_session_account(@account)
   end
-  
+    
   describe "GET 'slots'" do
     
     before(:each) do
@@ -19,12 +19,20 @@ describe TeamsController do
       @accountship = @signed_in_user.accountships.where('account_id = ?', @account.id).first
       @accountship.update_attribute(:admin, true)
       
-      @team.skills.create(:name => 'skill1')
-      @team.skills.create(:name => 'skill2')
+      @skill1 = @team.skills.create(:name => 'skill1')
+      @skill2 = @team.skills.create(:name => 'skill2')
+      @skill3 = @team.skills.create(:name => 'skill3')
       
-      @user_1 = Factory(:user, :email => Factory.next(:email))
-      @account.users << @user_1
-      @team.users << @user_1
+      @user_1 = Factory(:user, :last_name => 'user_1', :email => Factory.next(:email))
+      @user_2 = Factory(:user, :last_name => 'user_2', :email => Factory.next(:email))
+      @account.users << @user_1 << @user_2
+      @membership_1 = @team.memberships.create(:user_id => @user_1.id)
+      @membership_2 = @team.memberships.create(:user_id => @user_2.id)
+      
+      @skillship1 = @skill1.skillships.create(:membership_id => @membership_1.id)
+      @skillship2 = @skill2.skillships.create(:membership_id => @membership_2.id)
+      @skillship31 = @skill3.skillships.create(:membership_id => @membership_1.id)
+      @skillship32 = @skill3.skillships.create(:membership_id => @membership_2.id)
     
       @event_1 = @team.events.create(:start_at_date => Time.now.strftime("%Y-%m-%d"), :name => 'Event 1')
       @event_2 = @team.events.create(:start_at_date => 1.day.since(Time.now).strftime("%Y-%m-%d"), :name => 'Event 2')
@@ -86,8 +94,6 @@ describe TeamsController do
       response.should redirect_to(@signed_in_user)
     end 
     
-    it "should hide admin features from regular user" 
-    
     it "should display events posted from form in main content area" do
       get :slots, :id => @team, :show_events => @event_list
       
@@ -133,6 +139,33 @@ describe TeamsController do
       response.should have_selector('.blank_slate', :content => 'No events are set for this team')
     end
 
+    it "should show a listing of skills in the main display table" do
+      get :slots, :id => @team, :show_events => @event_list
+      
+      response.should have_selector('td.skills', :content => @skill1.name)
+      response.should have_selector('td.skills', :content => @skill2.name)
+      response.should have_selector('td.skills', :content => @skill3.name)
+    end
+    
+    it "should have a hidden form to update slots for each skill/event" do
+      get :slots, :id => @team, :show_events => @event_list
+      
+      response.should have_selector('form', :action => slots_team_event_path(@team, @event_1))
+      response.should have_selector('form', :action => slots_team_event_path(@team, @event_2))
+      response.should have_selector('form', :action => slots_team_event_path(@team, @event_3))
+    end
+    
+    it "should have a hidden dropdown of skillships for each skill/event" do
+      get :slots, :id => @team, :show_events => @event_list
+      
+      response.should have_selector('select option', :content => @user_1.last_name, :value => @skillship1.id.to_s)
+      response.should have_selector('select option', :content => @user_2.last_name, :value => @skillship2.id.to_s)
+      response.should have_selector('select option', :content => @user_1.last_name, :value => @skillship31.id.to_s)
+      response.should have_selector('select option', :content => @user_2.last_name, :value => @skillship32.id.to_s)
+    end
+    
+    it "should show skillships already added to a slot as selected"
+  
   end
   
   describe "GET 'admins'" do
