@@ -170,6 +170,10 @@ describe Event do
       it "should exist" do
         @event.should respond_to(:slots)
       end
-    end   
+    end 
+    
+    describe "assign_slots" do
+
+    end  
   end
 end

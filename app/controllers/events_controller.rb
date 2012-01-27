@@ -5,7 +5,16 @@ class EventsController < ApplicationController
   before_filter { require_team_member(params[:team_id]) }
   
   def slots
+    @team = Team.find(params[:team_id])
+    @event = Event.find(params[:id])
+    @event.slots.clear
+    unless params[:skillship_id_list].nil?
+      params[:skillship_id_list].each do |id| 
+        Slot.create(:event_id => @event.id, :skillship_id => id) unless id.blank?
+      end
+    end
     
+    redirect_to slots_team_url(@team)
   end
   
   def show

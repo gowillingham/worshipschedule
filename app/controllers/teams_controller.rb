@@ -8,6 +8,16 @@ class TeamsController < ApplicationController
   def slots
     @team = Team.find(params[:id])
     @sidebar_events = @team.events.sort { |a,b| a.start_at <=> b.start_at }
+    @slots = Slot.find(
+      :all,
+      :joins => %/
+        JOIN skillships ON slots.skillship_id = skillships.id 
+        JOIN skills ON skillships.skill_id = skills.id 
+        JOIN memberships ON skillships.membership_id = memberships.id
+        JOIN users ON memberships.user_id = users.id 
+        /,
+      :conditions => ['slots.event_id = ?', params[:event_id]]
+    )
     @skillships = Skillship.find(
       :all, 
       :joins => 'JOIN memberships ON skillships.membership_id = memberships.id JOIN users ON memberships.user_id = users.id',
@@ -16,12 +26,23 @@ class TeamsController < ApplicationController
       :order => 'CASE WHEN (LENGTH(last_name) = 0) THEN LOWER(email) ELSE LOWER(last_name) END'
       )
       
-    unless params[:show_events].blank?
-      @selected_events = Event.find(params[:show_events]).sort { |a,b| a.start_at <=> b.start_at } unless params[:show_events].blank?
+    if !params[:show_events].blank?
+      @selected_events = Event.find(params[:show_events]).sort { |a,b| a.start_at <=> b.start_at }
+      session[:show_events] = params[:show_events]
+    elsif !session[:show_events].blank?
+      @selected_events = Event.find(session[:show_events]).sort { |a,b| a.start_at <=> b.start_at }
     else
       @selected_events = @team.events.all if params[:all]
       @selected_events ||= []
     end
+      
+    # unless params[:show_events].blank?
+    #   @selected_events = Event.find(params[:show_events]).sort { |a,b| a.start_at <=> b.start_at } unless params[:show_events].blank?
+    # else
+    #   @selected_events = @team.events.all if params[:all]
+    #   @selected_events ||= []
+    # end
+    # 
     
     @cols = 3
     @title = "Schedule people"

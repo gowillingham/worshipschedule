@@ -27,12 +27,6 @@
 				});
 			});
 
-	
-	
-	
-	
-	
-	
 			// arm select all/none links ..
 			$(".bulk_links a").click(function(){
 				var action = $(this).attr("data-action")
@@ -130,11 +124,20 @@
 										<td class="blank"></td>
 									<% else %>
 										<td class="cell" data-title="<%= "skill_id:#{skill.id} event_id:#{events[i].id}" %>">
+											<% slots = events[i].slots.find_all { |slot| slot.skillship.skill_id == skill.id } %>
+											<% if slots.any? %>
+												<ul>
+													<% slots.each do |slot| %>
+														<li><%= slot.skillship.membership.user.last_name %></li>
+													<% end %>
+												</ul>
+											<% end %>
 											<div style="display:none;" class='remote'>
 												<%= form_for events[i], :url => slots_team_event_path(@team, events[i]), :html => { :method => 'put' } do |f| %>
 													<%= hidden_field :skill_id, skill.id %>
+													<%- hidden_field :show_events, params[:show_events] %>
 													<% options = @skillships.find_all { |s| s.skill_id == skill.id}.map { |s| [s.last_name + ', ' + s.first_name, s.id] }%>
-													<%= select_tag :skillship_ids, options_for_select(options), :multiple => true %>
+													<%= select_tag :skillship_id_list, options_for_select(options), :multiple => true, :include_blank => true %>
 													<%= submit_tag 'Save' %>
 												<% end %>
 											</div>

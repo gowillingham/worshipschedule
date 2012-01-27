@@ -21,17 +21,17 @@ describe Slot do
     @skillship2 = @membership.skillships.create(:skill_id => @skill2.id)
     @skillship3 = @membership.skillships.create(:skill_id => @skill3.id)
     
-    @slot = Slot.create!(:event_id => @event1.id, :skillship_id => @skillship1.id)
+    @slot = Slot.create!(:event_id => @event1.id, :skillship_id => @skillship1.id)    
   end
   
   describe "methods" do
-    
     it "should respond to event" do
       @slot.should respond_to(:event)
     end
     
     it "should respond to skillship" do
       @slot.should respond_to(:skillship)
-    end 
+    end
   end
+  
 end
