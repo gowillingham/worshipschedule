@@ -16,7 +16,7 @@ class TeamsController < ApplicationController
         JOIN memberships ON skillships.membership_id = memberships.id
         JOIN users ON memberships.user_id = users.id 
         /,
-      :conditions => ['slots.event_id = ?', params[:event_id]]
+      :conditions => ['slots.event_id = ? AND skills.id = ?', params[:event_id], params[:skill_id]]
     )
     @skillships = Skillship.find(
       :all, 
@@ -35,14 +35,6 @@ class TeamsController < ApplicationController
       @selected_events = @team.events.all if params[:all]
       @selected_events ||= []
     end
-      
-    # unless params[:show_events].blank?
-    #   @selected_events = Event.find(params[:show_events]).sort { |a,b| a.start_at <=> b.start_at } unless params[:show_events].blank?
-    # else
-    #   @selected_events = @team.events.all if params[:all]
-    #   @selected_events ||= []
-    # end
-    # 
     
     @cols = 3
     @title = "Schedule people"

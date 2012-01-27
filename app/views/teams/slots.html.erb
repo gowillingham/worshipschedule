@@ -128,7 +128,7 @@
 											<% if slots.any? %>
 												<ul>
 													<% slots.each do |slot| %>
-														<li><%= slot.skillship.membership.user.last_name %></li>
+														<li><%= slot.skillship.membership.user.name_or_email %></li>
 													<% end %>
 												</ul>
 											<% end %>
@@ -136,8 +136,9 @@
 												<%= form_for events[i], :url => slots_team_event_path(@team, events[i]), :html => { :method => 'put' } do |f| %>
 													<%= hidden_field :skill_id, skill.id %>
 													<%- hidden_field :show_events, params[:show_events] %>
-													<% options = @skillships.find_all { |s| s.skill_id == skill.id}.map { |s| [s.last_name + ', ' + s.first_name, s.id] }%>
-													<%= select_tag :skillship_id_list, options_for_select(options), :multiple => true, :include_blank => true %>
+													<% selected = events[i].slots.map { |sl| sl.skillship_id } %>
+													<% options = @skillships.find_all { |s| s.skill_id == skill.id}.map { |s| [Skillship.find(s.id).membership.user.name_or_email, s.id] }%>
+													<%= select_tag :skillship_id_list, options_for_select(options, selected), :multiple => true, :include_blank => true %>
 													<%= submit_tag 'Save' %>
 												<% end %>
 											</div>
