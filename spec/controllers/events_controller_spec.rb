@@ -24,6 +24,106 @@ describe EventsController do
       }
   end
   
+  describe "PUT 'slots'" do
+    
+    before(:each) do
+      @skill1 = @team.skills.create(:name => 'skill1')
+      @skill2 = @team.skills.create(:name => 'skill2')
+      @skill3 = @team.skills.create(:name => 'skill3')
+      
+      @user_1 = Factory(:user, :last_name => 'user_1', :email => Factory.next(:email))
+      @user_2 = Factory(:user, :last_name => 'user_2', :email => Factory.next(:email))
+      @account.users << @user_1 << @user_2
+      @membership_1 = @team.memberships.create(:user_id => @user_1.id)
+      @membership_2 = @team.memberships.create(:user_id => @user_2.id)
+      
+      @skillship1 = @skill1.skillships.create(:membership_id => @membership_1.id)
+      @skillship2 = @skill2.skillships.create(:membership_id => @membership_2.id)
+      @skillship31 = @skill3.skillships.create(:membership_id => @membership_1.id)
+      @skillship32 = @skill3.skillships.create(:membership_id => @membership_2.id)
+    
+      @event_1 = @team.events.create(:start_at_date => Time.now.strftime("%Y-%m-%d"), :name => 'Event 1')
+      @event_2 = @team.events.create(:start_at_date => 1.day.since(Time.now).strftime("%Y-%m-%d"), :name => 'Event 2')
+      @event_3 = @team.events.create(:start_at_date => 2.day.since(Time.now).strftime("%Y-%m-%d"), :name => 'Event 3')
+      
+      @slot11 = @event_1.slots.create(:skillship_id => @skillship1.id)
+      @slot12 = @event_1.slots.create(:skillship_id => @skillship2.id)
+      @slot21 = @event_2.slots.create(:skillship_id => @skillship1.id)
+      @slot22 = @event_2.slots.create(:skillship_id => @skillship2.id)
+    end 
+    
+    it "should allow an account admin" do
+      put :slots, :team_id => @team, :id => @event_1, :skill_id => @skill1, :skillship_id_list => []
+      
+      response.should redirect_to(slots_team_path(@team))
+    end
+    
+    it "should allow a team admin who is not account admin" do
+      @team.memberships.create(:user_id => @signed_in_user, :admin => true)
+      @accountship.update_attribute(:admin, false)
+      put :slots, :team_id => @team, :id => @event_1, :skill_id => @skill1, :skillship_id_list => []
+
+      response.should redirect_to(slots_team_path(@team))
+    end
+    
+    it "should redirect for a regular user" do
+      @accountship.update_attribute(:admin, false)
+      membership = @team.memberships.create(:user_id => @signed_in_user)
+      put :slots, :team_id => @team, :id => @event_1, :skill_id => @skill1, :skillship_id_list => []
+
+      response.should redirect_to(@signed_in_user)
+    end
+    
+    it "should redirect for a team that is not from the current_account" do
+      account = Factory(:account)
+      team = Factory(:team, :account_id => account.id)
+      put :slots, :team_id => team, :id => @event_1, :skill_id => @skill1, :skillship_id_list => []
+
+      response.should redirect_to(@signed_in_user)
+      flash[:error].should =~ /don't have permission/i
+    end
+    
+    it "should redirect for an event that does not belong to the current team" do
+      team = @account.teams.create(:name => 'Name')
+      event = Event.create(@attr.merge(:team_id => team.id))
+      put :slots, :team_id => @team, :id => event, :skill_id => @skill1, :skillship_id_list => []
+
+      response.should redirect_to(@signed_in_user)
+      flash[:error].should =~ /don't have permission/i
+    end
+    
+    it "should redirect for a skillship from another team" do
+      user = Factory(:user, :email => Factory.next(:email))
+      @account.users << user
+      team = @account.teams.create(:name => 'team')
+      skill = team.skills.create(:name => 'skill')
+      membership = team.memberships.create(:user_id => user.id)
+      skillship = Skillship.create(:skill_id => skill.id, :membership_id => membership.id)
+      put :slots, :team_id => @team, :id => @event_1, :skill_id => @skill1, :skillship_id_list => [skillship.id.to_s]
+
+      response.should redirect_to(@signed_in_user)
+    end
+  
+    it "should remove slots for the passed in event/skill that if no ids are passed in" do
+      lambda do
+        put :slots, :team_id => @team, :id => @event_1, :skill_id => @skill1, :skillship_id_list => []
+      end.should change(Slot, :count).by(-1)
+    end 
+    
+    it "should add slots if none already exist and an id is passed in" do
+      @event_1.slots.clear
+      lambda do
+        put :slots, :team_id => @team, :id => @event_1, :skill_id => @skill1, :skillship_id_list => [@skillship1.id.to_s]
+      end.should change(Slot, :count).by(1)      
+    end 
+    
+    it "should add remove slots that aren't passed in and add new ones" do
+      lambda do
+        put :slots, :team_id => @team, :id => @event_1, :skill_id => @skill2, :skillship_id_list => [@skillship2.id.to_s, @skillship32.id.to_s]
+      end.should change(Slot, :count).by(1)      
+    end
+  end
+  
   describe "GET 'show'" do
     
     before(:each) do

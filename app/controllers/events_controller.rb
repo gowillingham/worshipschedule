@@ -3,12 +3,15 @@ class EventsController < ApplicationController
   before_filter { require_team_for_current_account(params[:team_id]) }
   before_filter(:except => [:new, :create, :index]) { require_event_for_current_team(params[:team_id], params[:id])}
   before_filter { require_team_member(params[:team_id]) }
+  before_filter(:only => :slots) { require_skillships_for_current_team(params[:team_id], params[:skillship_id_list]) }
   
   def slots
     @team = Team.find(params[:team_id])
     @event = Event.find(params[:id])
-    @event.slots.clear
-    unless params[:skillship_id_list].nil?
+    
+    @event.slots.joins(:skillship).where("skill_id = ? AND event_id = ?", params[:skill_id], params[:id]).destroy_all
+    
+    unless params[:skillship_id_list].blank?
       params[:skillship_id_list].each do |id| 
         Slot.create(:event_id => @event.id, :skillship_id => id) unless id.blank?
       end
@@ -87,5 +90,19 @@ class EventsController < ApplicationController
         redirect_to current_user, :flash => { :error => "You don't have permission to modify that event" }        
       end
     end
+    
+    def require_skillships_for_current_team(team_id, skillship_ids)
+      included = true
+      team = Team.find(team_id)
 
+      skillship_ids.each do |id|
+        unless team.memberships.include?(Skillship.find(id).membership)
+          included = false
+        end
+      end
+
+      unless included
+        redirect_to current_user, :flash => { :error => "You don't have permission to modify one (or more) of the members you selected " }
+      end
+    end
 end

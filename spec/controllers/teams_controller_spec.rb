@@ -164,17 +164,7 @@ describe TeamsController do
       response.should have_selector('select option', :content => @user_2.last_name, :value => @skillship32.id.to_s)
     end
     
-    it "should show skillships already added to a slot as selected" do
-      slot1 = @event_1.slots.create(:skillship_id => @skillship1.id)
-      slot32 = @event_1.slots.create(:skillship_id => @skillship32.id)
-      
-      get :slots, :id => @team, :show_events => @event_list
-      
-      response.should have_selector('select option', :content => @user_1.name_or_email, :value => @skillship1.id.to_s, :selected => 'selected')
-      response.should_not have_selector('select option', :content => @user_1.name_or_email, :value => @skillship31.id.to_s, :selected => 'selected')
-      response.should have_selector('select option', :content => @user_2.name_or_email, :value => @skillship32.id.to_s, :selected => 'selected')
-    end
-  
+    it "should show members scheduled in one dropdown and members not scheduled in the other"
   end
   
   describe "GET 'admins'" do

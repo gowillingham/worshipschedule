@@ -134,10 +134,9 @@
 											<% end %>
 											<div style="display:none;" class='remote'>
 												<%= form_for events[i], :url => slots_team_event_path(@team, events[i]), :html => { :method => 'put' } do |f| %>
-													<%= hidden_field :skill_id, skill.id %>
-													<%- hidden_field :show_events, params[:show_events] %>
+													<%= hidden_field_tag :skill_id, skill.id %>
 													<% selected = events[i].slots.map { |sl| sl.skillship_id } %>
-													<% options = @skillships.find_all { |s| s.skill_id == skill.id}.map { |s| [Skillship.find(s.id).membership.user.name_or_email, s.id] }%>
+													<% options = @skillships.find_all { |s| s.skill_id == skill.id }.map { |s| [Skillship.find(s.id).membership.user.name_or_email, s.id] }%>
 													<%= select_tag :skillship_id_list, options_for_select(options, selected), :multiple => true, :include_blank => true %>
 													<%= submit_tag 'Save' %>
 												<% end %>
