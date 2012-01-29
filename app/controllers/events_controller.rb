@@ -96,8 +96,10 @@ class EventsController < ApplicationController
       team = Team.find(team_id)
 
       skillship_ids.each do |id|
-        unless team.memberships.include?(Skillship.find(id).membership)
-          included = false
+        unless id.blank?
+          unless team.memberships.include?(Skillship.find(id).membership)
+            included = false
+          end
         end
       end
 
