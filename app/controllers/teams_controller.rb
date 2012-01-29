@@ -26,11 +26,8 @@ class TeamsController < ApplicationController
       :order => 'CASE WHEN (LENGTH(last_name) = 0) THEN LOWER(email) ELSE LOWER(last_name) END'
       )
       
-    if !params[:show_events].blank?
+    unless params[:show_events].blank?
       @selected_events = Event.find(params[:show_events]).sort { |a,b| a.start_at <=> b.start_at }
-      session[:show_events] = params[:show_events]
-    elsif !session[:show_events].blank?
-      @selected_events = Event.find(session[:show_events]).sort { |a,b| a.start_at <=> b.start_at }
     else
       @selected_events = @team.events.all if params[:all]
       @selected_events ||= []

@@ -183,10 +183,10 @@ th .link                      {font-size:0.8em;float:right;margin-top:.2em;}
 .for_slots																	{padding:20px 0;}
 .for_slots table 														{background-color:#fff;margin:0 1%;width:98%;border-collapse:collapse;border:none;}
 .for_slots table.header											{margin:10px 1% 0;}
-.for_slots table td													{width:20%;border:none;border:solid 1px #ccc;vertical-align:top;}
+.for_slots table td													{border:none;border:solid 1px #ccc;vertical-align:top;width:20%;}
 .for_slots table td.skills									{background-color:#ddd;font-weight:bold;}
-.for_slots table.header td									{background-color:#ccc;font-weight:bold;font-size:;border:none;}
-.for_slots table td.blank										{background-color:#fff;border:none;}
+.for_slots table.header td									{background-color:#ccc;font-weight:bold;}
+.for_slots table td.blank										{background-color:#fff;border:1px solid #fff;}
 .for_slots table td.cell ul									{padding:0;margin:0;list-style-type:none;}
 
 #sidebar .listing 								{padding:0;margin:0;}
