@@ -2,9 +2,9 @@
 	<h1>Team events</h1>
 	<%= form_for @team, :url => { :action => 'slots' }, :html => { :method => 'get' } do |f| %>
 		<ul class="events">
-			<% if @sidebar_events.any? %>
+			<% if @team.events.any? %>
 					<li class="bulk_links">Select: <a href="#" data-action="select-all">All events</a> | <a href="#" data-action="clear-all">None</a></li>
-					<% @sidebar_events.each do |e| %>
+					<% @team.events.sort { |a,b| a.start_at <=> b.start_at }.each do |e| %>
 						<li>
 							<label for="<%= "event_#{e.id}" %>">
 								<%= check_box_tag 'show_events[]', e.id, @selected_events.map { |e| e.id }.include?(e.id), :id => "event_#{e.id}", :class => "checkbox" %>
@@ -15,7 +15,10 @@
 							</label>
 						</li>
 					<% end %>
-					<li><%= f.submit 'Show selected events' %></li>
+					<li>
+						<%= hidden_field_tag 'reset_events?', 'on' %>
+						<%= f.submit 'Show selected events' %>
+					</li>
 			<% else %>
 				<li class="none">No events were returned for this team&nbsp;..</li>
 			<% end %>

@@ -111,7 +111,7 @@ describe TeamsController do
     end
     
     it "should show posted events as selected in sidebar" do
-      get :slots, :id => @team, :show_events => [@event_1.id.to_s, @event_3.id.to_s]
+      get :slots, :id => @team, :show_events => [@event_1.id.to_s, @event_3.id.to_s], :reset_events? => 'on'
 
       response.should have_selector("input[type=checkbox][checked=checked]", :value => @event_1.id.to_s)
       response.should have_selector("input[type=checkbox]", :value => @event_2.id.to_s)
@@ -120,7 +120,7 @@ describe TeamsController do
     end
     
     it "should show a  blank slate message if no events are selected in the sidebar" do
-      get :slots, :id => @team, :show_events => []
+      get :slots, :id => @team, :show_events => [], :reset_events? => 'on'
       
       response.should have_selector('.blank_slate', :content => "have not selected any events")
     end 
@@ -136,7 +136,7 @@ describe TeamsController do
       @team.events.clear
       get :slots, :id => @team, :show_events => []
       
-      response.should have_selector('.blank_slate', :content => 'No events are set for this team')
+      response.should have_selector('.blank_slate', :content => "You'll use this page to assign your people to events, but you don't have any yet!")
     end
 
     it "should show a listing of skills in the main display table" do

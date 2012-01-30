@@ -7,7 +7,6 @@ class TeamsController < ApplicationController
  
   def slots
     @team = Team.find(params[:id])
-    @sidebar_events = @team.events.sort { |a,b| a.start_at <=> b.start_at }
     @slots = Slot.find(
       :all,
       :joins => %/
@@ -26,12 +25,19 @@ class TeamsController < ApplicationController
       :order => 'CASE WHEN (LENGTH(last_name) = 0) THEN LOWER(email) ELSE LOWER(last_name) END'
       )
       
-    unless params[:show_events].blank?
-      @selected_events = Event.find(params[:show_events]).sort { |a,b| a.start_at <=> b.start_at }
+    if params[:reset_events?]
+      @selected_events = Event.find(params[:show_events]).sort { |a,b| a.start_at <=> b.start_at } unless params[:show_events].blank?
+      session[@team.id] ||= {}
+      session[@team.id][:show_events] = params[:show_events]
     else
-      @selected_events = @team.events.all if params[:all]
-      @selected_events ||= []
+      session[@team.id] ||= {}
+      if session[@team.id][:show_events].nil?
+        @selected_events = @team.events.all.sort { |a,b| a.start_at <=> b.start_at } if @team.events.any?
+      else
+        @selected_events = Event.find(session[@team.id][:show_events]).sort { |a,b| a.start_at <=> b.start_at } unless session[@team.id][:show_events].blank?
+      end
     end
+    @selected_events ||= []
     
     @cols = 3
     @title = "Schedule people"
@@ -95,6 +101,8 @@ class TeamsController < ApplicationController
     @team = Team.find(params[:id])
     @memberships = Membership.joins(:user).where("team_id = ? AND active = ?", @team.id, true).all
     @memberships.sort! { |a,b| a.user.sortable_name.downcase <=> b.user.sortable_name.downcase }
+    @events = @team.events.all
+    
     @title = "Team details"
     @sidebar_partial = 'teams/sidebar/show'
   end
