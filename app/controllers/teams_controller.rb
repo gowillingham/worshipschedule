@@ -7,16 +7,6 @@ class TeamsController < ApplicationController
  
   def slots
     @team = Team.find(params[:id])
-    @slots = Slot.find(
-      :all,
-      :joins => %/
-        JOIN skillships ON slots.skillship_id = skillships.id 
-        JOIN skills ON skillships.skill_id = skills.id 
-        JOIN memberships ON skillships.membership_id = memberships.id
-        JOIN users ON memberships.user_id = users.id 
-        /,
-      :conditions => ['slots.event_id = ? AND skills.id = ?', params[:event_id], params[:skill_id]]
-    )
     @skillships = Skillship.find(
       :all, 
       :joins => 'JOIN memberships ON skillships.membership_id = memberships.id JOIN users ON memberships.user_id = users.id',

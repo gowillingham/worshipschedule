@@ -25,18 +25,25 @@ describe TeamsController do
       
       @user_1 = Factory(:user, :last_name => 'user_1', :email => Factory.next(:email))
       @user_2 = Factory(:user, :last_name => 'user_2', :email => Factory.next(:email))
-      @account.users << @user_1 << @user_2
+      @user_3 = Factory(:user, :last_name => 'user_3', :email => Factory.next(:email))
+      
+      @account.users << @user_1 << @user_2 << @user_3
       @membership_1 = @team.memberships.create(:user_id => @user_1.id)
       @membership_2 = @team.memberships.create(:user_id => @user_2.id)
+      @membership_3 = @team.memberships.create(:user_id => @user_3.id)      
       
       @skillship1 = @skill1.skillships.create(:membership_id => @membership_1.id)
       @skillship2 = @skill2.skillships.create(:membership_id => @membership_2.id)
       @skillship31 = @skill3.skillships.create(:membership_id => @membership_1.id)
       @skillship32 = @skill3.skillships.create(:membership_id => @membership_2.id)
+      @skillship33 = @skill3.skillships.create(:membership_id => @membership_3.id)
     
       @event_1 = @team.events.create(:start_at_date => Time.now.strftime("%Y-%m-%d"), :name => 'Event 1')
       @event_2 = @team.events.create(:start_at_date => 1.day.since(Time.now).strftime("%Y-%m-%d"), :name => 'Event 2')
       @event_3 = @team.events.create(:start_at_date => 2.day.since(Time.now).strftime("%Y-%m-%d"), :name => 'Event 3')
+      
+      @slot31 = @event_1.slots.create!(:skillship_id => @skillship31.id)
+      @slot32 = @event_1.slots.create!(:skillship_id => @skillship32.id)
     
       @event_list = [@event_1.id.to_s, @event_2.id.to_s, @event_3.id.to_s]
     end
@@ -154,17 +161,39 @@ describe TeamsController do
       response.should have_selector('form', :action => slots_team_event_path(@team, @event_2))
       response.should have_selector('form', :action => slots_team_event_path(@team, @event_3))
     end
-    
-    it "should have a hidden dropdown of skillships for each skill/event" do
+
+    it "should have a hidden dropdown of skillships that do belong to slots for the event" do
       get :slots, :id => @team, :show_events => @event_list
       
-      response.should have_selector('select option', :content => @user_1.last_name, :value => @skillship1.id.to_s)
-      response.should have_selector('select option', :content => @user_2.last_name, :value => @skillship2.id.to_s)
-      response.should have_selector('select option', :content => @user_1.last_name, :value => @skillship31.id.to_s)
-      response.should have_selector('select option', :content => @user_2.last_name, :value => @skillship32.id.to_s)
+      assert_select "td#slots_#{@skill3.id}_#{@event_1.id} form" do
+        assert_select "select[name='remove[]']" do
+          assert_select "option", 2
+          assert_select "option", :text => @user_1.name_or_email
+          assert_select "option", :text => @user_2.name_or_email
+        end
+      end
     end
     
-    it "should show members scheduled in one dropdown and members not scheduled in the other"
+    it "should have a hidden dropdonw of skillships that don't belong to slots for the event" do
+      get :slots, :id => @team, :show_events => @event_list
+      
+      assert_select "td#slots_#{@skill3.id}_#{@event_1.id} form" do
+        assert_select "select[name='add[]']" do
+          assert_select "option", 1
+          assert_select "option", :text => @user_3.name_or_email
+        end 
+      end     
+    end
+    
+    it "should show members scheduled in the table table cell for each skill/event" do
+      get :slots, :id => @team, :show_events => @event_list
+
+      assert_select "td#slots_#{@skill3.id}_#{@event_1.id} ul" do
+        assert_select 'li', 2
+        assert_select 'li', :text => @user_1.name_or_email
+        assert_select 'li', :text => @user_2.name_or_email
+      end      
+    end
   end
   
   describe "GET 'admins'" do
