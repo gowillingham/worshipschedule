@@ -122,7 +122,7 @@
 									<% if events[i].nil? %>
 										<td class="blank"></td>
 									<% else %>
-										<td class="cell" data-title="<%= "skill_id:#{skill.id} event_id:#{events[i].id}" %>">
+										<td class="cell" data-title="<%= "#{skill.name} for #{events[i].start_at.strftime("%b %d")}" %>">
 											<% slots = events[i].slots.find_all { |slot| slot.skillship.skill_id == skill.id } %>
 											<% if slots.any? %>
 												<ul>
@@ -134,10 +134,32 @@
 											<div style="display:none;" class='remote'>
 												<%= form_for events[i], :url => slots_team_event_path(@team, events[i]), :html => { :method => 'put' } do |f| %>
 													<%= hidden_field_tag :skill_id, skill.id %>
+													
+													<table class="picker">
+														<tbody>
+															<tr>
+																<td>
+																
 													<% selected = events[i].slots.map { |sl| sl.skillship_id } %>
 													<% options = @skillships.find_all { |s| s.skill_id == skill.id }.map { |s| [Skillship.find(s.id).membership.user.name_or_email, s.id] }%>
-													<%= select_tag :skillship_id_list, options_for_select(options, selected), :multiple => true, :include_blank => true %>
-													<%= submit_tag 'Save' %>
+													<%= select_tag :remove, options_for_select(options, selected), :multiple => true %>
+														
+																</td>
+																<td class="center">
+																	<%= submit_tag '<<' %>
+																	<br />
+																	<%= submit_tag '>>' %>																	
+																</td>
+																<td>
+																		<% selected = events[i].slots.map { |sl| sl.skillship_id }%>
+																		<% options = @skillships.find_all { |s| s.skill_id == skill.id }.map { |s| [Skillship.find(s.id).membership.user.name_or_email, s.id] }%>
+																		<%= select_tag :add, options_for_select(options, selected), :multiple => true %>
+																		
+																</td>
+															</tr>
+														</tbody>
+													</table>
+													
 												<% end %>
 											</div>
 										</td>

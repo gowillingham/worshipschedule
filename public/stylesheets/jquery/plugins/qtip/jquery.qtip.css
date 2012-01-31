@@ -18,8 +18,9 @@
 	left: -28000px;
 	top: -28000px;
 	display: none;
-
-	max-width: 280px;
+	
+/*	max-width: 280px; i'm re-writing this rule to get tip to auto-size */	
+	max-width: auto;
 	min-width: 50px;
 	
 	font-size: 10.5px;
