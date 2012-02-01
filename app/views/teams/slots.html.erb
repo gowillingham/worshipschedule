@@ -136,6 +136,10 @@
 													<%= hidden_field_tag :skill_id, skill.id %>
 													<table class="picker">
 														<tbody>
+															<tr class="label">
+																<td>Assigned</td>
+																<td></td>
+																<td>Not assigned</td>
 															<tr>
 																<td>
 																	<% remove_these = events[i].slots.find_all { |slot| slot.skillship.skill_id == skill.id }.map { |slot| [slot.skillship.membership.user.name_or_email, slot.skillship_id] } %>

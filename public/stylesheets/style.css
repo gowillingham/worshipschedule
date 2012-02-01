@@ -191,6 +191,7 @@ th .link                      {font-size:0.8em;float:right;margin-top:.2em;}
 .for_slots table td select									{height:150px;}
 
 .picker											{margin:0 0 5px 0;}
+.picker tr.label td					{padding:3px 0;font-size:10px;}
 .picker	td									{padding:0;}
 .picker td.center						{width:1%;padding:5px;}						
 .picker input								{margin:0;padding:0;font-size:8px;font-weight:bold;}
