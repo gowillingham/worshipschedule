@@ -153,7 +153,7 @@
 																</td>
 																<td>
 																	<% selected = events[i].slots.map { |sl| sl.skillship_id }%>
-																	<% add_these = @skillships.find_all { |s| (s.skill_id == skill.id) && (!selected.include?(s.id)) }.map { |s| [Skillship.find(s.id).membership.user.name_or_email, s.id] }%>
+																	<% add_these = @skillships.find_all { |s| (s.skill_id == skill.id) && (!selected.include?(s.id)) && s.membership.active = true }.map { |s| [Skillship.find(s.id).membership.user.name_or_email, s.id] }%>
 																	<%= select_tag :add, options_for_select(add_these), :multiple => true %>																		
 																</td>
 															</tr>

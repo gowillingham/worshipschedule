@@ -9,9 +9,14 @@ class TeamsController < ApplicationController
     @team = Team.find(params[:id])
     @skillships = Skillship.find(
       :all, 
-      :joins => 'JOIN memberships ON skillships.membership_id = memberships.id JOIN users ON memberships.user_id = users.id',
+      :joins => { :membership => :user },
       :select => 'skillships.id, skillships.skill_id AS skill_id, users.first_name, users.last_name, users.email, memberships.id AS membership_id',
       :conditions => ['memberships.team_id = ?', @team.id],
+      :order => 'CASE WHEN (LENGTH(last_name) = 0) THEN LOWER(email) ELSE LOWER(last_name) END'
+      )
+    @slots = Slot.find(
+      :all,
+      :joins => [:event, :skillship => { :membership => :user }],
       :order => 'CASE WHEN (LENGTH(last_name) = 0) THEN LOWER(email) ELSE LOWER(last_name) END'
       )
       

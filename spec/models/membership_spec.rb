@@ -15,6 +15,38 @@ describe Membership do
     @membership = Membership.create(:team_id => @team.id, :user_id => @user.id)
   end
   
+  describe "scope" do
+    
+    describe "active" do
+      
+      it "should not return inactive users" do
+        user = Factory(:user, :email => Factory.next(:email))
+        @account.users << user
+        membership = @team.memberships.create(:user_id => user.id)
+        Membership.active.count.should eq(2)
+        
+        membership.update_attribute(:active, false)
+        Membership.count.should eq(2)
+        Membership.active.count.should eq(1)
+      end
+    end
+    
+    describe 'admin' do
+      
+      it "should return only admin users" do
+        user = Factory(:user, :email => Factory.next(:email))
+        @account.users << user
+        membership = @team.memberships.create(:user_id => user.id)
+        
+        Membership.count.should eq(2)
+        Membership.admin.count.should eq(0)
+        
+        membership.update_attribute(:admin, true)
+        Membership.admin.count.should eq(1)
+      end
+    end
+  end
+  
   describe "methods" do
   
     it "should include user" do
