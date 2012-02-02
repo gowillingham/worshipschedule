@@ -105,9 +105,7 @@
 								<% if events[i].nil? %>
 									<td class="blank"></td>
 								<% else %>
-									<td>
-										<%= events[i].name %>
-									</td>
+									<td><%= events[i].name %></td>
 								<% end %>
 							<% end %>
 						</tr>
@@ -124,7 +122,7 @@
 									<% else %>
 										<td class="cell" id="<%= "slots_#{skill.id}_#{events[i].id}" %>" data-title="<%= "#{skill.name} for #{events[i].start_at.strftime("%b %d")}" %>">
 											<%= slotted_for_cell @slots, skill.id, events[i].id %>
-											<%= render :partial => 'slots_popup', :locals => { :slots => @slots, :skillships => @skillships, :skill_id => skill.id, :event => events[i] } %>											
+											<%= render :partial => 'slots_popup', :locals => { :slots => @slots, :team => @team, :skillships => @skillships, :skill_id => skill.id, :event => events[i] } if team_admin?(@team, current_user)%>
 										</td>
 									<% end %>
 								<% end %>

@@ -195,8 +195,20 @@ describe TeamsController do
       end      
     end
     
-    it "should not display inactive members"
+    it "should not display inactive members" do
+      @membership_1.update_attribute(:active, false)
+      get :slots, :id => @team, :show_events => @event_list
+      
+      response.should_not =~ @user_1.name_or_email
+    end
     
+    it "should hide admin features from a regular user" do
+      membership = @team.memberships.create(:user_id => @signed_in_user.id, :admin => false)
+      @accountship.update_attribute(:admin, false)
+      get :slots, :id => @team, :show_events => @event_list
+      
+      response.should_not have_selector('div', :class => 'remote')
+    end
   end
   
   describe "GET 'admins'" do

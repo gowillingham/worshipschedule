@@ -5,7 +5,7 @@
 <% could_be_slotted.map! { |sk| [sk.membership.user.name_or_email, sk.id] } %>
 
 <div style="display:none;" class='remote'>
-	<%= form_for event, :url => slots_team_event_path(@team, event), :html => { :method => 'put' } do |f| %>
+	<%= form_for event, :url => slots_team_event_path(team, event), :html => { :method => 'put' } do |f| %>
 		<%= hidden_field_tag :skill_id, skill_id %>
 		<table class="picker">
 			<tbody>
@@ -15,17 +15,9 @@
 					<td>Not assigned</td>
 				</tr>
 				<tr>
-					<td>
-						<%= select_tag :remove, options_for_select(slotted), :multiple => true %>														
-					</td>
-					<td class="center">
-						<%= submit_tag '<<' %>
-						<br />
-						<%= submit_tag '>>' %>																	
-					</td>
-					<td>
-						<%= select_tag :add, options_for_select(could_be_slotted - slotted), :multiple => true %>																		
-					</td>
+					<td><%= select_tag :remove, options_for_select(slotted), :multiple => true %></td>
+					<td class="center"><%= submit_tag '<<' %><br /><%= submit_tag '>>' %></td>
+					<td><%= select_tag :add, options_for_select(could_be_slotted - slotted), :multiple => true %></td>
 				</tr>
 			</tbody>
 		</table>													
