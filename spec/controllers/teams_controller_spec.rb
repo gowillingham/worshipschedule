@@ -194,6 +194,9 @@ describe TeamsController do
         assert_select 'li', :text => @user_2.name_or_email
       end      
     end
+    
+    it "should not display inactive members"
+    
   end
   
   describe "GET 'admins'" do

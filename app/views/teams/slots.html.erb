@@ -123,44 +123,8 @@
 										<td class="blank"></td>
 									<% else %>
 										<td class="cell" id="<%= "slots_#{skill.id}_#{events[i].id}" %>" data-title="<%= "#{skill.name} for #{events[i].start_at.strftime("%b %d")}" %>">
-											<% slots = events[i].slots.find_all { |slot| slot.skillship.skill_id == skill.id } %>
-											<% if slots.any? %>
-												<ul>
-													<% slots.each do |slot| %>
-														<li><%= slot.skillship.membership.user.name_or_email %></li>
-													<% end %>
-												</ul>
-											<% end %>
-											<div style="display:none;" class='remote'>
-												<%= form_for events[i], :url => slots_team_event_path(@team, events[i]), :html => { :method => 'put' } do |f| %>
-													<%= hidden_field_tag :skill_id, skill.id %>
-													<table class="picker">
-														<tbody>
-															<tr class="label">
-																<td>Assigned</td>
-																<td></td>
-																<td>Not assigned</td>
-															</tr>
-															<tr>
-																<td>
-																	<% remove_these = events[i].slots.find_all { |slot| slot.skillship.skill_id == skill.id }.map { |slot| [slot.skillship.membership.user.name_or_email, slot.skillship_id] } %>
-																	<%= select_tag :remove, options_for_select(remove_these), :multiple => true %>														
-																</td>
-																<td class="center">
-																	<%= submit_tag '<<' %>
-																	<br />
-																	<%= submit_tag '>>' %>																	
-																</td>
-																<td>
-																	<% selected = events[i].slots.map { |sl| sl.skillship_id }%>
-																	<% add_these = @skillships.find_all { |s| (s.skill_id == skill.id) && (!selected.include?(s.id)) && s.membership.active = true }.map { |s| [Skillship.find(s.id).membership.user.name_or_email, s.id] }%>
-																	<%= select_tag :add, options_for_select(add_these), :multiple => true %>																		
-																</td>
-															</tr>
-														</tbody>
-													</table>													
-												<% end %>
-											</div>
+											<%= slotted_for_cell @slots, skill.id, events[i].id %>
+											<%= render :partial => 'slots_popup', :locals => { :slots => @slots, :skillships => @skillships, :skill_id => skill.id, :event => events[i] } %>											
 										</td>
 									<% end %>
 								<% end %>
