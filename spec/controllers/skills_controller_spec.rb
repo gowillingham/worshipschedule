@@ -160,6 +160,13 @@ describe SkillsController do
       response.should have_selector('label', :content => @user_3.name_or_email)
     end
     
+    it "should not display an inactive team member" do
+       @membership_3.update_attribute(:active, false)
+       get :skillships, :team_id => @team, :id => @skill
+       
+       response.should_not have_selector('label', :content => @user_3.name_or_email)
+    end
+
     it "should show members with this accountship as checked" do
       @skill.memberships << @membership_1
       @skill.memberships << @membership_3
@@ -252,6 +259,13 @@ describe SkillsController do
       response.should have_selector('li', :content => @user_2.name_or_email)
       response.should have_selector('li', :content => @user_3.name_or_email)
     end   
+    
+    it "should not show inactive members in the sidebar" do
+      @membership_3.update_attribute(:active, false)
+      get :show, :team_id => @team, :id => @skill
+
+      response.should_not have_selector('li', :content => @user_3.name_or_email)
+    end
     
     it "should show message if there are no members with the skill" do
       @skill.skillships.clear
@@ -398,12 +412,20 @@ describe SkillsController do
     
     it "should list the members with the skill in the sidebar" do 
       @skill.memberships << @membership_1 << @membership_2 << @membership_3
-      get :show, :team_id => @team, :id => @skill
+      get :edit, :team_id => @team, :id => @skill
       
       response.should have_selector('li', :content => @user_1.name_or_email)
       response.should have_selector('li', :content => @user_2.name_or_email)
       response.should have_selector('li', :content => @user_3.name_or_email)
     end   
+
+    it "should not show inactive members in the sidebar" do
+      @membership_3.update_attribute(:active, false)
+      get :edit, :team_id => @team, :id => @skill
+
+      response.should_not have_selector('li', :content => @user_3.name_or_email)
+    end
+    
   end
   
   describe "DELETE 'destroy'" do
