@@ -4,6 +4,25 @@
 	<script type="text/javascript">
     $(document).ready(function(){
 	
+			// set up 
+			$(".picker select").focus(function(){
+			
+				var form = $(this).parents("form")
+				var select = $(this)
+				
+				if (select.attr("name") == 'add[]') {
+					$("input[name='add_slots']").attr("disabled", false)
+					$("input[name='remove_slots']").attr("disabled", true)
+					$("select[name='remove[]']").attr('selectedIndex', -1).children('option:selected').removeAttr('selected')
+				}
+				else if (select.attr("name") == 'remove[]') {
+					$("input[name='add_slots']").attr("disabled", true)
+					$("input[name='remove_slots']").attr("disabled", false)
+					$("select[name='add[]']").attr('selectedIndex', -1).children('option:selected').removeAttr('selected')
+				}				
+			})
+	
+			// arm slot picker popups ..
 			$("td.cell").each(function(){
 				$(this).qtip({
 					content: { 
@@ -16,8 +35,13 @@
 					show: 'click',
 					hide: 'unfocus',
 					style: { 
-						// classes: 'ui-tooltip-light ui-tooltip-shadow' 
 						classes: 'ui-tooltip-jtools ui-tooltip-shadow'
+					},
+					events: {
+						show: function(){
+							$(".picker .center input").attr("disabled", true)
+							$(".picker select").attr("selectedIndex", -1).children('option:selected').removeAttr('selected')
+						}
 					},
 					position: { 
 						at: 'top center',
@@ -27,7 +51,7 @@
 				});
 			});
 
-			// arm select all/none links ..
+			// arm sidebar event select all/none links ..
 			$(".bulk_links a").click(function(){
 				var action = $(this).attr("data-action")
 				
