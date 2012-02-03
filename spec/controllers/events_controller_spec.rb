@@ -99,28 +99,27 @@ describe EventsController do
       skill = team.skills.create(:name => 'skill')
       membership = team.memberships.create(:user_id => user.id)
       skillship = Skillship.create(:skill_id => skill.id, :membership_id => membership.id)
-      put :slots, :team_id => @team, :id => @event_1, :skill_id => @skill1, :skillship_id_list => [skillship.id.to_s]
-
-      response.should redirect_to(@signed_in_user)
+      
+      put :slots, :team_id => @team, :id => @event_1, :skill_id => @skill1, :add => [skillship.id.to_s]
+      response.should redirect_to(slots_team_path(@team))
+      flash[:error].should =~ /do not have permission/i     
+      
+      put :slots, :team_id => @team, :id => @event_1, :skill_id => @skill1, :remove => [skillship.id.to_s]
+      response.should redirect_to(slots_team_path(@team)) 
+      flash[:error].should =~ /do not have permission/i     
     end
   
-    it "should remove slots for the passed in event/skill that if no ids are passed in" do
-      lambda do
-        put :slots, :team_id => @team, :id => @event_1, :skill_id => @skill1, :skillship_id_list => []
-      end.should change(Slot, :count).by(-1)
-    end 
-    
-    it "should add slots if none already exist and an id is passed in" do
+    it "should add slots" do
       @event_1.slots.clear
       lambda do
-        put :slots, :team_id => @team, :id => @event_1, :skill_id => @skill1, :skillship_id_list => [@skillship1.id.to_s]
+        put :slots, :team_id => @team, :id => @event_1, :skill_id => @skill1, :add_slots => '<<', :add => [@skillship1.id.to_s]
       end.should change(Slot, :count).by(1)      
     end 
     
-    it "should add remove slots that aren't passed in and add new ones" do
+    it "should remove slots" do
       lambda do
-        put :slots, :team_id => @team, :id => @event_1, :skill_id => @skill2, :skillship_id_list => [@skillship2.id.to_s, @skillship32.id.to_s]
-      end.should change(Slot, :count).by(1)      
+        put :slots, :team_id => @team, :id => @event_1, :skill_id => @skill2, :remove_slots => '>>', :remove => [@skillship2.id.to_s]
+      end.should change(Slot, :count).by(-1)      
     end
   end
   

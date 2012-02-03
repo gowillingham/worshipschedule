@@ -16,7 +16,7 @@
 				</tr>
 				<tr>
 					<td><%= select_tag :remove, options_for_select(slotted), :multiple => true %></td>
-					<td class="center"><%= submit_tag '<<' %><br /><%= submit_tag '>>' %></td>
+					<td class="center"><%= submit_tag '<<', :name => :add_slots %><br /><%= submit_tag '>>', :name => :remove_slots %></td>
 					<td><%= select_tag :add, options_for_select(could_be_slotted - slotted), :multiple => true %></td>
 				</tr>
 			</tbody>

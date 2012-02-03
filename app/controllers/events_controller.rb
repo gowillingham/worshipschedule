@@ -3,20 +3,18 @@ class EventsController < ApplicationController
   before_filter { require_team_for_current_account(params[:team_id]) }
   before_filter(:except => [:new, :create, :index]) { require_event_for_current_team(params[:team_id], params[:id])}
   before_filter { require_team_member(params[:team_id]) }
-  before_filter(:only => :slots) { require_skillships_for_current_team(params[:team_id], params[:skillship_id_list]) }
+  before_filter(:only => :slots) { require_skillships_for_current_team(params[:team_id], params[:add] ||= [], params[:remove] ||= []) }
   
   def slots
     @team = Team.find(params[:team_id])
-    @event = Event.find(params[:id])
+    @event = Event.find(params[:id])    
     
-    @event.slots.joins(:skillship).where("skill_id = ? AND event_id = ?", params[:skill_id], params[:id]).destroy_all
-    
-    unless params[:skillship_id_list].blank?
-      params[:skillship_id_list].each do |id| 
-        Slot.create(:event_id => @event.id, :skillship_id => id) unless id.blank?
-      end
+    if params[:add_slots] && (params[:add] ||= []).any?
+      params[:add].each { |id| Slot.create(:event_id => @event.id, :skillship_id => id) unless id.blank? }
+    elsif params[:remove_slots] && (params[:remove] ||= []).any?
+      params[:remove].each { |id| Slot.where(:event_id => @event.id, :skillship_id => id).first.destroy unless id.blank? }
     end
-    
+
     redirect_to slots_team_url(@team)
   end
   
@@ -83,6 +81,22 @@ class EventsController < ApplicationController
   
   private
   
+    def require_skillships_for_current_team(team_id, add_ids, remove_ids)
+      included = true
+      team = Team.find(team_id)
+    
+      membership_ids = Skillship.find(add_ids + remove_ids).collect { |skillship| skillship.membership_id }
+      membership_ids.each do |membership_id|
+        unless team.membership_ids.include?(membership_id)
+          included = false
+        end
+      end
+    
+      if !included
+        redirect_to slots_team_url(team), :flash => { :error => "You do not have permission to modify one (or more) of the members you selected " }
+      end
+    end
+
     def require_event_for_current_team(team_id, event_id)
       team = Team.find(team_id)
       event = Event.find(event_id)
@@ -91,20 +105,4 @@ class EventsController < ApplicationController
       end
     end
     
-    def require_skillships_for_current_team(team_id, skillship_ids)
-      included = true
-      team = Team.find(team_id)
-
-      skillship_ids.each do |id|
-        unless id.blank?
-          unless team.memberships.include?(Skillship.find(id).membership)
-            included = false
-          end
-        end
-      end
-
-      unless included
-        redirect_to current_user, :flash => { :error => "You don't have permission to modify one (or more) of the members you selected " }
-      end
-    end
 end
