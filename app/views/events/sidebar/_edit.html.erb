@@ -1,17 +1,15 @@
 <div id="sidebar">
-	<% if team_admin?(@team, current_user) %>
-		<h1>Remove this event?</h1>
-		<p>
-			Removing an event <strong>immediately and permanently deletes</strong> all the data associated with this event.
-			If you have scheduled someone for this event, it will no longer appear on your calendar.
-			<strong>There is no undo</strong> so be absolutely sure before removing it. 
-	    <br /><br />
-	    <%= link_to "Yes, I understand - remove this event".html_safe, team_event_path(@team), :method => :delete, :class => 'cancel', :confirm => "Are you sure you want to delete this event?\nNote: There is no undo.\n" %>
-		</p>
-	<% end %>
+	<h1>Remove this event?</h1>
+	<p>
+		Removing an event <strong>immediately and permanently deletes</strong> all the data associated with this event.
+		If you have scheduled someone for this event, it will no longer appear on your calendar.
+		<strong>There is no undo</strong> so be absolutely sure before removing it. 
+    <br /><br />
+    <%= link_to "Yes, I understand - remove this event".html_safe, team_event_path(@team), :method => :delete, :class => 'cancel', :confirm => "Are you sure you want to delete this event?\nNote: There is no undo.\n" %>
+	</p>
 	<h1>
 		People scheduled for this event
-		<%= link_to 'Change', slots_team_path(@team) if team_admin?(@team, current_user) %>
+		<%= link_to 'Change', slots_team_path(@team, :show_events => [@event.id], :reset_events? => 'true') %>
 	</h1>
 	<%= render :partial => 'slots_for', :locals => { :event => @event } %>
 </div>

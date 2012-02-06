@@ -10,7 +10,7 @@
 								<%= check_box_tag 'show_events[]', e.id, @selected_events.map { |e| e.id }.include?(e.id), :id => "event_#{e.id}", :class => "checkbox" %>
 								<%= e.name %>
 								<div>
-									<%= Date.parse(e.start_at_date).strftime("%a, %d %B")%><%= ", #{Time.parse(e.start_at_time).strftime("%l:%M%P").downcase.strip.chop}" unless e.start_at_time.nil? %>
+									<%= Date.parse(e.start_at_date).strftime("%a, %d %B") %><%= ", #{Time.parse(e.start_at_time).strftime("%l:%M%P").downcase.strip.chop}" unless e.start_at_time.nil? %>
 								</div>
 							</label>
 						</li>

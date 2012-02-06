@@ -1,7 +1,7 @@
 <div id="sidebar">
 	<h1>
 		People scheduled for this event
-		<%= link_to 'Change', slots_team_path(@team) if team_admin?(@team, current_user) %>
+		<%= link_to 'Change', slots_team_path(@team, :show_events => [@event.id], :reset_events? => 'true') if team_admin?(@team, current_user) %>
 	</h1>
 	<%= render :partial => 'slots_for', :locals => { :event => @event }%>
 </div>

@@ -129,7 +129,10 @@
 								<% if events[i].nil? %>
 									<td class="blank"></td>
 								<% else %>
-									<td><%= events[i].name %></td>
+									<td class="when">
+										<h4><%= link_to events[i].name, team_event_path(@team, events[i]) %></h4>
+										<div><%= events[i].start_at.to_date.strftime("%a, %d %B")%></div>
+									</td>
 								<% end %>
 							<% end %>
 						</tr>
