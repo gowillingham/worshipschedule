@@ -13,4 +13,5 @@
 		People scheduled for this event
 		<%= link_to 'Change', slots_team_path(@team) if team_admin?(@team, current_user) %>
 	</h1>
+	<%= render :partial => 'slots_for', :locals => { :event => @event } %>
 </div>
