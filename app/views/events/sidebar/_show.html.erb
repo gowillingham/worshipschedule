@@ -1,22 +1,7 @@
 <div id="sidebar">
-	<h1>People scheduled for this event</h1>
-	<ul class="">
-		<% slots = slots_for(@event) %>
-		<% if slots.any? %>
-			<% slots.each do |slot| %>
-			<li>
-			<%= gravatar_for(slot[0], { :size => 35, :default => :identicon  }) %>
-			<div>
-				<%= slot[0].name_or_email %>
-				<br />
-				<span>
-					<%= slot[1] %>
-				</span>
-			</div>
-			</li>
-			<% end %>
-		<% else %>
-			<li class="blank_slate">No one has been scheduled or assigned to this event. </li>
-		<% end %>
-	</ul>
+	<h1>
+		People scheduled for this event
+		<%= link_to 'Change', slots_team_path(@team) if team_admin?(@team, current_user) %>
+	</h1>
+	<%= render :partial => 'slots_for', :locals => { :event => @event }%>
 </div>
