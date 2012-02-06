@@ -236,7 +236,7 @@ div.big_button a:hover                  {background-color:transparent;color:#000
 #sidebar ul.events li label					{font-size:12px;font-weight:bold;}
 #sidebar ul.events li label div			{margin:-3px 0 0 0;padding:0 0 0 25px;font-size:10px;font-weight:normal;}
 
-#sidebar ul.skillships li div	{font-size:14px;font-weight:normal;padding:9px 0;}
+#sidebar ul.people li div	{font-size:14px;font-weight:normal;padding:9px 0;}
 
 #sidebar ul li.blank_slate		{margin-top:10px;}
 

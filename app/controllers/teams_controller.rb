@@ -16,7 +16,7 @@ class TeamsController < ApplicationController
       )
     @slots = Slot.find(
       :all,
-      :joins => [:event, :skillship => { :membership => :user }],
+      :joins => [:event, :skillship => [:skill, { :membership => :user }]],
       :order => 'CASE WHEN (LENGTH(last_name) = 0) THEN LOWER(email) ELSE LOWER(last_name) END'
       )
       

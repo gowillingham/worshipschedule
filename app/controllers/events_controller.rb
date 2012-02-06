@@ -7,8 +7,8 @@ class EventsController < ApplicationController
   
   def slots
     @team = Team.find(params[:team_id])
-    @event = Event.find(params[:id])    
-    
+    @event = Event.find(params[:id]) 
+
     if params[:add_slots] && (params[:add] ||= []).any?
       params[:add].each { |id| Slot.create(:event_id => @event.id, :skillship_id => id) unless id.blank? }
     elsif params[:remove_slots] && (params[:remove] ||= []).any?
@@ -21,7 +21,7 @@ class EventsController < ApplicationController
   def show
     @team = Team.find(params[:team_id])
     @event = Event.find(params[:id])
-    
+
     @sidebar_partial = 'events/sidebar/show'
     @title = 'Event details'
     render 'show'

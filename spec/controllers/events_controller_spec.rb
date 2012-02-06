@@ -127,6 +127,24 @@ describe EventsController do
     
     before(:each) do
       @event = Event.create(@attr)
+      @skill = @team.skills.create(:name => 'skill name')
+      
+      @user1 = Factory(:user, :last_name => 'User1', :email => Factory.next(:email))
+      @user2 = Factory(:user, :last_name => 'User2', :email => Factory.next(:email))
+      @user3 = Factory(:user, :last_name => 'User3', :email => Factory.next(:email))
+      @account.users << @user1 << @user2 << @user3
+      
+      @membership1 = @team.memberships.create(:user_id => @user1.id)
+      @membership2 = @team.memberships.create(:user_id => @user2.id)
+      @membership3 = @team.memberships.create(:user_id => @user3.id)
+      
+      @skillship1 = @skill.skillships.create(:membership_id => @membership1.id)
+      @skillship2 = @skill.skillships.create(:membership_id => @membership2.id)
+      @skillship3 = @skill.skillships.create(:membership_id => @membership3.id)
+      
+      @event.slots.create(:skillship_id => @skillship1.id)
+      @event.slots.create(:skillship_id => @skillship2.id)
+      @event.slots.create(:skillship_id => @skillship3.id)
     end
     
     it "should allow an account admin" do
@@ -171,13 +189,46 @@ describe EventsController do
     
     it "should not show admin features to regular user" do
       @accountship.update_attribute(:admin, false)
+      get :show, :team_id => @team, :id => @event
 
       response.should_not have_selector('a', :content => 'remove')
       response.should_not have_selector('a', :content => 'Change')
       response.should_not have_selector('a', :content => 'Edit')
     end
     
-    it "should show listing of members scheduled for this event in sidebar"
+    it "should show listing of active members scheduled for this event in sidebar" do
+      get :show, :team_id => @team, :id => @event
+
+      assert_select "#sidebar ul" do |elements|
+        elements.each do |element|
+          assert_select element, 'li', 3
+          assert_select element, 'li', :text => /#{@user1.name_or_email}/
+          assert_select element, 'li', :text => /#{@user2.name_or_email}/
+          assert_select element, 'li', :text => /#{@user3.name_or_email}/
+        end
+      end
+    end
+    
+    it "should list a member only one time if they are slotted for multiple skills" do
+      skill2 = @team.skills.create(:name => 'Skill 2')
+      skillship12 = skill2.skillships.create(:membership_id => @membership1.id)
+      @event.slots.create(:skillship_id => skillship12.id)
+      get :show, :team_id => @team, :id => @event
+      
+      assert_select "#sidebar ul" do |elements|
+        elements.each do |element|
+          assert_select element, 'li', 3
+          assert_select element, 'li', { :count => 1, :text => /#{@user1.name_or_email}/ }
+        end
+      end 
+    end
+    
+    it "should show blank slate if no members are scheduled" do
+      @event.slots.clear
+      get :show, :team_id => @team, :id => @event
+      
+      response.should have_selector('li', :class => 'blank_slate', :content => 'No one has been scheduled')
+    end
   end
   
   describe "DELETE 'destroy'" do
