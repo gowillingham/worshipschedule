@@ -189,6 +189,7 @@ th .link                      {font-size:0.8em;float:right;margin-top:.2em;}
 .for_slots table.header	td.when h4 a:hover	{color:#fff;}
 .for_slots table.header	td.when div					{font-size:10px;font-weight:normal;margin:1px 0 0 1px;}
 .for_slots table td													{border:none;border:solid 1px #ccc;vertical-align:top;width:28%;}
+.for_slots table td.selected								{background-color:#c5e2e9;}
 .for_slots table td.skills									{background-color:#ddd;font-weight:bold;width:16%;}
 .for_slots table.header td									{background-color:#ccc;font-weight:bold;}
 .for_slots table td.blank										{background-color:#fff;border:1px solid #fff;}

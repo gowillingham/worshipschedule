@@ -24,6 +24,7 @@
 	
 			// arm slot picker popups ..
 			$("td.cell").each(function(){
+				var cell = $(this)
 				$(this).qtip({
 					content: { 
 						text: $('div.remote', $(this)),
@@ -39,8 +40,12 @@
 					},
 					events: {
 						show: function(){
+							$(cell).addClass('selected')
 							$(".picker .center input").attr("disabled", true)
 							$(".picker select").attr("selectedIndex", -1).children('option:selected').removeAttr('selected')
+						}, 
+						hide: function(){
+							$(cell).removeClass('selected')
 						}
 					},
 					position: { 
