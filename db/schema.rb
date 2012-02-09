@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120124144903) do
+ActiveRecord::Schema.define(:version => 20120209185316) do
 
   create_table "accounts", :force => true do |t|
     t.string   "name"
@@ -30,6 +30,27 @@ ActiveRecord::Schema.define(:version => 20120124144903) do
   add_index "accountships", ["account_id"], :name => "index_accountships_on_account_id"
   add_index "accountships", ["user_id", "account_id"], :name => "index_accountships_on_user_id_and_account_id", :unique => true
   add_index "accountships", ["user_id"], :name => "index_accountships_on_user_id"
+
+  create_table "availabilities", :force => true do |t|
+    t.integer  "membership_id"
+    t.integer  "event_id"
+    t.boolean  "free"
+    t.boolean  "approved"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "availabilities", ["event_id", "membership_id"], :name => "index_availabilities_on_event_id_and_membership_id", :unique => true
+
+  create_table "event_memberships", :force => true do |t|
+    t.integer  "membership_id"
+    t.integer  "event_id"
+    t.boolean  "available",     :default => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "event_memberships", ["event_id", "membership_id"], :name => "index_event_membership_on_event_id_and_membership_id", :unique => true
 
   create_table "events", :force => true do |t|
     t.integer  "team_id",                        :null => false
