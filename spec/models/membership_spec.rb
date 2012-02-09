@@ -48,6 +48,14 @@ describe Membership do
   end
   
   describe "methods" do
+    
+    it "should include availabilities" do
+      @membership.should respond_to(:availabilities)
+    end 
+    
+    it "should include events" do 
+      @membership.should respond_to(:events)
+    end
   
     it "should include user" do
       @membership.should respond_to(:user)

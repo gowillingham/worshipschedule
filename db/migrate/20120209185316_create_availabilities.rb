@@ -1,10 +1,10 @@
 class CreateAvailabilities < ActiveRecord::Migration
   def self.up
     create_table :availabilities do |t|
-      t.integer :membership_id
-      t.integer :event_id
-      t.boolean :free
-      t.boolean :approved
+      t.integer :membership_id, :null => false
+      t.integer :event_id, :null => false
+      t.boolean :free, :default => false
+      t.boolean :approved, :default => true
 
       t.timestamps
     end

@@ -1,6 +1,8 @@
 class Event < ActiveRecord::Base
   belongs_to :team
   has_many :slots, :dependent => :destroy
+  has_many :availabilities, :dependent => :destroy
+  has_many :memberships, :through => :availabilities
     
   attr_accessor :start_at_date, :start_at_time, :end_at_date, :end_at_time
   attr_accessible :team_id, :start_at_date, :start_at_time, :end_at_date, :end_at_time, :name, :description

@@ -2,8 +2,10 @@ class Membership < ActiveRecord::Base
   belongs_to :team
   belongs_to :user
   
-  has_many :skillships
+  has_many :skillships, :dependent => :destroy
   has_many :skills, :through => :skillships
+  has_many :availabilities, :dependent => :destroy
+  has_many :events, :through => :availabilities
     
   scope :active, where(:active => true)
   scope :admin, where(:admin => true, :active => true)

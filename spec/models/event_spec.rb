@@ -156,6 +156,18 @@ describe Event do
       @event.should respond_to(:end_at_date)
     end
     
+    describe "availabilities" do
+      it "should exist" do
+        @event.should respond_to(:availabilities)
+      end
+    end
+    
+    describe "memberships" do
+      it "should exist" do
+        @event.should respond_to(:memberships)
+      end
+    end
+    
     describe "team" do
       it "should exist" do
         @event.should respond_to(:team)

@@ -32,10 +32,10 @@ ActiveRecord::Schema.define(:version => 20120209185316) do
   add_index "accountships", ["user_id"], :name => "index_accountships_on_user_id"
 
   create_table "availabilities", :force => true do |t|
-    t.integer  "membership_id"
-    t.integer  "event_id"
-    t.boolean  "free"
-    t.boolean  "approved"
+    t.integer  "membership_id",                    :null => false
+    t.integer  "event_id",                         :null => false
+    t.boolean  "free",          :default => false
+    t.boolean  "approved",      :default => true
     t.datetime "created_at"
     t.datetime "updated_at"
   end
