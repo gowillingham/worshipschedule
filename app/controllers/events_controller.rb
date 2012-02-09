@@ -56,8 +56,15 @@ class EventsController < ApplicationController
     @team = Team.find(params[:team_id])
     @events = @team.events
     @events.sort! { |a,b| b.start_at <=> a.start_at}
+    @slots = Slot.find(
+      :all,
+      :joins => [:event, :skillship => [:skill, { :membership => :user }]],
+      :conditions => ['users.id = ? AND memberships.team_id = ?', current_user.id, @team.id]
+    )
+    @slots.sort! { |a,b| b.event.start_at <=> a.event.start_at}
+    
     @title = 'All events'
-    @sidebar_partial = 'users/sidebar/placeholder'
+    @sidebar_partial = 'events/sidebar/index'
   end
   
   def create 

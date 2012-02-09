@@ -560,8 +560,39 @@ describe EventsController do
       response.should have_selector('div.blank_slate', :content => "A team administrator still needs to create some events")
     end
 
-    it "should display a list of scheduled events for the current_user in the sidebar" 
-    it "should display a blank slate message in the sidebar if the current_user is not scheduled for any events"  
+    it "should display a list of scheduled events for the current_user in the sidebar" do
+      skill1 = @team.skills.create(:name => 'skill1')
+      skill2 = @team.skills.create(:name => 'skill2')
+      
+      membership = @team.memberships.create(:user_id => @signed_in_user.id)
+      
+      skillship1 = skill1.skillships.create(:membership_id => membership.id)
+      skillship2 = skill2.skillships.create(:membership_id => membership.id)
+      
+      event_1 = @team.events.create(:start_at_date => Time.now.strftime("%Y-%m-%d"), :name => 'Event 1')
+      event_2 = @team.events.create(:start_at_date => 1.day.since(Time.now).strftime("%Y-%m-%d"), :name => 'Event 2')
+      
+      slot11 = event_1.slots.create(:skillship_id => skillship1.id)
+      slot12 = event_1.slots.create(:skillship_id => skillship2.id)
+      slot21 = event_2.slots.create(:skillship_id => skillship1.id)
+          
+      get :index, :team_id => @team
+      
+      assert_select '#sidebar div.listing table' do |elements|
+        elements.each do |element|
+          assert_select element, 'td.item', /#{event_1.name}/
+          assert_select element, 'td.item div.skill_list', /#{skill1.name}, #{skill2.name}/
+          assert_select element, 'td.item', /#{event_2.name}/
+          assert_select element, 'td.item div.skill_list', /#{skill1.name}/          
+        end
+      end
+    end
+    
+    it "should display a blank slate message in the sidebar if the current_user is not scheduled for any events" do
+      get :index, :team_id => @team
+      
+      response.should have_selector('li.blank_slate', :content => "not assigned or scheduled")
+    end 
   end
   
   describe "POST 'create'" do

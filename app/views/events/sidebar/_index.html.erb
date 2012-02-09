@@ -1,0 +1,40 @@
+<div id="sidebar">
+	<h1>My scheduled events</h1>
+	<div class="listing">
+		<% slots = user_slots_for current_user, @team %>
+			<% if slots.any? %>
+				<table>
+					<% slots.each do |slot| %>
+						<tr>
+							<td class="when">
+								<div class="date_badge">
+									<div class="weekday"><%= slot[0].start_at.to_date.strftime("%A") %></div>
+									<div class="day"><%= slot[0].start_at.to_date.strftime("%e") %></div>
+									<div class="month"><%= slot[0].start_at.to_date.strftime("%b") %></div>
+								</div>
+								<div class="time">
+									<% unless slot[0].start_at_time.nil? %>
+										<%= Time.parse(slot[0].start_at_time).strftime("%l:%M%P").downcase.chop %>
+									<% end %>
+								</div>
+							</td>
+							<td class="item">
+								<div>
+									<strong>
+										<%= link_to slot[0].name, team_event_path(@team, slot[0].name) %>
+									</strong>
+								</div>
+								<div class="skill_list"><%= slot[1] %></div>
+							</td>
+						</tr>
+					<% end %>
+				</table>
+			<% else %>
+				<ul>
+					<li class="blank_slate">
+						You are not assigned or scheduled for any of this team's events.
+					</li>
+				</ul>
+			<% end %>
+	</div>
+</div>

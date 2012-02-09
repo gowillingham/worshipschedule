@@ -159,7 +159,6 @@ th .link                      {font-size:0.8em;float:right;margin-top:.2em;}
 #main .dashboard table td.what span     {width:6em;display:block;font-size:.9em;text-align:right;padding:.2em .5em;background-color:#c87800;color:white;}
 #main .dashboard table td.what .availability  {background-color:green;}
 
-
 .listing			 											{padding:12px 40px 12px 24px;}
 .listing table td										{border-bottom:solid 1px #efefef;padding:4px 3px;}
 .listing table td.what							{width:1px;white-space:nowrap;vertical-align:top;}
@@ -167,6 +166,20 @@ th .link                      {font-size:0.8em;float:right;margin-top:.2em;}
 .listing table td.item							{font-size:12px;padding:4px 3px 4px 8px;vertical-align:top;}
 .listing table td.item .desc				{font-size:10px;color:#777;padding-top:2px;}
 .listing table td .hover_menu				{display:none;float:right;font-size:12px;}
+.listing table td.item .skill_list	{font-size:10px;color:#777;line-height:14px;}
+.listing table td.item strong a				{color:#000;}
+.listing table td.item strong a:hover	{color:#d6ffcf;}
+
+.listing table td.when							{width:1%;text-align:center;}
+.listing table td.when div					{width:45px;margin:0;padding:0;line-height:1.0;}
+.listing table td.when .date_badge	{padding:3px 3px 3px;background-color:#fff;border:solid 2px #7A4A77;border-radius:4px;}
+.listing table td.when .month				{letter-spacing:1px;font-size:10px;font-weight:bold;text-transform:uppercase;}
+.listing table td.when .day					{padding:4px 0 4px;font-size:25px;font-weight:bold;}
+.listing table td.when .weekday			{color:#7A4A77;font-size:8.5px;}
+.listing table td.when .time				{width:100%;padding:3px 0 0 0;color:#7A4A77;}
+
+#sidebar .listing table 						{margin-top:5px;}
+#sidebar .listing .item 						{font-size:14px;padding:5px;	}
 
 .listing.event h6										{font-weight:normal;font-size:14px;padding-bottom:0;margin-bottom:0;letter-spacing:1px;}
 .listing.event h2										{margin-bottom:15px;}
@@ -176,6 +189,7 @@ th .link                      {font-size:0.8em;float:right;margin-top:.2em;}
 .for_events table 													{width:100%;margin:0;}
 .for_events table td.what .start_at 				{text-align:right;color:#7a4a77;font-size:10px;padding-top:1px;}
 .for_events table tr.date td								{border-bottom:none;padding:15px 0 6px;}
+.for_events table tr.date td.when						{text-align:left;width:200px;}
 .for_events table tr.date td.when h2				{display:inline;border-bottom:solid 1px #ccc;margin-left:-27px;white-space:nowrap;padding:2px 5px 2px 0;color:#666;text-transform:uppercase;font-size:9px;font-weight:bold;}
 .for_events table tr.date td.when h2.today	{border-bottom:none;color:black;background-color:#fff000;padding:2px 5px 2px 0}
 .for_events table tr.date td.when h2 span 	{margin-left:29px;}
