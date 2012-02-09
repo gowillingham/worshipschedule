@@ -23,9 +23,6 @@
 	<% end %>
     <h2>All events for <%= @team.name %></h2>
   </div>
-
-
-
 	<% if @events.any? %>
 		<% today = Date.new %>
 		<div class="listing for_events">
@@ -56,13 +53,14 @@
 									<div class="start_at"><%= event.all_day_text %></div>
 								</td>
 								<td class="item">
-									<% if team_admin?(@team, current_user) || admin? %>
-										<div class="hover_menu"><%= link_to "Edit", edit_team_event_path(@team, event), :class => 'cancel' %></div>
-									<% end %>
 									<div><%= link_to event.name, team_event_path(@team, event) %></div>
 									<% unless event.description.blank? %>
 										<div class="desc"><%= event.description %></div>
 									<% end %>
+									<ul class="avail">
+										<li><a href="#">Available?</a></li>
+										<li><a href="#">Not available?</a></li>
+									</ul>
 								</td>
 							</tr>
 						<% end %>
