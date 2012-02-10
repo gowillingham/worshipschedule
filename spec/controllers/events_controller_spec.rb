@@ -525,14 +525,6 @@ describe EventsController do
       response.should have_selector('a', :content => @event_3.name, :href => team_event_path(@team, @event_3))
     end
     
-    it "should display a rollover link to event#edit" do
-      get :index, :team_id => @team
-      
-      response.should have_selector('a', :content => 'Edit', :href => edit_team_event_path(@team, @event_1))
-      response.should have_selector('a', :content => 'Edit', :href => edit_team_event_path(@team, @event_2))
-      response.should have_selector('a', :content => 'Edit', :href => edit_team_event_path(@team, @event_3))      
-    end
-    
     it "should not display admin features to a regular user" do
       @accountship.update_attribute(:admin, false)
       membership = @team.memberships.create(:user_id =>@signed_in_user.id, :admin => false)
