@@ -10,6 +10,8 @@ Worshipschedule::Application.routes.draw do
       get :slots
     end
     
+    resources :availabilities, :only => [:update, :create]
+    
     resources :events do
       member do
         put :slots, :to => 'events#slots'
