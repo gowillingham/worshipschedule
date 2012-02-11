@@ -61,6 +61,24 @@
 										<li><a href="#">Available?</a></li>
 										<li><a href="#">Not available?</a></li>
 									</ul>
+										<% if current_user.teams.include?(@team) %>
+											<% membership = current_user.memberships.where('team_id =?', @team.id).first %>
+											<%= form_for :availability, :url => { :action => :create, :controller => :availabilities } do |f| %>
+												<%= f.hidden_field :event_id, :value => event.id %>
+												<%= f.hidden_field :membership_id, :value => membership.id %>
+												<%= f.submit 'available', :name => 'free?' %>
+												<%= f.submit 'not available' %>
+											<% end %>
+											<% availability = Availability.where('membership_id = ? AND event_id =?', membership.id, event.id).first %>
+											<% if availability.nil? %>
+												not yet set
+											<% elsif availability.free? %>
+												available
+											<% else %>
+												not available
+											<% end %>
+										<% end %>
+											
 								</td>
 							</tr>
 						<% end %>

@@ -22,15 +22,7 @@ module SessionsHelper
   def require_team_member(team_id)
     team = Team.find(team_id)
     unless admin? || owner? || team.users.include?(current_user)
-      respond_to do |format|
-        if request.xhr?
-          render :json => { :error => "You do not have permission for this action. You must belong to the team. " }, :status => :unprocessable_entity
-        else
-          format.html do
-            redirect_to current_user, :flash => { :error => "You don't have permission for that page" }
-          end
-        end
-      end
+      redirect_to current_user, :flash => { :error => "You don't have permission for that page" }
     end
   end
   
