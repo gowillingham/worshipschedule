@@ -33,6 +33,14 @@ module SessionsHelper
     end
   end
   
+  def team_member?(member, team)
+    if member.teams.exists?(team)
+      member.memberships.where(:team_id => team.id).first.active?
+    else
+      false
+    end
+  end
+
   def team_admin?(team, user)
     membership = Membership.where('user_id = ? AND team_id = ?', user.id, team.id).first
     if admin?
