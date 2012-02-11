@@ -15,7 +15,7 @@ class AvailabilitiesController < AccountsController
       respond_to do |format|
         format.html { redirect_to team_events_url(@team) }
       end
-    end    
+    end     
   end
 
   def create

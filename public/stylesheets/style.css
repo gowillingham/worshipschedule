@@ -196,7 +196,10 @@ th .link                      {font-size:0.8em;float:right;margin-top:.2em;}
 
 .for_events table td.item .avail						{text-align:right;margin:5px 0;padding:0;}
 .for_events table td.item .avail li					{font-size:10px;text-align:center;list-style-type:none;display:inline;}
-.for_events table td.item .avail a					{padding:3px 10px;background-color:gray;color:#fff;border-radius:4px;}				
+
+.for_events table td.item .avail a														{background-color:gray;padding:3px 10px;color:#fff;border-radius:4px;}				
+.for_events table td.item .avail li.available a.selected	 		{background-color:green;}
+.for_events table td.item .avail li.not_available a.selected 	{background-color:red;}
 
 .for_slots																	{padding:20px 0;}
 .for_slots table 														{background-color:#fff;margin:0 1%;width:98%;border-collapse:collapse;border:none;}

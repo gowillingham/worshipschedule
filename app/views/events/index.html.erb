@@ -57,10 +57,6 @@
 									<% unless event.description.blank? %>
 										<div class="desc"><%= event.description %></div>
 									<% end %>
-									<ul class="avail">
-										<li><a href="#">Available?</a></li>
-										<li><a href="#">Not available?</a></li>
-									</ul>
 										<% if current_user.teams.include?(@team) %>
 											<% membership = current_user.memberships.where('team_id =?', @team.id).first %>
 											<% availability = Availability.where('membership_id = ? AND event_id =?', membership.id, event.id).first %>
@@ -80,12 +76,19 @@
 											<% end %>
 
 											<% if availability.nil? %>
-												not yet set
+												<% avail_class = '' %>
+												<% unavail_class = '' %>
 											<% elsif availability.free? %>
-												available
+												<% avail_class = 'selected' %>
+												<% not_avail_class = '' %>
 											<% else %>
-												not available
+												<% avail_class = '' %>
+												<% not_avail_class = 'selected' %>
 											<% end %>
+											<ul class="avail">
+												<li class="available"><a href="#" class="<%= avail_class %>">Available?</a></li>
+												<li class='not_available'><a href="#" class="<%= not_avail_class %>">Not available?</a></li>
+											</ul>
 										<% end %>
 											
 								</td>
