@@ -65,32 +65,22 @@
 												<%= form_for :availability, :url => { :action => :create, :controller => :availabilities } do |f| %>
 													<%= f.hidden_field :event_id, :value => event.id %>
 													<%= f.hidden_field :membership_id, :value => membership.id %>
-													<%= f.submit 'available', :name => 'free?' %>
-													<%= f.submit 'not available' %>
+													<%= f.submit 'Available?', :name => 'free?'%>
+													<%= f.submit 'Not available?' %>
 												<% end %>
 											<% else %>
 												<%= form_for availability, :url => team_availability_path(@team, availability) do |f| %>
-													<%= f.submit 'available', :name => 'free?' %>
-													<%= f.submit 'not available' %>
+												
+													<% if availability.free? %>
+														<%= f.submit 'Available', :name => 'free?', :class => 'available selected'%>
+														<%= f.submit 'Not available' %>
+													<% else %>
+														<%= f.submit 'Available', :name => 'free?' %>
+														<%= f.submit 'Not available', :class => 'not_available selected' %>
+													<% end %>
 												<% end %>
 											<% end %>
-
-											<% if availability.nil? %>
-												<% avail_class = '' %>
-												<% unavail_class = '' %>
-											<% elsif availability.free? %>
-												<% avail_class = 'selected' %>
-												<% not_avail_class = '' %>
-											<% else %>
-												<% avail_class = '' %>
-												<% not_avail_class = 'selected' %>
-											<% end %>
-											<ul class="avail">
-												<li class="available"><a href="#" class="<%= avail_class %>">Available?</a></li>
-												<li class='not_available'><a href="#" class="<%= not_avail_class %>">Not available?</a></li>
-											</ul>
-										<% end %>
-											
+										<% end %>											
 								</td>
 							</tr>
 						<% end %>
