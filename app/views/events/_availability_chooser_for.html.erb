@@ -1,0 +1,37 @@
+<% membership = user.memberships.where('team_id =?', team.id).first %>
+<% availability = Availability.where('membership_id = ? AND event_id =?', membership.id, event.id).first %>
+
+<div class="availability_chooser">
+	<% if availability.nil? %>
+		<%= form_for 	:availability, :url => team_availabilities_path(team), :remote => true do |f| %>
+			<%= f.hidden_field :event_id, :value => event.id %>
+			<%= f.hidden_field :membership_id, :value => membership.id %>
+			<%= hidden_field_tag 'free?', 'on' %>
+			<%= f.submit 'Available?', :id => nil%>
+		<% end %>
+		<%= form_for 	:availability, :url => team_availabilities_path(team), :remote => true do |f| %>
+			<%= f.hidden_field :event_id, :value => event.id %>
+			<%= f.hidden_field :membership_id, :value => membership.id %>
+			<%= f.submit 'Not available?', :id => nil %>
+		<% end %>												
+	<% else %>											
+		<% if availability.free? %>
+			<%= form_for availability, :url => team_availability_path(team, availability), :remote => true do |f| %>
+				<%= hidden_field_tag 'free?', 'on' %>
+				<%= f.submit 'Available', :class => 'available selected', :id => nil %>													
+			<%end %>
+			<%= form_for availability, :url => team_availability_path(team, availability), :remote => true do |f| %>
+				<%= f.submit 'Not available', :id => nil %>													
+			<%end %>
+		<% else %>
+			<%= form_for availability, :url => team_availability_path(team, availability), :remote => true do |f| %>
+				<%= hidden_field_tag 'free?', 'on' %>
+				<%= f.submit 'Available', :id => nil %>													
+			<%end %>
+			<%= form_for availability, :url => team_availability_path(team, availability), :remote => true do |f| %>
+				<%= f.submit 'Not available', :class => 'not_available selected', :id => nil %>													
+			<%end %>
+		<% end %>
+	<% end %>
+</div>
+
