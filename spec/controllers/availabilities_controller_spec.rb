@@ -21,32 +21,35 @@ describe AvailabilitiesController do
     }
   end
   
+  describe 'PUT update' do
+    it "should not allow an availability from another team"
+    it "it should update the availability given valid attributes"
+  end
+  
   describe 'POST create' do
-    
-    it "should return an error for a non-team member" do
-      @signed_in_user.teams.clear
+
+    it "should return error for a membership from another team" do
       post :create, :team_id => @team, :availability => @attr
+      response.should redirect_to(@signed_in_user)
       
-      response.should_not be_success
-    end
-     
-    it "should return error for a membership that doesn't belong to current_user" do
-      # user = Factory(:user, :email => Factory.next(:email))
-      # @account.users << user
-      # membership = @team.memberships.create(:user_id => user.id)
-      # post :create, :team_id => @team, :availability => @attr.merge(:membership_id => membership.id)
-      # 
-      # response.should_not be_success
+      xhr :post, :create, :team_id => @team, :availability => @attr
+      response.response_code.should eq(403) # => forbidden      
     end
     
-    it "should return error for an event that doesn't belong to current_user"
-    it "should return error for a membership from another team"
-    it "should return error for an event from another team"
+    it "should return error for an event from another team" do
+      post :create, :team_id => @team, :availability => @attr
+      response.should redirect_to(@signed_in_user)
+      
+      xhr :post, :create, :team_id => @team, :availability => @attr
+      response.response_code.should eq(403) # => forbidden
+    end
     
     it "should add an availability for valid attributes" do
       lambda do
         post :create, :team_id => @team, :availability => @attr
       end.should change(Availability, :count).by(1)
     end
+    
+    it "should not add an availability for invalid attributes"
   end
 end

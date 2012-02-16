@@ -586,7 +586,11 @@ describe EventsController do
       response.should have_selector('li.blank_slate', :content => "not assigned or scheduled")
     end 
   
-    it "should show availability buttons to current_user"
+    it "should show availability buttons to current_user if they are a team member" do
+      get :index, :team_id => @team
+      
+      response.should have_selector('div.availability_chooser form')
+    end
     it "should hide availability buttons from someone who is not the current user"
   end
   
