@@ -201,10 +201,11 @@ th .link                      {font-size:0.8em;float:right;margin-top:.2em;}
 .for_events table td.item .avail li.available a.selected	 		{background-color:green;}
 .for_events table td.item .avail li.not_available a.selected 	{background-color:red;}
 
-.for_events form								 													{text-align:right;}
-.for_events input[type="submit"] 													{width:85px;margin:2px 0;cursor:pointer;font-size:10px;line-height:10px;text-decoration:underline;padding:2px 8px;color:white;background-color:gray;border:none;background-image:none;border-radius:4px;}
-.for_events input[type="submit"].available.selected 			{background-color:green;}
-.for_events input[type="submit"].not_available.selected 	{background-color:red;}
+.for_events .availability_controls										 													{text-align:right;margin:5px 0 0 0;}
+.for_events .availability_controls form								 													{display:inline;}
+.for_events .availability_controls input[type="submit"] 												{width:85px;margin:2px 0;cursor:pointer;font-size:10px;line-height:10px;text-decoration:underline;padding:2px 8px;color:white;background-color:gray;border:none;background-image:none;border-radius:4px;}
+.for_events .availability_controls input[type="submit"].available.selected 			{background-color:green;}
+.for_events .availability_controls input[type="submit"].not_available.selected 	{background-color:red;}
 
 .for_slots																	{padding:20px 0;}
 .for_slots table 														{background-color:#fff;margin:0 1%;width:98%;border-collapse:collapse;border:none;}

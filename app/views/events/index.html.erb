@@ -2,14 +2,7 @@
   <script type="text/javascript">
     
     $(document).ready(function(){
-			$("tr, .hover_menu").hover(
-				function(){
-					$(this).children("td").children(".hover_menu").show()
-				},
-				function(){
-					$(this).children("td").children(".hover_menu").hide()
-				}
-			)
+
     })
   </script>
 <% end %>
@@ -61,25 +54,40 @@
 											<% membership = current_user.memberships.where('team_id =?', @team.id).first %>
 											<% availability = Availability.where('membership_id = ? AND event_id =?', membership.id, event.id).first %>
 											
-											<% if availability.nil? %>
-												<%= form_for :availability, :url => { :action => :create, :controller => :availabilities } do |f| %>
-													<%= f.hidden_field :event_id, :value => event.id %>
-													<%= f.hidden_field :membership_id, :value => membership.id %>
-													<%= f.submit 'Available?', :name => 'free?'%>
-													<%= f.submit 'Not available?' %>
-												<% end %>
-											<% else %>
-												<%= form_for availability, :url => team_availability_path(@team, availability) do |f| %>
-												
+											<div class="availability_controls">
+												<% if availability.nil? %>
+													<%= form_for 	:availability, :url => team_availabilities_path(@team), :remote => true do |f| %>
+														<%= f.hidden_field :event_id, :value => event.id %>
+														<%= f.hidden_field :membership_id, :value => membership.id %>
+														<%= hidden_field_tag 'free?', 'on' %>
+														<%= f.submit 'Available?', :id => nil%>
+													<% end %>
+													<%= form_for 	:availability, :url => team_availabilities_path(@team), :remote => true do |f| %>
+														<%= f.hidden_field :event_id, :value => event.id %>
+														<%= f.hidden_field :membership_id, :value => membership.id %>
+														<%= f.submit 'Not available?', :id => nil %>
+													<% end %>												
+												<% else %>											
 													<% if availability.free? %>
-														<%= f.submit 'Available', :name => 'free?', :class => 'available selected'%>
-														<%= f.submit 'Not available' %>
+														<%= form_for availability, :url => team_availability_path(@team, availability), :remote => true do |f| %>
+															<%= hidden_field_tag 'free?', 'on' %>
+															<%= f.submit 'Available', :class => 'available selected', :id => nil %>													
+														<%end %>
+														<%= form_for availability, :url => team_availability_path(@team, availability), :remote => true do |f| %>
+															<%= f.submit 'Not available', :id => nil %>													
+														<%end %>
 													<% else %>
-														<%= f.submit 'Available', :name => 'free?' %>
-														<%= f.submit 'Not available', :class => 'not_available selected' %>
+														<%= form_for availability, :url => team_availability_path(@team, availability), :remote => true do |f| %>
+															<%= hidden_field_tag 'free?', 'on' %>
+															<%= f.submit 'Available', :id => nil %>													
+														<%end %>
+														<%= form_for availability, :url => team_availability_path(@team, availability), :remote => true do |f| %>
+															<%= f.submit 'Not available', :class => 'not_available selected', :id => nil %>													
+														<%end %>
 													<% end %>
 												<% end %>
-											<% end %>
+											</div>
+											
 										<% end %>											
 								</td>
 							</tr>
