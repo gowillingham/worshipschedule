@@ -103,13 +103,4 @@ class EventsController < ApplicationController
         redirect_to slots_team_url(team), :flash => { :error => "You do not have permission to modify one (or more) of the members you selected " }
       end
     end
-
-    def require_event_for_current_team(team_id, event_id)
-      team = Team.find(team_id)
-      event = Event.find(event_id)
-      unless team.events.include?(event)
-        redirect_to current_user, :flash => { :error => "You don't have permission to modify that event" }        
-      end
-    end
-    
 end

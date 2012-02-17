@@ -587,11 +587,17 @@ describe EventsController do
     end 
   
     it "should show availability buttons to current_user if they are a team member" do
+      @signed_in_user.memberships.create(:team_id => @team.id)
       get :index, :team_id => @team
       
       response.should have_selector('div.availability_chooser form')
     end
-    it "should hide availability buttons from someone who is not the current user"
+    
+    it "should hide availability buttons from someone who is not the current user" do
+      get :index, :team_id => @team
+      
+      response.should_not have_selector('div.availability_chooser form')
+    end
   end
   
   describe "POST 'create'" do

@@ -1,4 +1,6 @@
 class AvailabilitiesController < AccountsController
+  before_filter(:only => :create) { require_memberships_for_current_team(params[:team_id], [params[:availability][:membership_id]]) }
+  before_filter(:only => :create) { require_event_for_current_team(params[:team_id], params[:availability][:event_id])}
   respond_to :html
   
   def update

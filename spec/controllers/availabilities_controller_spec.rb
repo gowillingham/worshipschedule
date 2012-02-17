@@ -13,34 +13,49 @@ describe AvailabilitiesController do
     
     @team = @account.teams.create(:name => 'Team')
     @event = @team.events.create!(:start_at_date => '2012-02-14')
-    @membership = @team.memberships.create(:user_id => @signed_in_user)
+    @membership = @team.memberships.create!(:user_id => @signed_in_user)
     
     @attr = {
-      :membership_id => @membership.id,
-      :event_id => @event.id
+      :membership_id => @membership.id.to_s,
+      :event_id => @event.id.to_s,
+      :approved => true,
+      :free => false
     }
   end
   
   describe 'PUT update' do
-    it "should not allow an availability from another team"
-    it "it should update the availability given valid attributes"
+    
+    before(:each) do
+     @availability = Availability.create!(@attr)
+    end
+    
+    it "should not allow an availability from another team" 
+    it "should update the availability given valid attributes" do
+
+    end
   end
   
   describe 'POST create' do
 
     it "should return error for a membership from another team" do
-      post :create, :team_id => @team, :availability => @attr
+      team = @account.teams.create(:name => 'orphan team')
+      membership = team.memberships.create(:user_id => @signed_in_user.id)
+      
+      post :create, :team_id => @team, :availability => @attr.merge(:membership_id => membership.id)
       response.should redirect_to(@signed_in_user)
       
-      xhr :post, :create, :team_id => @team, :availability => @attr
+      xhr :post, :create, :team_id => @team, :availability => @attr.merge(:membership_id => membership.id)
       response.response_code.should eq(403) # => forbidden      
     end
     
     it "should return error for an event from another team" do
-      post :create, :team_id => @team, :availability => @attr
+      team = @account.teams.create(:name => 'orphan team')
+      event = team.events.create!(:start_at_date => '02-02-2012')
+      
+      post :create, :team_id => @team, :availability => @attr.merge(:event_id => event.id)
       response.should redirect_to(@signed_in_user)
       
-      xhr :post, :create, :team_id => @team, :availability => @attr
+      xhr :post, :create, :team_id => @team, :availability => @attr.merge(:event_id => event.id)
       response.response_code.should eq(403) # => forbidden
     end
     
@@ -50,6 +65,13 @@ describe AvailabilitiesController do
       end.should change(Availability, :count).by(1)
     end
     
-    it "should not add an availability for invalid attributes"
+    it "should not add an availability for invalid attributes" do
+      team = @account.teams.create(:name => 'orphan team')
+      event = team.events.create!(:start_at_date => '02-02-2012')
+
+      lambda do
+        post :create, :team_id => @team, :availability => @attr.merge(:event_id => event.id)
+      end.should change(Availability, :count).by(0)      
+    end
   end
 end

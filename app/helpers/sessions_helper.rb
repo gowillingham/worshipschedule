@@ -55,6 +55,33 @@ module SessionsHelper
       membership.admin? && membership.active?
     end
   end
+      
+  def require_memberships_for_current_team(team_id, membership_ids)
+    team = Team.find(team_id)
+    current_ids = team.memberships.map { |m| m.id.to_s }
+    membership_ids.each do |id|
+      unless current_ids.include?(id)
+        if request.xhr?
+          render :nothing => true, :status => :forbidden
+        else
+          redirect_to current_user, :flash => { :error => "You don't have permission to modify one or more of the team members you selected"}
+        end
+        return
+      end
+    end
+  end
+
+  def require_event_for_current_team(team_id, event_id)
+    team = Team.find(team_id)
+    event = Event.find(event_id)
+    unless team.events.include?(event)
+      if request.xhr?
+        render :nothing => true, :status => :forbidden
+      else
+        redirect_to current_user, :flash => { :error => "You don't have permission to modify that event" }        
+      end
+    end
+  end
   
   def require_user_for_current_account(user_id)
     user = User.find(user_id)

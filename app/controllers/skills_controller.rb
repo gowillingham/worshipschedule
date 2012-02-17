@@ -100,15 +100,4 @@ class SkillsController < ApplicationController
         redirect_to current_user, :flash => { :error => "You don't have permission to modify that skill" }
       end      
     end
-    
-    def require_memberships_for_current_team(team_id, membership_ids)
-      team = Team.find(team_id)
-      current_ids = team.memberships.map { |m| m.id.to_s }
-      membership_ids.each do |id|
-        unless current_ids.include?(id)
-          redirect_to current_user, :flash => { :error => "You don't have permission to modify one or more of the team members you selected"}
-          return
-        end
-      end
-    end
 end
