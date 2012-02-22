@@ -25,13 +25,21 @@ describe AvailabilitiesController do
   
   describe 'PUT update' do
     
-    before(:each) do
-     @availability = Availability.create!(@attr)
+    before(:each) do 
+      @availability = Availability.create!(@attr)
     end
     
     it "should not allow an availability from another team" 
+    
     it "should update the availability given valid attributes" do
-
+      attrib = {
+        :membership_id => @availability.membership_id,
+        :event_id => @availability.event_id,
+        :approved => true,
+        :free => true
+      }
+      put :update, :team_id => @team, :id => @availability, :availability => attrib
+      Availability.find(@availability.id).free.should be_true
     end
   end
   
