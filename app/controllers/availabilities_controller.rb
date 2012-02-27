@@ -1,6 +1,7 @@
 class AvailabilitiesController < ApplicationController
   before_filter(:only => :create) { require_memberships_for_current_team(params[:team_id], [params[:availability][:membership_id]]) }
   before_filter(:only => :create) { require_event_for_current_team(params[:team_id], params[:availability][:event_id])}
+  before_filter(:only => :update) { require_availability_for_current_team(params[:team_id], params[:id]) }
   respond_to :html
   
   def update
@@ -57,4 +58,23 @@ class AvailabilitiesController < ApplicationController
       end
     end     
   end
+  
+  private
+  
+    def require_availability_for_current_team(team_id, availability_id)
+      availabilities = Availability.find(
+        :all,
+        :joins => { :event => :team },
+        :conditions => ['teams.id = ?', team_id]
+      ).map { |availability| availability.id.to_s }
+
+      unless availabilities.include?(availability_id.to_s)
+        if request.xhr?
+          render :nothing => true, :status => :forbidden
+        else
+          flash[:error] = 'You do not have permission to modify that availability'
+          redirect_to(current_user)
+        end
+      end
+    end
 end

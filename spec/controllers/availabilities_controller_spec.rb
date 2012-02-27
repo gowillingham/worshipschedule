@@ -27,20 +27,34 @@ describe AvailabilitiesController do
     
     before(:each) do 
       @availability = Availability.create!(@attr)
-    end
-    
-    it "should not allow an availability from another team" 
-    
-    it "should update the availability given valid attributes" do
-      attrib = {
-        :membership_id => @availability.membership_id,
-        :event_id => @availability.event_id,
+      @new_attrib = {
+        :membership_id => @availability.membership_id.to_s,
+        :event_id => @availability.event_id.to_s,
         :approved => true,
         :free => true
       }
-      put :update, :team_id => @team, :id => @availability, :availability => attrib
-      Availability.find(@availability.id).free.should be_true
     end
+    
+    it "should not allow an availability from another team"
+    it "should update the availability given valid attributes"
+    
+    # it "should not allow an availability from another team" do
+    # 
+    #   put :update, :team_id => @team, :id => availability, :availability => @new_attrib
+    #   response.should redirect_to(@signed_in_user)
+    #   
+    #   xhr :put, :update, :team_id => @team, :id => availability, :availability => @new_attrib.merge(:free => false)
+    #   response.response_code.should eq(403) # => forbidden
+    # end
+    
+    # it "should update the availability given valid attributes" do
+    #   put :update, :team_id => @team, :id => @availability, :availability => @new_attrib
+    #   response.should redirect_to(team_events_path(@team))
+    #   Availability.find(@availability.id).free.should be_true
+    #   
+    #   xhr :put, :update, :team_id => @team, :id => @availability, :availability => @new_attrib.merge(:free => false)
+    #   Availability.find(@availability.id).free.should_not be_true      
+    # end
   end
   
   describe 'POST create' do
