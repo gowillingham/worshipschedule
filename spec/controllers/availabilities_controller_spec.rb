@@ -35,26 +35,51 @@ describe AvailabilitiesController do
       }
     end
     
-    it "should not allow an availability from another team"
-    it "should update the availability given valid attributes"
+    it "should not allow an availability from another team" do
+      team = @account.teams.create(:name => 'orphan team')
+      membership = team.memberships.create(:user_id => @signed_in_user.id)
+      event = team.events.create!(:start_at_date => '2012-02-14')  
+      availability = Availability.create(:event_id => event.id, :membership_id => membership.id, :free => true)
+      
+      put :update, :team_id => @team, :id => availability.id, :availability => { :membership_id => membership.id, :event_id => event.id, :free => true, :approved => true }
+      response.should redirect_to(@signed_in_user)
+      flash[:error].should =~ /do not have permission/i
+      
+      xhr :put, :update, :team_id => @team, :id => availability, :availability => { :membership_id => membership.id, :event_id => event.id, :free => true, :approved => true }
+      response.response_code.should eq(403) # => forbidden
+    end
     
-    # it "should not allow an availability from another team" do
-    # 
-    #   put :update, :team_id => @team, :id => availability, :availability => @new_attrib
-    #   response.should redirect_to(@signed_in_user)
-    #   
-    #   xhr :put, :update, :team_id => @team, :id => availability, :availability => @new_attrib.merge(:free => false)
-    #   response.response_code.should eq(403) # => forbidden
-    # end
+    it "should not allow an event from another team" do
+      team = @account.teams.create(:name => 'orphan team')
+      event = team.events.create!(:start_at_date => '2012-02-14')  
+      
+      put :update, :team_id => @team, :id => @availability.id, :availability => @attr.merge(:event_id => event.id)
+      response.should redirect_to(@signed_in_user)
+      
+      xhr :put, :update, :team_id => @team, :id => @availability.id, :availability => @attr.merge(:event_id => event.id)
+      response.response_code.should eq(403) # => forbidden
+    end
     
-    # it "should update the availability given valid attributes" do
-    #   put :update, :team_id => @team, :id => @availability, :availability => @new_attrib
-    #   response.should redirect_to(team_events_path(@team))
-    #   Availability.find(@availability.id).free.should be_true
-    #   
-    #   xhr :put, :update, :team_id => @team, :id => @availability, :availability => @new_attrib.merge(:free => false)
-    #   Availability.find(@availability.id).free.should_not be_true      
-    # end
+    it "should not allow a membership from another team" do
+      team = @account.teams.create(:name => 'orphan team')
+      membership = team.memberships.create(:user_id => @signed_in_user.id)
+      
+      put :update, :team_id => @team, :id => @availability.id, :availability => @attr.merge(:membership_id => membership.id)
+      response.should redirect_to(@signed_in_user)
+      
+      xhr :put, :update, :team_id => @team, :id => @availability.id, :availability => @attr.merge(:membership_id => membership.id)
+      response.response_code.should eq(403) # => forbidden      
+    end
+    
+    it "should update the availability given valid attributes" do
+      put :update, :team_id => @team, :id => @availability.id, :availability => @attr.merge(:free => true)
+      response.should redirect_to(team_events_path(@team))
+      Availability.find(@availability).free.should be_true
+      
+      xhr :put, :update, :team_id => @team, :id => @availability.id, :availability => @attr.merge(:free => true)
+      response.response_code.should eq(200)
+      Availability.find(@availability).free.should be_true
+    end
   end
   
   describe 'POST create' do
