@@ -1,5 +1,5 @@
 <% membership = user.memberships.where('team_id =?', team.id).first %>
-<% availability = Availability.where('membership_id = ? AND event_id =?', membership.id, event.id).first %>
+<% availability = Availability.where('membership_id = ? AND event_id = ?', membership.id, event.id).first %>
 
 <div class="availability_chooser">
 	<% if availability.nil? %>

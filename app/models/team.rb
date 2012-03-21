@@ -11,6 +11,20 @@ class Team < ActiveRecord::Base
   validates_presence_of :account_id
   validates_presence_of :name
   
+  def new_availability_for?(user)
+    membership = self.memberships.find_by_user_id(user.id)    
+    
+    if membership.nil?
+      # this user is not on this team
+      false
+    elsif self.events == membership.events
+      # there is an availability row for each event
+      false
+    else
+      true
+    end
+  end
+  
   def assign_administrators(ids, current_user)
     memberships = self.memberships.find(:all, :include => :user)
     
